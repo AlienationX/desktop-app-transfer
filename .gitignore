@@ -4,12 +4,15 @@
 .history
 .venv
 
+
+
 # python
 __pycache__
+*.spec
 
 # project folder
-/tmp_script
-
+build
+dist
 output
 
 bash.exe.stackdump
