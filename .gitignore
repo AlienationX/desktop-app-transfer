@@ -1,0 +1,15 @@
+# idea
+.idea
+.vscode
+.history
+.venv
+
+# python
+__pycache__
+
+# project folder
+/tmp_script
+
+output
+
+bash.exe.stackdump
