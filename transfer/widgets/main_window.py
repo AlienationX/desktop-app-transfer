@@ -16,9 +16,11 @@ from PySide6.QtWidgets import (
     QStackedWidget
 )
 from PySide6.QtCore import Slot, QSize, QStandardPaths, QUrl, QFile, QSaveFile, QDir, QIODevice
+import qtawesome as qta
 
 from widgets.excel_widget import ExcelToCsvWidget, ExcelSplitWidget
 from widgets.csv_widget import CsvToExcelWidget
+from widgets.word_widget import WordToPDFWidget
 
 
 class MainWindow(QMainWindow):
@@ -36,7 +38,7 @@ class MainWindow(QMainWindow):
         # QTreeWidget组件定义
         self.treeWidget = QTreeWidget()
         self.treeWidget.header().setVisible(False)           # 隐藏标头
-        self.treeWidget.setStyleSheet(u"border:none;")       # 隐藏边框
+        self.treeWidget.setStyleSheet("border:none;")       # 隐藏边框
         # self.treeWidget.headerItem().setText(0, "参数名")    # 给第1列设置标题
         # self.treeWidget.setColumnWidth(0, 200)               # 给第1列设置列宽200
         self.treeWidget.setMaximumSize(QSize(200, 16777215))
@@ -44,19 +46,29 @@ class MainWindow(QMainWindow):
         # QTreeWidget组件内容设置
         self.menu_map = {
             "EXCEL": {
-                "转换CSV": {
+                "转换成CSV": {
                     "name" : "excelToCsvWidget",
+                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
                     "class" : ExcelToCsvWidget()
                 },
                 "文件拆分": {
                     "name" : "excelSplitWidget",
+                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
                     "class" : ExcelSplitWidget()
                 }
             },
             "CSV":{
-                "转换EXCEL": {
+                "转换成EXCEL": {
                     "name" : "csvToExcelWidget",
+                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
                     "class" : CsvToExcelWidget(),
+                }
+            },
+            "WORD":{
+                "转换成PDF": {
+                    "name" : "wordToPDFWidget",
+                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
+                    "class" : WordToPDFWidget(),
                 }
             }
         }
@@ -72,6 +84,7 @@ class MainWindow(QMainWindow):
             rootItem = QTreeWidgetItem()
             rootItem.setText(0, k)
             for key, value in self.menu_map[k].items():
+                rootItem.setIcon(0, value["icon"])
                 childItem = QTreeWidgetItem()
                 childItem.setText(0, key)
                 rootItem.addChild(childItem)
@@ -120,6 +133,10 @@ class MainWindow(QMainWindow):
         
         i = 0
         for k in self.menu_map:
+            
+            if current.text(0) == k:
+                current.setExpanded(not current.isExpanded())  # TODO
+            
             for key in self.menu_map[k]:
                 if current.text(0) == key:
                     self.stackedWidget.setCurrentIndex(i)

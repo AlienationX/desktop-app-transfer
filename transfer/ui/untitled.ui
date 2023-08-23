@@ -193,6 +193,12 @@ border:none;</string>
       <property name="text">
        <string>双引号转义</string>
       </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QRadioButton" name="radioButton_3">
       <property name="geometry">
