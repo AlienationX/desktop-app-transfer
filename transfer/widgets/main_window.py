@@ -1,7 +1,7 @@
 
 from PySide6.QtWidgets import (
     QMainWindow,
-    QWidget, 
+    QWidget,
     QLabel,
     QMessageBox,
     QLineEdit,
@@ -16,11 +16,13 @@ from PySide6.QtWidgets import (
     QStackedWidget
 )
 from PySide6.QtCore import Slot, QSize, QStandardPaths, QUrl, QFile, QSaveFile, QDir, QIODevice
+from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
 from widgets.excel_widget import ExcelToCsvWidget, ExcelSplitWidget
 from widgets.csv_widget import CsvToExcelWidget
 from widgets.word_widget import WordToPDFWidget
+from resources import resources_rc
 
 
 class MainWindow(QMainWindow):
@@ -32,45 +34,64 @@ class MainWindow(QMainWindow):
     def setupUi(self):
         """页面初始化"""
         # 设置窗体大小及标题
-        self.resize(700, 400)
+        self.resize(900, 500)
         self.setWindowTitle("Transfer - 转换工具")
+        
+        # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
+        # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
+        # self.setWindowIcon(QIcon(":/logo.ico"))
+        # self.setWindowIcon(QIcon(":/texts/icons/8687850_ic_fluent_tag_regular_icon_48.png"))
+        logoIcon = qta.icon("msc.twitter", color="blue")
+        self.setWindowIcon(logoIcon)
         
         # QTreeWidget组件定义
         self.treeWidget = QTreeWidget()
         self.treeWidget.header().setVisible(False)           # 隐藏标头
-        self.treeWidget.setStyleSheet("border:none;")       # 隐藏边框
+        self.treeWidget.setStyleSheet("border:none;")        # 隐藏边框
         # self.treeWidget.headerItem().setText(0, "参数名")    # 给第1列设置标题
         # self.treeWidget.setColumnWidth(0, 200)               # 给第1列设置列宽200
         self.treeWidget.setMaximumSize(QSize(200, 16777215))
         
         # QTreeWidget组件内容设置
-        self.menu_map = {
+        self.menus = {
             "EXCEL": {
-                "转换成CSV": {
-                    "name" : "excelToCsvWidget",
-                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
-                    "class" : ExcelToCsvWidget()
-                },
-                "文件拆分": {
-                    "name" : "excelSplitWidget",
-                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
-                    "class" : ExcelSplitWidget()
-                }
+                "icon" : qta.icon("ri.file-excel-2-line", color="blue"),
+                "children" : [
+                    {
+                        "name" : "excelToCsvWidget",
+                        "text" : "转换成CSV",
+                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "class": ExcelToCsvWidget()
+                    },
+                    {
+                        "name" : "excelSplitWidget",
+                        "text" : "文件拆分",
+                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "class": ExcelSplitWidget()
+                    }
+                ]},
+            "WORD": {
+                "icon" : qta.icon("ri.file-word-2-line", color="blue"),
+                "children" : [
+                    {
+                        "name" : "wordToPDFWidget",
+                        "text" : "转换成PDF",
+                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "class": WordToPDFWidget(),
+                    }
+                ]
             },
-            "CSV":{
-                "转换成EXCEL": {
-                    "name" : "csvToExcelWidget",
-                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
-                    "class" : CsvToExcelWidget(),
-                }
+            "CSV": {
+                "icon" : qta.icon("fa5s.file-csv", color="blue"),
+                "children" : [
+                    {
+                        "name" : "csvToExcelWidget",
+                        "text" : "转换成EXCEL",
+                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "class": CsvToExcelWidget(),
+                    }
+                ]
             },
-            "WORD":{
-                "转换成PDF": {
-                    "name" : "wordToPDFWidget",
-                    "icon" : qta.icon("ri.file-excel-2-line", color="red"),
-                    "class" : WordToPDFWidget(),
-                }
-            }
         }
         
         # self.homeItem = QTreeWidgetItem()
@@ -80,20 +101,21 @@ class MainWindow(QMainWindow):
         # 设置stackedWidget
         self.stackedWidget = QStackedWidget()
         
-        for k in self.menu_map:
+        for text in self.menus:
             rootItem = QTreeWidgetItem()
-            rootItem.setText(0, k)
-            for key, value in self.menu_map[k].items():
-                rootItem.setIcon(0, value["icon"])
+            rootItem.setText(0, text)
+            rootItem.setIcon(0, self.menus[text]["icon"])
+            for menu_list in self.menus[text]["children"]:
                 childItem = QTreeWidgetItem()
-                childItem.setText(0, key)
+                childItem.setText(0, menu_list["text"])
+                childItem.setIcon(0, menu_list["icon"])
                 rootItem.addChild(childItem)
-                setattr(self, value["name"], value["class"])  # 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
-                self.stackedWidget.addWidget(getattr(self, value["name"]))  # 添加到stackedWidget上
+                setattr(self, menu_list["name"], menu_list["class"])  # 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
+                self.stackedWidget.addWidget(getattr(self, menu_list["name"]))  # 添加到stackedWidget上
             self.treeWidget.addTopLevelItem(rootItem)
         
         # QTreeWidget绑定信号
-        self.treeWidget.currentItemChanged.connect(self.router)
+        self.treeWidget.itemClicked.connect(self.router)
         
         
         # 创建布局
@@ -127,17 +149,17 @@ class MainWindow(QMainWindow):
         # setStatusBar(self.statusbar)
 
     @Slot()
-    def router(self, current, previous):
+    def router(self, item, column):
         # print(current, previous)
         # print(current.text(0))
         
         i = 0
-        for k in self.menu_map:
-            
-            if current.text(0) == k:
-                current.setExpanded(not current.isExpanded())  # TODO
-            
-            for key in self.menu_map[k]:
-                if current.text(0) == key:
+        for text in self.menus:
+            # 如果等于一级节点则展开
+            if item.text(0) == text:
+                item.setExpanded(not item.isExpanded())
+            # 如果等于二级节点则切换页面
+            for menu_list in self.menus[text]["children"]:
+                if item.text(0) == menu_list["text"]:
                     self.stackedWidget.setCurrentIndex(i)
                 i += 1

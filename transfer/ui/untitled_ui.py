@@ -48,7 +48,7 @@ class Ui_Form(object):
         self.widget.setAutoFillBackground(False)
         self.pushButton = QPushButton(self.widget)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(20, 190, 75, 24))
+        self.pushButton.setGeometry(QRect(10, 170, 75, 24))
         self.pushButton.setAutoFillBackground(True)
         self.pushButton.setStyleSheet(u"outline:none;\n"
 "\n"
@@ -81,7 +81,19 @@ class Ui_Form(object):
         self.radioButton_3.setGeometry(QRect(20, 110, 131, 20))
         self.pushButton_2 = QPushButton(self.widget)
         self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(240, 40, 75, 24))
+        self.pushButton_2.setGeometry(QRect(300, 40, 75, 24))
+        self.groupBox = QGroupBox(self.widget)
+        self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setGeometry(QRect(180, 150, 120, 80))
+        self.radioButton_4 = QRadioButton(self.groupBox)
+        self.radioButton_4.setObjectName(u"radioButton_4")
+        self.radioButton_4.setGeometry(QRect(10, 30, 95, 20))
+        self.radioButton_5 = QRadioButton(self.groupBox)
+        self.radioButton_5.setObjectName(u"radioButton_5")
+        self.radioButton_5.setGeometry(QRect(10, 50, 95, 20))
+        self.comboBox = QComboBox(self.widget)
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setGeometry(QRect(230, 40, 69, 22))
 
         self.horizontalLayout.addWidget(self.widget)
 
@@ -118,5 +130,8 @@ class Ui_Form(object):
         self.radioButton_2.setText(QCoreApplication.translate("Form", u"\u53cc\u5f15\u53f7\u8f6c\u4e49", None))
         self.radioButton_3.setText(QCoreApplication.translate("Form", u"\u6240\u6709\u6587\u672c\u5e26\u53cc\u5f15\u53f7", None))
         self.pushButton_2.setText(QCoreApplication.translate("Form", u"\u9009\u62e9\u6587\u4ef6", None))
+        self.groupBox.setTitle(QCoreApplication.translate("Form", u"\u7f16\u7801", None))
+        self.radioButton_4.setText(QCoreApplication.translate("Form", u"utf8", None))
+        self.radioButton_5.setText(QCoreApplication.translate("Form", u"gbk", None))
     # retranslateUi
 
