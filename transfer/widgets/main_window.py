@@ -41,8 +41,8 @@ class MainWindow(QMainWindow):
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
         # self.setWindowIcon(QIcon(":/logo.ico"))
         # self.setWindowIcon(QIcon(":/icons/8687850_ic_fluent_tag_regular_icon_48.png"))
-        logoIcon = qta.icon("msc.twitter")
-        self.setWindowIcon(logoIcon)
+        # logoIcon = qta.icon("msc.twitter")
+        # self.setWindowIcon(logoIcon)
         
         # QTreeWidget组件定义
         self.treeWidget = QTreeWidget()

@@ -10,7 +10,8 @@ from widgets.main_window import MainWindow
 
 if __name__ == "__main__":
     
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv)  # 支持命令行启动传参，提高可扩展性
+    app.setWindowIcon(QIcon(":/logo.ico"))
     window = MainWindow()
     
     # # 创建系统托盘图标
