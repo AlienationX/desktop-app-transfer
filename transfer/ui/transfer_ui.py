@@ -18,6 +18,9 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(585, 455)
+        icon = QIcon()
+        icon.addFile(u"../resources/logo.ico", QSize(), QIcon.Normal, QIcon.Off)
+        Form.setWindowIcon(icon)
         self.gridLayout_2 = QGridLayout(Form)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout = QGridLayout()

@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Slot, QStandardPaths, QUrl, QFile, QSaveFile, QDir, QIODevice
 
 
-class OpenButton(QWidget):
+class OpenFileDialog(QWidget):
     
     def __init__(self):
         super().__init__()
