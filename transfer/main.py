@@ -1,16 +1,27 @@
 # 导入sys
 import sys
 
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PySide6.QtGui import QIcon
 from widgets.main_window import MainWindow
 
-import ctypes
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("my-secret-appid")  # 任务栏图标同窗体图标
+# import ctypes
+# ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("my-secret-appid")  # 任务栏图标同窗体图标
 
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     window = MainWindow()
+    
+    # # 创建系统托盘图标
+    # tray_icon = QSystemTrayIcon(QIcon(":logo.png"), app)
+    # # 创建托盘菜单
+    # menu = QMenu()
+    # action = menu.addAction("Open")
+    # action = menu.addAction("Exit")
+    # tray_icon.setContextMenu(menu)
+    # # 显示系统托盘图标
+    # tray_icon.show()
     
     # 1. pip install qtmodern，还可以，就是input文字也是黑的，看不清。不再维护
     # import qtmodern.styles

@@ -29,10 +29,13 @@ import time
 
 class ExcelToCsvWidget(QWidget):
     
+    # 自定义信号，给状态栏发送信息
+    message_signal = Signal(str)
+    
     def __init__(self):
         super().__init__()
         self.inputFiles = []
-        self.outputPath = ""
+        self.outputFiles = []
         self.options = {
             "encoding": "utf-8",         # utf-8, gbk
             "quoting": csv.QUOTE_NONE,   # "QUOTE_MINIMAL", "QUOTE_ALL", "QUOTE_NONNUMERIC", "QUOTE_NONE"
@@ -54,21 +57,20 @@ class ExcelToCsvWidget(QWidget):
         self.choiceComboBox = QComboBox()
         self.choiceComboBox.addItem("文件")
         self.choiceComboBox.addItem("文件夹")
-        self.choiceComboBox.setToolTip("VIP用户支持选择文件夹，进行文件批量转换")
-        # self.choiceComboBox.activated.connect(lambda x: print("choice ", x))
+        self.choiceComboBox.setToolTip("VIP用户支持选择文件夹，进行文件批量转换")        
         
         self.inputLineEdit = QLineEdit()
         self.inputLineEdit.setPlaceholderText("请选择Excel文件或目录")
         self.inputLineEdit.setReadOnly(True)
         
-        openBtnIcon  = qta.icon("msc.folder-opened", color="blue")
+        openBtnIcon  = qta.icon("msc.folder-opened")
         self.openBtn = QPushButton(openBtnIcon, "打开文件")
 
         self.outputLineEdit = QLineEdit()
-        self.outputLineEdit.setPlaceholderText("请选择保存的路径")
+        self.outputLineEdit.setPlaceholderText("请选择保存的文件或目录")
         self.outputLineEdit.setReadOnly(True)
         
-        saveBtnIcon  = qta.icon("msc.folder-active", color="blue")
+        saveBtnIcon  = qta.icon("msc.folder-active")
         self.saveBtn = QPushButton(saveBtnIcon, "保存文件")
         
         self.radioBtn1 = QRadioButton("保持原始数据")
@@ -104,13 +106,18 @@ class ExcelToCsvWidget(QWidget):
         self.coverCheckBox = QCheckBox("覆盖已存在文件")
         self.coverCheckBox.setChecked(True)
         self.coverCheckBox.setEnabled(False)
-        vboxLayout3 = QVBoxLayout()
-        vboxLayout3.addWidget(self.coverCheckBox)
-        vboxLayout3.addStretch()
+        self.deepCheckBox = QCheckBox("包括子文件夹")
+        self.deepCheckBox.setChecked(True)
+        self.deepCheckBox.setEnabled(False)
+        self.vboxLayout3 = QVBoxLayout()
+        self.vboxLayout3.addWidget(self.coverCheckBox)
+        self.vboxLayout3.addWidget(self.deepCheckBox)
+        self.vboxLayout3.addStretch()
         self.groupBox3 = QGroupBox("选项")
-        self.groupBox3.setLayout(vboxLayout3)
+        self.groupBox3.setLayout(self.vboxLayout3)
+        self.groupBox3.hide()
         
-        self.startBtnIcon  = qta.icon("msc.play", color="blue")
+        self.startBtnIcon  = qta.icon("msc.play")
         self.startBtn = QPushButton(self.startBtnIcon, "执行")
         
         self.progressBar = QProgressBar()
@@ -140,7 +147,7 @@ class ExcelToCsvWidget(QWidget):
         
         # 动态图标
         fa5_button = QPushButton('Font Awesome! (regular)')
-        spin_icon = qta.icon('fa5s.spinner', color='blue', animation=qta.Spin(fa5_button))
+        spin_icon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(fa5_button))
         fa5_button.setIcon(spin_icon)
         self.gridLayout.addWidget(fa5_button, 99, 0, 1, self.gridLayout.columnCount())
         
@@ -148,15 +155,26 @@ class ExcelToCsvWidget(QWidget):
         self.setLayout(self.gridLayout)
         
         # 添加点击事件
+        self.choiceComboBox.activated.connect(self.showFolderOptions)
         self.openBtn.clicked.connect(self.open)
         self.saveBtn.clicked.connect(self.save)
         self.startBtn.clicked.connect(self.execute)
         
     @Slot()
-    def open(self):
-        print(self.choiceComboBox.currentIndex())
+    def showFolderOptions(self):
         if self.choiceComboBox.currentIndex() == 0:
-            pass
+            self.groupBox3.hide()
+        else:
+            self.groupBox3.show()
+        
+    @Slot()
+    def open(self):
+        if self.choiceComboBox.currentIndex() == 0:
+            # "Images (*.png *.xpm *.jpg);;Text files (*.txt);;XML files (*.xml)"
+            file_tuple = QFileDialog.getOpenFileName(self, "Open Excel File", QDir.homePath(), "Excel (*.xlsx *.xls)")
+            if file_tuple:
+                file = file_tuple[0]
+                self.inputLineEdit.setText(QDir.fromNativeSeparators(file))
         else:
             dir_path = QFileDialog.getExistingDirectory(
                 self, "Open Directory", QDir.homePath(), QFileDialog.ShowDirsOnly
@@ -164,16 +182,19 @@ class ExcelToCsvWidget(QWidget):
             if dir_path:
                 dest_dir = QDir(dir_path)
                 self.inputLineEdit.setText(QDir.fromNativeSeparators(dest_dir.path()))
-                for item in dest_dir.entryList():
-                    suffix = item.split(".")[-1]
-                    if suffix in ["xlsx", "xls"]:
-                        file = dest_dir.filePath(item)
-                        self.inputFiles.append(file)
+                # for item in dest_dir.entryList():
+                #     suffix = item.split(".")[-1]
+                #     if suffix in ["xlsx", "xls"]:
+                #         file = dest_dir.filePath(item)
+                #         self.inputFiles.append(file)
     
     @Slot()
     def save(self):
         if self.choiceComboBox.currentIndex() == 0:
-            pass
+            file_tuple = QFileDialog.getSaveFileName(self, "Save File", QDir.homePath(), "CSV (*.csv)")
+            if file_tuple:
+                file = file_tuple[0]
+                self.outputLineEdit.setText(file)
         else:
             dir_path = QFileDialog.getExistingDirectory(
                 self, "Choice Directory", QDir.homePath(), QFileDialog.ShowDirsOnly
@@ -181,39 +202,48 @@ class ExcelToCsvWidget(QWidget):
             if dir_path:
                 dest_dir = QDir(dir_path)
                 self.outputLineEdit.setText(QDir.fromNativeSeparators(dest_dir.path()))
-                self.outputPath = dest_dir.path()
     
     @Slot()
     def execute(self):
-        print("inputFiles = ", self.inputFiles)
-        print("outputPath = ", self.outputPath)
-        self.inputFiles =  [
-            r'C:/Users/Admin/Desktop/in/副本赣州市皮肤病医院（赣州市皮肤病研究所、赣州市麻风病康复中心、赣州市性病防治中心）-医保-src-彩色多普勒超声-收费项目明细-20230821172226247.xlsx', 
-            r'C:/Users/Admin/Desktop/in/北京一体机开发环境.xlsx',
-            r'C:/Users/Admin/Desktop/in/1.xlsx',
-            r'C:/Users/Admin/Desktop/in/2.xlsx',
-            r'C:/Users/Admin/Desktop/in/3.xlsx',
-            r'C:/Users/Admin/Desktop/in/4.xlsx',
-            r'C:/Users/Admin/Desktop/in/5.xlsx',
-        ]
-        self.outputPath = r"C:/Users/Admin/Desktop/out"
-        if not self.inputFiles:
+        # self.inputLineEdit.setText(r"C:/Users/Admin/Desktop/in")
+        # self.outputLineEdit.setText(r"C:/Users/Admin/Desktop/out")
+        if not self.inputLineEdit.text():
             QMessageBox.warning(self, "Input Error", "请选择Excel文件或目录")  # 只支持QMessageBox.Icon
             return
-        if not self.outputPath:
-            QMessageBox.warning(self, "Output Error", "请选择保存的路径")
+        if not self.outputLineEdit.text():
+            QMessageBox.warning(self, "Output Error", "请选择保存的文件或目录")
             return
+        
+        inputPath = Path(self.inputLineEdit.text())
+        outputPath = Path(self.outputLineEdit.text())
+        self.inputFiles = []   # 清空列表
+        self.outputFiles = []
+        if inputPath.is_dir() and outputPath.is_dir():
+            self.inputFiles = [str(x) for x in inputPath.iterdir() if x.suffix in [".xlsx", ".xls"]]  # TODO 增加子文件夹下的文件
+            self.outputFiles = [str(outputPath.joinpath(Path(x).stem).with_suffix(".csv")) for x in self.inputFiles]  
+        else:
+            self.inputFiles.append(str(inputPath))
+            self.outputFiles.append(str(outputPath))
+        
+        print("inputFiles = ", self.inputFiles)
+        print("outputFiles = ", self.outputFiles)
         
         self.progressBar.setValue(1)                                         # 预先设置为1%
         self.updateOptions()                                                 # 更新选项值
         
         workThread = WorkThread(self)                                        # 将self传进去，绑定到部件上
-        workThread.setArgs(self.inputFiles, self.outputPath, self.options)   # 设置参数，传递进线程
-        workThread.signal.connect(lambda x: self.progressBar.setValue(x))
+        workThread.setArgs(self.inputFiles, self.outputFiles, self.options)   # 设置参数，传递进线程
+        # workThread.signal.connect(lambda x: self.progressBar.setValue(x))
+        workThread.signal.connect(lambda value, msg: self.execute_work_signal(value, msg))
         workThread.started.connect(self.setStartStatus)
         workThread.finished.connect(self.setEndStatus)
         workThread.finished.connect(workThread.deleteLater)                  # 完成后销毁线程
         workThread.start()
+        
+    def execute_work_signal(self, value, msg):
+        self.progressBar.setValue(value)
+        print(f"emit {msg} to main widget from excel_widget")
+        self.message_signal.emit(msg)  # 完成一个文件，就发送给状态栏进行显示
     
     def updateOptions(self):
         if self.radioBtn1.isChecked():
@@ -227,7 +257,7 @@ class ExcelToCsvWidget(QWidget):
         print(self.options)
     
     def setStartStatus(self):
-        runBtnIcon = qta.icon('fa5s.spinner', color='blue', animation=qta.Spin(self.startBtn))
+        runBtnIcon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(self.startBtn))
         self.startBtn.setIcon(runBtnIcon)
         self.startBtn.setText("执行中......")
         self.startBtn.setEnabled(False)
@@ -243,34 +273,30 @@ class ExcelToCsvWidget(QWidget):
 
 
 class WorkThread(QThread):
-    signal = Signal(int)
+    signal = Signal(int, str)
     # signal = Signal(int, str)  # 可以发送多个值
     
     # 参数
     input_files = []
-    output_path = ""
+    output_files = []
     option = {}
     
     # 设置参数
-    def setArgs(self, input_files, output_path, options):
+    def setArgs(self, input_files, output_files, options):
         self.input_files = input_files
-        self.output_path = output_path
+        self.output_files = output_files
         self.options = options
     
     # start执行的函数
     def run(self):
         count = len(self.input_files)
-        i = 0
-        for file in self.input_files:
-            from_file =  file
-            filename = Path(file).name
-            to_file = Path(self.output_path).joinpath(filename).with_suffix(".csv")
+        for i in range(count):
+            from_file = self.input_files[i]
+            to_file = self.output_files[i]
             print(datetime.now(), from_file, to_file)
             self.excelToCsv(from_file, to_file)
-            
-            i += 1
-            time.sleep(1)
-            self.signal.emit(int(i / count *100))
+            time.sleep(1)  # TODO 暂时用来测试
+            self.signal.emit(int((i + 1) / count *100), from_file + " done .")
 
     def excelToCsv(self, from_file, to_file):
         df = pd.read_excel(from_file)

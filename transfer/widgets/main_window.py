@@ -40,8 +40,8 @@ class MainWindow(QMainWindow):
         # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
         # self.setWindowIcon(QIcon(":/logo.ico"))
-        # self.setWindowIcon(QIcon(":/texts/icons/8687850_ic_fluent_tag_regular_icon_48.png"))
-        logoIcon = qta.icon("msc.twitter", color="blue")
+        # self.setWindowIcon(QIcon(":/icons/8687850_ic_fluent_tag_regular_icon_48.png"))
+        logoIcon = qta.icon("msc.twitter")
         self.setWindowIcon(logoIcon)
         
         # QTreeWidget组件定义
@@ -55,48 +55,48 @@ class MainWindow(QMainWindow):
         # QTreeWidget组件内容设置
         self.menus = {
             "EXCEL": {
-                "icon" : qta.icon("ri.file-excel-2-line", color="blue"),
+                "icon" : qta.icon("ri.file-excel-2-line"),
                 "children" : [
                     {
                         "name" : "excelToCsvWidget",
                         "text" : "转换成CSV",
-                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "icon" : qta.icon("msc.bookmark"),
                         "class": ExcelToCsvWidget()
                     },
                     {
                         "name" : "excelSplitWidget",
                         "text" : "文件拆分",
-                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "icon" : qta.icon("msc.bookmark"),
                         "class": ExcelSplitWidget()
                     }
                 ]},
             "WORD": {
-                "icon" : qta.icon("ri.file-word-2-line", color="blue"),
+                "icon" : qta.icon("ri.file-word-2-line"),
                 "children" : [
                     {
                         "name" : "wordToPDFWidget",
                         "text" : "转换成PDF",
-                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "icon" : qta.icon("msc.bookmark"),
                         "class": WordToPDFWidget(),
                     }
                 ]
             },
             "CSV": {
-                "icon" : qta.icon("fa5s.file-csv", color="blue"),
+                "icon" : qta.icon("fa5s.file-csv"),
                 "children" : [
                     {
                         "name" : "csvToExcelWidget",
                         "text" : "转换成EXCEL",
-                        "icon" : qta.icon("msc.bookmark", color="blue"),
+                        "icon" : qta.icon("msc.bookmark"),
                         "class": CsvToExcelWidget(),
                     }
                 ]
             },
         }
         
-        # self.homeItem = QTreeWidgetItem()
-        # self.homeItem.setText(0, "HOME")
-        # self.treeWidget.addTopLevelItem(self.homeItem)
+        self.homeItem = QTreeWidgetItem()
+        self.homeItem.setText(0, "HOME")
+        self.treeWidget.addTopLevelItem(self.homeItem)
         
         # 设置stackedWidget
         self.stackedWidget = QStackedWidget()
@@ -114,33 +114,46 @@ class MainWindow(QMainWindow):
                 self.stackedWidget.addWidget(getattr(self, menu_list["name"]))  # 添加到stackedWidget上
             self.treeWidget.addTopLevelItem(rootItem)
         
+        # TODO 给子组件的信号绑定处理函数
+        childw = getattr(self, "excelToCsvWidget")
+        childw.message_signal.connect(lambda msg: self.print_message(msg))
+        
         # QTreeWidget绑定信号
         self.treeWidget.itemClicked.connect(self.router)
         
+        # header
+        # self.headerLayout = QHBoxLayout()
         
         # 创建布局
-        self.layout = QHBoxLayout()
-        # 将组件添加到布局中
-        self.layout.addWidget(self.treeWidget)
-        self.layout.addWidget(self.stackedWidget)
-
+        self.bodyLayout = QHBoxLayout()
+        self.bodyLayout.addWidget(self.treeWidget)
+        self.bodyLayout.addWidget(self.stackedWidget)
+        
+        # 自定义状态栏
+        # self.messageLable = QLabel("当前剩余次数: 10")
+        # self.versionLable = QLabel("v1.0.0")
+        # self.statusLayout = QHBoxLayout()
+        # self.statusLayout.addWidget(self.messageLable)
+        # self.statusLayout.addStretch()
+        # self.statusLayout.addWidget(self.versionLable)
+        
         # 为窗体添加布局
-        self.centralwidget=QWidget()
-        self.centralwidget.setLayout(self.layout)
-        self.setCentralWidget(self.centralwidget)
+        self.centralLayout = QVBoxLayout()
+        self.centralLayout.addLayout(self.bodyLayout)
+        # self.centralLayout.addLayout(self.statusLayout)
+        self.centralWidget = QWidget()
+        self.centralWidget.setLayout(self.centralLayout)
+        self.setCentralWidget(self.centralWidget)
         
-        # 状态栏
-        # a = QWidget()
-        # b = QHBoxLayout()
-        # # b.addStretch(8)
-        # b.addWidget(QLabel("v1.0.0"))
-        # a.setLayout(b)
-        
-        # llll = QLabel("v1.0.0")
-        # b.addWidget(llll)
+        # QStatusBar        
         self.statusbar = QStatusBar()
-        # self.statusbar.addWidget(a)
-        self.statusbar.showMessage("当前剩余次数: 10")
+        # self.statusbar.showMessage("当前剩余次数: 10")
+        label1 = QLabel("Welcome")
+        label2 = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
+        # addWidget 在左侧添加临时控件
+        self.statusbar.addWidget(label1)
+        # addWidget 在右侧添加永久控件
+        self.statusbar.addPermanentWidget(label2)
         self.setStatusBar(self.statusbar)
     
         # MainWindow的三个组件设置方法
@@ -163,3 +176,7 @@ class MainWindow(QMainWindow):
                 if item.text(0) == menu_list["text"]:
                     self.stackedWidget.setCurrentIndex(i)
                 i += 1
+    
+    def print_message(self, msg):
+        self.statusbar.showMessage(msg)
+        self.statusbar.setToolTip(msg)
