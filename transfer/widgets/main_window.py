@@ -22,6 +22,7 @@ import qtawesome as qta
 from widgets.excel_widget import ExcelToCsvWidget, ExcelSplitWidget
 from widgets.csv_widget import CsvToExcelWidget
 from widgets.word_widget import WordToPDFWidget
+from widgets.document_widget import DocumentWidget
 from resources import resources_rc
 
 
@@ -34,8 +35,8 @@ class MainWindow(QMainWindow):
     def setupUi(self):
         """页面初始化"""
         # 设置窗体大小及标题
-        self.resize(900, 500)
-        self.setWindowTitle("Transfer - 转换工具")
+        self.resize(960, 500)
+        self.setWindowTitle("TransferS - 转换工具")
         
         # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
@@ -100,6 +101,7 @@ class MainWindow(QMainWindow):
         
         # 设置stackedWidget
         self.stackedWidget = QStackedWidget()
+        self.stackedWidget.addWidget(DocumentWidget())  # 添加home主页显示
         
         for text in self.menus:
             rootItem = QTreeWidgetItem()
@@ -163,10 +165,12 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def router(self, item, column):
-        # print(current, previous)
-        # print(current.text(0))
+        print("menubar ==> ", item.text(0))
+        if item.text(0) == "HOME":
+            self.stackedWidget.setCurrentIndex(0)
+            return
         
-        i = 0
+        i = 1
         for text in self.menus:
             # 如果等于一级节点则展开
             if item.text(0) == text:
@@ -175,6 +179,7 @@ class MainWindow(QMainWindow):
             for menu_list in self.menus[text]["children"]:
                 if item.text(0) == menu_list["text"]:
                     self.stackedWidget.setCurrentIndex(i)
+                    return
                 i += 1
     
     def print_message(self, msg):

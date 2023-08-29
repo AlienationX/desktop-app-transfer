@@ -1,18 +1,33 @@
-# 导入sys
 import sys
 
-from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PySide6.QtWidgets import QApplication, QStyleFactory, QSystemTrayIcon, QMenu
 from PySide6.QtGui import QIcon
-from widgets.main_window import MainWindow
 
-# import ctypes
-# ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("my-secret-appid")  # 任务栏图标同窗体图标
+from widgets.main_window import MainWindow
+from utils.common import CommonHelper
+
+
+import platform
+if platform.system() == "Windows":  # Windows / Linux / MacOS
+    import ctypes
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("my-secret-appid")  # windows平台任务栏图标同窗体图标
+
 
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)  # 支持命令行启动传参，提高可扩展性
-    app.setWindowIcon(QIcon(":/logo.ico"))
+    app.setWindowIcon(QIcon(":/svgs/JSON-LD.svg"))
     window = MainWindow()
+    
+    # 当前平台自带的风格
+    list_style = QStyleFactory.keys()  # 当前平台支持的 QStyle 窗口风格样式, 默认vista ['windowsvista', 'Windows', 'Fusion']
+    print(list_style)
+    app.setStyle(QStyleFactory.create(list_style[0]))  # 给 App 设置窗口风格, 其他Widget默认(无设置)使用App的风格
+    
+    # 添加自定义样式
+    qssStyle = CommonHelper.readQssResource(":/styles/common.css")  # 可以直接起名为css(其实是qss)
+    window.setStyleSheet(qssStyle)
+
     
     # # 创建系统托盘图标
     # tray_icon = QSystemTrayIcon(QIcon(":logo.png"), app)
@@ -32,8 +47,8 @@ if __name__ == "__main__":
     # mw.show()
     
     # 2. pip install pyqtdarktheme，白色主题还不错。还在维护
-    import qdarktheme
-    qdarktheme.setup_theme("light")  # dark, light, auto
+    # import qdarktheme
+    # qdarktheme.setup_theme("light")  # dark, light, auto
     
     # 3. pip install qdarkstyle，一般
     # import qdarkstyle

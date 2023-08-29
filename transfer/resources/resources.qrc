@@ -2,8 +2,24 @@
 <RCC>
 <!-- prefix 配合 alias 才会增加效率，单独使用prefix路径更长 -->
     <qresource>
-        <file>logo.png</file>
-        <file>logo.ico</file>
+        <file>logo2_164x94.png</file>
+        <file>logo2.ico</file>
+        <file>transfers.png</file>
+        <file>TransferS_88x111.png</file>
+        <file>TransferS-title_461x116.png</file>
+        <file>svgs/JSON-LD.svg</file>
+        <file>svgs/Mautic.svg</file>
+        <file>svgs/Memgraph.svg</file>
+        <file>svgs/Obsidian.svg</file>
+    </qresource>
+    <qresource>
+        <file>texts/home.md</file>
+    </qresource>
+    <qresource>
+        <file>styles/common.css</file>
+    </qresource>
+    <qresource>
+        <file>images/qtforpython.png</file>
     </qresource>
     <qresource>
         <file>icons/8687188_ic_fluent_error_circle_settings_icon (1).png</file>
@@ -15,8 +31,5 @@
         <file>icons/8687850_ic_fluent_tag_regular_icon_48.png</file>
         <file>icons/8687850_ic_fluent_tag_regular_icon_64.png</file>
         <file>icons/8687850_ic_fluent_tag_regular_icon_512.png</file>
-    </qresource>
-    <qresource>
-        <file>images/qtforpython.png</file>
     </qresource>
 </RCC>

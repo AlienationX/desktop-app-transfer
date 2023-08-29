@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 from PySide6.QtCore import Slot, Qt, QSize, QStandardPaths, QFile, QSaveFile, QDir, QThread, QThreadPool, Signal
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QPixmap
 
 import qtawesome as qta
 import pandas as pd
@@ -209,6 +209,21 @@ class ExcelToCsvWidget(QWidget):
         # self.outputLineEdit.setText(r"C:/Users/Admin/Desktop/out")
         if not self.inputLineEdit.text():
             QMessageBox.warning(self, "Input Error", "请选择Excel文件或目录")  # 只支持QMessageBox.Icon
+            
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle("Message Box Titil")  # 设置标题
+            msgBox.setText("The document has been modified.")  # 主文本
+            msgBox.setInformativeText("Do you want to save your changes?")  # 副文本
+            msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮
+            msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
+            msgBox.setDetailedText("If the detailed text property is set...")  # 详情按钮
+            msgBox.setIcon(QMessageBox.Question)  # 图标
+            # msgBox.setIconPixmap(QPixmap(':b.svg'))
+            msgBox.setIconPixmap(QPixmap(':TransferS_88x111.png'))
+            ret = msgBox.exec()
+            print(ret)
+            print(ret == QMessageBox.Save)
+
             return
         if not self.outputLineEdit.text():
             QMessageBox.warning(self, "Output Error", "请选择保存的文件或目录")
