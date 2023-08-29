@@ -25,8 +25,8 @@ if __name__ == "__main__":
     app.setStyle(QStyleFactory.create(list_style[0]))  # 给 App 设置窗口风格, 其他Widget默认(无设置)使用App的风格
     
     # 添加自定义样式
-    qssStyle = CommonHelper.readQssResource(":/styles/common.css")  # 可以直接起名为css(其实是qss)
-    window.setStyleSheet(qssStyle)
+    # qssStyle = CommonHelper.readQssResource(":/styles/common.css")  # 可以直接起名为css(其实是qss)
+    # window.setStyleSheet(qssStyle)
 
     
     # # 创建系统托盘图标
@@ -47,8 +47,8 @@ if __name__ == "__main__":
     # mw.show()
     
     # 2. pip install pyqtdarktheme，白色主题还不错。还在维护
-    # import qdarktheme
-    # qdarktheme.setup_theme("light")  # dark, light, auto
+    import qdarktheme
+    qdarktheme.setup_theme("light")  # dark, light, auto
     
     # 3. pip install qdarkstyle，一般
     # import qdarkstyle
