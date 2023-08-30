@@ -11,12 +11,39 @@
 QPushButton {
     background-color: rgb(59, 134, 202);
     border-radius: 5px;
+    padding: 3px
+}
+
+QLineEdit {
+    border-radius: 5px;
+    padding: 3px
+}
+
+QComboBox {
+    border-radius: 5px;
+    padding: 3px
 }
 
 QGroupBox {
     background-color: rgb(84, 19, 216);
     /* border: 1px solid red; */
     border-radius: 5px;
+}
+
+QRadioButton {
+    border-radius: 5px;
+    padding: 3px
+}
+
+QCheckBox {
+    border-radius: 5px;
+    padding: 3px
+}
+
+QProgressBar {
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 3px
 }
 
 QTreeWidget {
