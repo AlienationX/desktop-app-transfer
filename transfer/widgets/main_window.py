@@ -21,9 +21,10 @@ from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
 from .excel_widget import ExcelToCsvWidget, ExcelSplitWidget
-from widgets.csv_widget import CsvToExcelWidget
-from widgets.word_widget import WordToPDFWidget
-from widgets.document_widget import DocumentWidget
+from .csv_widget import CsvToExcelWidget
+from .word_widget import WordToPDFWidget
+from .document_widget import DocumentWidget
+from utils.common import CommonHelper
 from resources import resources_rc
 
 
@@ -38,6 +39,7 @@ class MainWindow(QWidget):
         # 设置窗体大小及标题
         self.resize(960, 500)
         self.setWindowTitle("TransferS - 转换工具")
+        self.setWindowIconText("Transfer")
         
         # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
@@ -49,6 +51,10 @@ class MainWindow(QWidget):
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
         self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
         # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+
+        # 添加自定义样式
+        qssStyle = CommonHelper.readQssResource(":/styles/color_theme.css")  # 可以直接起名为css(其实是qss)
+        self.setStyleSheet(qssStyle)
         
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setContentsMargins(0, 5, 0, 5)
@@ -87,6 +93,8 @@ class MainWindow(QWidget):
         self.headerLayout.setContentsMargins(5, 0, 5, 0)
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
+        self.logoLabel.setFixedSize(120, 32)
+        self.logoLabel.setScaledContents(True)
         self.minBtn = QPushButton(qta.icon("msc.chrome-minimize"), "")
         self.maxBtn = QPushButton(qta.icon("msc.collapse-all"), "")
         self.closeBtn = QPushButton(qta.icon("msc.close"), "")
@@ -201,7 +209,7 @@ class MainWindow(QWidget):
         
         # 创建布局
         self.bodyLayout = QHBoxLayout()
-        print(self.bodyLayout.getContentsMargins())
+        self.bodyLayout.setSpacing(0)
         self.bodyLayout.addWidget(self.treeWidget)
         self.bodyLayout.addWidget(self.stackedWidget)
         self.centralLayout.addLayout(self.bodyLayout)
@@ -211,6 +219,7 @@ class MainWindow(QWidget):
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
         self.statusLayout = QHBoxLayout()
+        self.statusLayout.setContentsMargins(5, 0, 5, 0)
         self.statusLayout.addWidget(self.messageLable)
         self.statusLayout.addStretch()
         self.statusLayout.addWidget(self.versionLable)

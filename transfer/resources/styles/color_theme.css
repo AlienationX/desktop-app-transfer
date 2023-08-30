@@ -1,10 +1,48 @@
 * {
-    font-family:Microsoft YaHei;
+    font-family: "Segoe UI", "Microsoft YaHei";
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /* border: 1px solid red; */
+    /* 测试 */
 }
- 
-QToolTip {
-    /* border: 2px solid rgb(75, 74, 68); */
-    padding: 2px;
-    border-radius: 10px;
-    opacity: 200;
+
+QPushButton {
+    background-color: rgb(59, 134, 202);
+    border-radius: 5px;
+}
+
+QGroupBox {
+    background-color: rgb(84, 19, 216);
+    /* border: 1px solid red; */
+    border-radius: 5px;
+}
+
+QTreeWidget {
+    background-color: rgb(157, 108, 178);
+}
+
+QStackedWidget {
+    background-color: rgb(117, 60, 112);
+}
+
+QTextBrowser {
+    background-color: rgb(15, 31, 43);
+}
+
+/* ---------------------------------- id需要放到下面单独执行，覆盖掉上面的通用设置 ---------------------------------- */
+QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
+    border: none;
+    border-radius: 5px;
+    /* 背景透明 */
+    background-color: transparent;
+}
+
+QPushButton#closeBtn:hover {
+    background-color: rgb(177, 73, 126);
+}
+
+QPushButton#minBtn:hover, QPushButton#maxBtn:hover{
+    background-color: rgb(66, 66, 66);
 }
