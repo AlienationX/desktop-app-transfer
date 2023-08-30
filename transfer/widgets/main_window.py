@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
     QStatusBar,
     QStackedWidget
 )
-from PySide6.QtCore import Slot, QSize, QStandardPaths, QUrl, QFile, QSaveFile, QDir, QIODevice
+from PySide6.QtCore import Slot, QSize, Qt
 from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
@@ -26,7 +26,7 @@ from widgets.document_widget import DocumentWidget
 from resources import resources_rc
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
     
     def __init__(self):
         super().__init__()
@@ -45,10 +45,79 @@ class MainWindow(QMainWindow):
         # logoIcon = qta.icon("msc.twitter")
         # self.setWindowIcon(logoIcon)
         
+        # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
+        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
+        # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+        
+        self.centralLayout = QVBoxLayout()
+        self.setHeader()
+        self.setBody()
+        self.setFooter()
+        self.setLayout(self.centralLayout)
+        
+        # 为窗体添加布局
+        # self.centralLayout = QVBoxLayout()
+        # self.setHeader()
+        # self.setBody()
+        # self.setFooter()
+        # self.centralWidget = QWidget()
+        # self.centralWidget.setLayout(self.centralLayout)
+        # self.setCentralWidget(self.centralWidget)
+        
+        # QStatusBar        
+        # self.statusbar = QStatusBar()
+        # label1 = QLabel("Welcome")
+        # label2 = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
+        # # addWidget 在左侧添加临时控件
+        # self.statusbar.addWidget(label1)
+        # # addWidget 在右侧添加永久控件
+        # self.statusbar.addPermanentWidget(label2)
+        # self.setStatusBar(self.statusbar)
+    
+        # MainWindow的三个组件设置方法
+        # setMenuBar(self.menubar)
+        # setCentralWidget(self.centralwidget)
+        # setStatusBar(self.statusbar)
+        
+    def setHeader(self):
+        # header
+        self.headerLayout = QHBoxLayout()
+        self.logoLabel = QLabel("Logo.png")
+        self.minBtn = QPushButton(qta.icon("msc.chrome-minimize"), "")
+        self.maxBtn = QPushButton(qta.icon("msc.chrome-restore"), "")
+        self.closeBtn = QPushButton(qta.icon("msc.chrome-close"), "")
+        self.headerLayout.addWidget(self.logoLabel)
+        self.headerLayout.addStretch()
+        self.headerLayout.addWidget(self.minBtn)
+        self.headerLayout.addWidget(self.maxBtn)
+        self.headerLayout.addWidget(self.closeBtn)
+        self.centralLayout.addLayout(self.headerLayout)
+        
+        self.minBtn.clicked.connect(self.showMinimized)
+        self.maxBtn.clicked.connect(self.showMaximized)  # TODO 只能最大化，不能还原...
+        self.closeBtn.clicked.connect(self.close) 
+        
+        
+    def mousePressEvent(self, event):
+        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标
+        self.pressX = event.x()
+        self.pressY = event.y()
+ 
+    def mouseMoveEvent(self, event):
+        x = event.x()
+        y = event.y()   # 获取移动后的坐标
+        moveX = x - self.pressX
+        moveY = y - self.pressY  # 计算移动了多少
+ 
+        positionX = self.frameGeometry().x() + moveX
+        positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
+        self.move(positionX, positionY)    # 移动主窗口
+        
+    def setBody(self):
         # QTreeWidget组件定义
         self.treeWidget = QTreeWidget()
         self.treeWidget.header().setVisible(False)           # 隐藏标头
-        self.treeWidget.setStyleSheet("border:none;")        # 隐藏边框
+        # self.treeWidget.setStyleSheet("border:none;")        # 隐藏边框
         # self.treeWidget.headerItem().setText(0, "参数名")    # 给第1列设置标题
         # self.treeWidget.setColumnWidth(0, 200)               # 给第1列设置列宽200
         self.treeWidget.setMaximumSize(QSize(200, 16777215))
@@ -123,45 +192,21 @@ class MainWindow(QMainWindow):
         # QTreeWidget绑定信号
         self.treeWidget.itemClicked.connect(self.router)
         
-        # header
-        # self.headerLayout = QHBoxLayout()
-        
         # 创建布局
         self.bodyLayout = QHBoxLayout()
         self.bodyLayout.addWidget(self.treeWidget)
         self.bodyLayout.addWidget(self.stackedWidget)
-        
-        # 自定义状态栏
-        # self.messageLable = QLabel("当前剩余次数: 10")
-        # self.versionLable = QLabel("v1.0.0")
-        # self.statusLayout = QHBoxLayout()
-        # self.statusLayout.addWidget(self.messageLable)
-        # self.statusLayout.addStretch()
-        # self.statusLayout.addWidget(self.versionLable)
-        
-        # 为窗体添加布局
-        self.centralLayout = QVBoxLayout()
         self.centralLayout.addLayout(self.bodyLayout)
-        # self.centralLayout.addLayout(self.statusLayout)
-        self.centralWidget = QWidget()
-        self.centralWidget.setLayout(self.centralLayout)
-        self.setCentralWidget(self.centralWidget)
-        
-        # QStatusBar        
-        self.statusbar = QStatusBar()
-        # self.statusbar.showMessage("当前剩余次数: 10")
-        label1 = QLabel("Welcome")
-        label2 = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
-        # addWidget 在左侧添加临时控件
-        self.statusbar.addWidget(label1)
-        # addWidget 在右侧添加永久控件
-        self.statusbar.addPermanentWidget(label2)
-        self.setStatusBar(self.statusbar)
     
-        # MainWindow的三个组件设置方法
-        # setMenuBar(self.menubar)
-        # setCentralWidget(self.centralwidget)
-        # setStatusBar(self.statusbar)
+    def setFooter(self):
+        # 自定义状态栏
+        self.messageLable = QLabel("Welcome")
+        self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
+        self.statusLayout = QHBoxLayout()
+        self.statusLayout.addWidget(self.messageLable)
+        self.statusLayout.addStretch()
+        self.statusLayout.addWidget(self.versionLable)
+        self.centralLayout.addLayout(self.statusLayout)
 
     @Slot()
     def router(self, item, column):

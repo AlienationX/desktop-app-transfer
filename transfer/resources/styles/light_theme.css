@@ -1,0 +1,18 @@
+* {
+    font-family:Microsoft YaHei;
+}
+
+QStackedWidget {
+    background-color: white;
+}
+
+QPushButton {
+    border: none;
+}
+
+QToolTip {
+    /* border: 2px solid rgb(75, 74, 68); */
+    padding: 2px;
+    border-radius: 10px;
+    opacity: 200;
+}

@@ -16,7 +16,9 @@
         <file>texts/home.md</file>
     </qresource>
     <qresource>
-        <file>styles/common.css</file>
+        <file>styles/light_theme.css</file>
+        <file>styles/dark_theme.css</file>
+        <file>styles/color_theme.css</file>
     </qresource>
     <qresource>
         <file>images/qtforpython.png</file>
