@@ -1,14 +1,28 @@
 * {
-    font-family:Microsoft YaHei;
+    font-family: Microsoft YaHei;
+    margin: 0;
+    padding: 0;
+    border: 1px solid red;
+    /* 测试 */
+}
+
+QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
+    border: none;
+}
+
+QTreeWidget {
+    background-color: white;
 }
 
 QStackedWidget {
     background-color: white;
 }
 
-QPushButton {
+
+
+/* QPushButton {
     border: none;
-}
+} */
 
 QToolTip {
     /* border: 2px solid rgb(75, 74, 68); */

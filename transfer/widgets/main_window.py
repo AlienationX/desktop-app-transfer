@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QProgressBar,
     QPushButton,
+    QLayout,
     QHBoxLayout,
     QVBoxLayout,
     QFileDialog,
@@ -19,7 +20,7 @@ from PySide6.QtCore import Slot, QSize, Qt
 from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
-from widgets.excel_widget import ExcelToCsvWidget, ExcelSplitWidget
+from .excel_widget import ExcelToCsvWidget, ExcelSplitWidget
 from widgets.csv_widget import CsvToExcelWidget
 from widgets.word_widget import WordToPDFWidget
 from widgets.document_widget import DocumentWidget
@@ -50,6 +51,7 @@ class MainWindow(QWidget):
         # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
         
         self.centralLayout = QVBoxLayout()
+        self.centralLayout.setContentsMargins(0, 5, 0, 5)
         self.setHeader()
         self.setBody()
         self.setFooter()
@@ -82,10 +84,15 @@ class MainWindow(QWidget):
     def setHeader(self):
         # header
         self.headerLayout = QHBoxLayout()
-        self.logoLabel = QLabel("Logo.png")
+        self.headerLayout.setContentsMargins(5, 0, 5, 0)
+        self.logoLabel = QLabel()
+        self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.minBtn = QPushButton(qta.icon("msc.chrome-minimize"), "")
-        self.maxBtn = QPushButton(qta.icon("msc.chrome-restore"), "")
-        self.closeBtn = QPushButton(qta.icon("msc.chrome-close"), "")
+        self.maxBtn = QPushButton(qta.icon("msc.collapse-all"), "")
+        self.closeBtn = QPushButton(qta.icon("msc.close"), "")
+        self.minBtn.setObjectName("minBtn")
+        self.maxBtn.setObjectName("maxBtn")
+        self.closeBtn.setObjectName("closeBtn")
         self.headerLayout.addWidget(self.logoLabel)
         self.headerLayout.addStretch()
         self.headerLayout.addWidget(self.minBtn)
@@ -194,6 +201,7 @@ class MainWindow(QWidget):
         
         # 创建布局
         self.bodyLayout = QHBoxLayout()
+        print(self.bodyLayout.getContentsMargins())
         self.bodyLayout.addWidget(self.treeWidget)
         self.bodyLayout.addWidget(self.stackedWidget)
         self.centralLayout.addLayout(self.bodyLayout)

@@ -18,6 +18,9 @@ class DocumentWidget(QWidget):
 
         # 创建布局
         self.layout = QVBoxLayout()
+        print(self.layout.getContentsMargins())
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        print(self.layout.getContentsMargins())
         self.layout.addWidget(self.document)
         self.setLayout(self.layout)
 

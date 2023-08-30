@@ -2,6 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QStyleFactory, QSystemTrayIcon, QMenu
 from PySide6.QtGui import QIcon
+import qtawesome as qta
 
 from widgets.main_window import MainWindow
 from utils.common import CommonHelper
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)  # 支持命令行启动传参，提高可扩展性
     app.setWindowIcon(QIcon(":/svgs/JSON-LD.svg"))
+    app.setWindowIcon(qta.icon("msc.terminal-debian"))
     window = MainWindow()
     
     # 当前平台自带的风格，'Windows', 'Fusion' 太丑了，没人会用
