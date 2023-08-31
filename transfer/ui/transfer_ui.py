@@ -3,15 +3,20 @@
 ################################################################################
 ## Form generated from reading UI file 'transfer.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.1.3
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import *  # type: ignore
-from PySide6.QtGui import *  # type: ignore
-from PySide6.QtWidgets import *  # type: ignore
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QPushButton,
+    QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -21,91 +26,89 @@ class Ui_Form(object):
         icon = QIcon()
         icon.addFile(u"../resources/logo.ico", QSize(), QIcon.Normal, QIcon.Off)
         Form.setWindowIcon(icon)
-        self.gridLayout_2 = QGridLayout(Form)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.pushButton_5 = QPushButton(Form)
-        self.pushButton_5.setObjectName(u"pushButton_5")
-
-        self.gridLayout.addWidget(self.pushButton_5, 3, 1, 1, 1)
-
-        self.checkBox = QCheckBox(Form)
-        self.checkBox.setObjectName(u"checkBox")
-
-        self.gridLayout.addWidget(self.checkBox, 4, 1, 1, 1)
-
-        self.pushButton_3 = QPushButton(Form)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-
-        self.gridLayout.addWidget(self.pushButton_3, 2, 0, 1, 1)
-
-        self.pushButton_4 = QPushButton(Form)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-        self.pushButton_4.setEnabled(False)
-
-        self.gridLayout.addWidget(self.pushButton_4, 2, 1, 1, 1)
-
-        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout = QHBoxLayout(Form)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.left = QWidget(Form)
+        self.left.setObjectName(u"left")
+        self.verticalLayout = QVBoxLayout(self.left)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.leftSub = QWidget(self.left)
+        self.leftSub.setObjectName(u"leftSub")
+        self.verticalLayout_2 = QVBoxLayout(self.leftSub)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.frame = QFrame(self.leftSub)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton_1 = QPushButton(Form)
-        self.pushButton_1.setObjectName(u"pushButton_1")
+        self.pushButton = QPushButton(self.frame)
+        self.pushButton.setObjectName(u"pushButton")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_1)
+        self.horizontalLayout_2.addWidget(self.pushButton, 0, Qt.AlignTop)
 
-        self.pushButton_2 = QPushButton(Form)
+
+        self.verticalLayout_2.addWidget(self.frame)
+
+        self.frame_2 = QFrame(self.leftSub)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_3 = QVBoxLayout(self.frame_2)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.pushButton_2 = QPushButton(self.frame_2)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.verticalLayout_3.addWidget(self.pushButton_2)
+
+        self.pushButton_3 = QPushButton(self.frame_2)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+
+        self.verticalLayout_3.addWidget(self.pushButton_3)
+
+        self.pushButton_4 = QPushButton(self.frame_2)
+        self.pushButton_4.setObjectName(u"pushButton_4")
+
+        self.verticalLayout_3.addWidget(self.pushButton_4)
 
 
-        self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.frame_2)
 
-        self.pushButton_6 = QPushButton(Form)
+        self.frame_3 = QFrame(self.leftSub)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.frame_3)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.pushButton_5 = QPushButton(self.frame_3)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+
+        self.verticalLayout_4.addWidget(self.pushButton_5)
+
+        self.pushButton_6 = QPushButton(self.frame_3)
         self.pushButton_6.setObjectName(u"pushButton_6")
 
-        self.gridLayout.addWidget(self.pushButton_6, 4, 0, 1, 1)
+        self.verticalLayout_4.addWidget(self.pushButton_6)
 
-        self.label = QLabel(Form)
-        self.label.setObjectName(u"label")
-        self.label.setMaximumSize(QSize(16777215, 60))
-        font = QFont()
-        font.setPointSize(10)
-        font.setBold(True)
-        self.label.setFont(font)
-        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.pushButton_7 = QPushButton(self.frame_3)
+        self.pushButton_7.setObjectName(u"pushButton_7")
 
-        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-
-        self.lineEdit = QLineEdit(Form)
-        self.lineEdit.setObjectName(u"lineEdit")
-
-        self.gridLayout.addWidget(self.lineEdit, 5, 0, 1, 1)
-
-        self.groupBox = QGroupBox(Form)
-        self.groupBox.setObjectName(u"groupBox")
-        self.verticalLayout_2 = QVBoxLayout(self.groupBox)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.radioButton = QRadioButton(self.groupBox)
-        self.radioButton.setObjectName(u"radioButton")
-
-        self.verticalLayout.addWidget(self.radioButton)
-
-        self.radioButton_2 = QRadioButton(self.groupBox)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-
-        self.verticalLayout.addWidget(self.radioButton_2)
+        self.verticalLayout_4.addWidget(self.pushButton_7)
 
 
-        self.verticalLayout_2.addLayout(self.verticalLayout)
+        self.verticalLayout_2.addWidget(self.frame_3)
 
 
-        self.gridLayout.addWidget(self.groupBox, 3, 0, 1, 1)
+        self.verticalLayout.addWidget(self.leftSub)
 
 
-        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+        self.horizontalLayout.addWidget(self.left)
+
+        self.main = QWidget(Form)
+        self.main.setObjectName(u"main")
+
+        self.horizontalLayout.addWidget(self.main)
 
 
         self.retranslateUi(Form)
@@ -115,16 +118,12 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.pushButton_5.setText(QCoreApplication.translate("Form", u"PushButton5", None))
-        self.checkBox.setText(QCoreApplication.translate("Form", u"CheckBox", None))
-        self.pushButton_3.setText(QCoreApplication.translate("Form", u"PushButton3", None))
-        self.pushButton_4.setText(QCoreApplication.translate("Form", u"PushButton4", None))
-        self.pushButton_1.setText(QCoreApplication.translate("Form", u"PushButton1", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Form", u"PushButton2", None))
-        self.pushButton_6.setText(QCoreApplication.translate("Form", u"PushButton6", None))
-        self.label.setText(QCoreApplication.translate("Form", u"TextLabel", None))
-        self.groupBox.setTitle(QCoreApplication.translate("Form", u"GroupBox", None))
-        self.radioButton.setText(QCoreApplication.translate("Form", u"RadioButton", None))
-        self.radioButton_2.setText(QCoreApplication.translate("Form", u"RadioButton", None))
+        self.pushButton.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_2.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_3.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_4.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_5.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_6.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_7.setText(QCoreApplication.translate("Form", u"PushButton", None))
     # retranslateUi
 

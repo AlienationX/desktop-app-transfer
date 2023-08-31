@@ -91,7 +91,6 @@ class MainWindow(QWidget):
         self.headerLayout = QHBoxLayout()
         # self.headerLayout.setContentsMargins(5, 0, 5, 0)
         self.logoLabel = QLabel()
-        print(self.logoLabel.getContentsMargins())
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
         self.logoLabel.setScaledContents(True)

@@ -145,7 +145,7 @@ class ExcelToCsvWidget(QWidget):
         print(self.gridLayout.horizontalSpacing(), "行间距")
         print(self.gridLayout.rowCount(), "行", self.gridLayout.columnCount(), "列")
         
-        # 动态图标
+        # TODO 文件夹形式，多文件，双进度条，动态图标
         fa5_button = QPushButton('Font Awesome! (regular)')
         spin_icon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(fa5_button))
         fa5_button.setIcon(spin_icon)
@@ -314,6 +314,7 @@ class WorkThread(QThread):
             self.signal.emit(int((i + 1) / count *100), from_file + " done .")
 
     def excelToCsv(self, from_file, to_file):
+        # TODO 双进度条更新
         df = pd.read_excel(from_file)
         df.to_csv(to_file, index=False, encoding=self.options["encoding"], quoting=self.options["quoting"])
         
