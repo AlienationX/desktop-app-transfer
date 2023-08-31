@@ -4,9 +4,13 @@
     margin: 0;
     padding: 0;
     border: 0;
-    /* border: 1px solid red; */
+    border: 1px solid red;
     /* 测试 */
 }
+
+/* #main {
+    border-radius: 15px;
+} */
 
 QListWidget {
     color: #2962ff;

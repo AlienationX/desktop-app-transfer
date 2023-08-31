@@ -126,7 +126,7 @@ class ExcelToCsvWidget(QWidget):
         # 创建布局
         self.gridLayout = QGridLayout()
         # 将组件添加到布局中（N行N列）初始值序号是0，(行, 列, 宽度, 高度)
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 5)
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 6)
         self.gridLayout.addWidget(self.choiceComboBox, 1, 0)
         self.gridLayout.addWidget(self.inputLineEdit, 2, 0, 1, 5)
         self.gridLayout.addWidget(self.openBtn, 2, 5)
@@ -141,8 +141,8 @@ class ExcelToCsvWidget(QWidget):
         self.gridLayout.addWidget(self.progressBar, 7, 0, 1, self.gridLayout.columnCount())
         self.gridLayout.setVerticalSpacing(10)        # 设置每行之间的间距
         # self.gridLayout.setHorizontalSpacing(10)    # 设置每列之间的间距
-        print(self.gridLayout.verticalSpacing())
-        print(self.gridLayout.horizontalSpacing())
+        print(self.gridLayout.verticalSpacing(), "列间距")
+        print(self.gridLayout.horizontalSpacing(), "行间距")
         print(self.gridLayout.rowCount(), "行", self.gridLayout.columnCount(), "列")
         
         # 动态图标
@@ -205,8 +205,8 @@ class ExcelToCsvWidget(QWidget):
     
     @Slot()
     def execute(self):
-        self.inputLineEdit.setText(r"C:/Users/Admin/Desktop/in")
-        self.outputLineEdit.setText(r"C:/Users/Admin/Desktop/out")
+        # self.inputLineEdit.setText(r"C:/Users/Admin/Desktop/in")
+        # self.outputLineEdit.setText(r"C:/Users/Admin/Desktop/out")
         if not self.inputLineEdit.text():
             QMessageBox.warning(self, "Input Error", "请选择Excel文件或目录")  # 只支持QMessageBox.Icon
             

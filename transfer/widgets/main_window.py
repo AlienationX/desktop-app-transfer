@@ -31,10 +31,12 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         
+        self.setObjectName("main")
+        
         self.settings = {
             "is_vip": False,
-            "is_maximized": False,
-            "theme": "light_theme",
+            "is_radius": False,
+            "theme": "light_theme",  # system_theme, light_theme, dark_theme, color_theme
         }
         
         self.setupUi()
@@ -59,24 +61,15 @@ class MainWindow(QWidget):
 
         # 添加自定义样式
         theme = self.settings["theme"]
-        qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.css")  # 可以直接起名为css(其实是qss)
-        self.setStyleSheet(qssStyle)
+        if theme in ["light_theme", "dark_theme", "color_theme"]:
+            qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.css")  # 可以直接起名为css(其实是qss)
+            self.setStyleSheet(qssStyle)
         
         self.centralLayout = QVBoxLayout()
-        self.centralLayout.setContentsMargins(0, 5, 0, 5)
         self.setHeader()
         self.setBody()
         self.setFooter()
         self.setLayout(self.centralLayout)
-        
-        # 为窗体添加布局
-        # self.centralLayout = QVBoxLayout()
-        # self.setHeader()
-        # self.setBody()
-        # self.setFooter()
-        # self.centralWidget = QWidget()
-        # self.centralWidget.setLayout(self.centralLayout)
-        # self.setCentralWidget(self.centralWidget)
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -96,8 +89,9 @@ class MainWindow(QWidget):
     def setHeader(self):
         # header
         self.headerLayout = QHBoxLayout()
-        self.headerLayout.setContentsMargins(5, 0, 5, 0)
+        # self.headerLayout.setContentsMargins(5, 0, 5, 0)
         self.logoLabel = QLabel()
+        print(self.logoLabel.getContentsMargins())
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
         self.logoLabel.setScaledContents(True)
@@ -112,26 +106,26 @@ class MainWindow(QWidget):
         self.headerLayout.addWidget(self.minBtn)
         self.headerLayout.addWidget(self.maxBtn)
         self.headerLayout.addWidget(self.closeBtn)
-        self.centralLayout.addLayout(self.headerLayout)
+        self.centralLayout.addLayout(self.headerLayout)        
         
         self.minBtn.clicked.connect(self.showMinimized)
-        self.maxBtn.clicked.connect(self.changeMaxOrReset)  # TODO 只能最大化，不能还原...
+        self.maxBtn.clicked.connect(self.changeMaxOrReset)
         self.closeBtn.clicked.connect(self.close) 
     
     def changeMaxOrReset(self):
-        if not self.settings["is_maximized"]:
-            self.showMaximized()
-            self.settings["is_maximized"] = True
-        else:
+        if self.isMaximized():
             self.showNormal()
-            self.settings["is_maximized"] = False
+        else:
+            self.showMaximized()
         
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标
+        # print(self.headerLayout.geometry(), "press")
         self.pressX = event.x()
         self.pressY = event.y()
  
     def mouseMoveEvent(self, event):
+        # print(self.headerLayout.geometry(), "move")
         x = event.x()
         y = event.y()   # 获取移动后的坐标
         moveX = x - self.pressX
@@ -200,7 +194,7 @@ class MainWindow(QWidget):
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
         self.statusLayout = QHBoxLayout()
-        self.statusLayout.setContentsMargins(5, 0, 5, 0)
+        # self.statusLayout.setContentsMargins(5, 0, 5, 0)
         self.statusLayout.addWidget(self.messageLable)
         self.statusLayout.addStretch()
         self.statusLayout.addWidget(self.versionLable)
