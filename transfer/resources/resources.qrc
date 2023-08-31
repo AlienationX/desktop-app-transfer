@@ -24,14 +24,10 @@
         <file>images/qtforpython.png</file>
     </qresource>
     <qresource>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon (1).png</file>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon (2).png</file>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon (3).png</file>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon (4).png</file>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon (5).png</file>
-        <file>icons/8687188_ic_fluent_error_circle_settings_icon.png</file>
-        <file>icons/8687850_ic_fluent_tag_regular_icon_48.png</file>
-        <file>icons/8687850_ic_fluent_tag_regular_icon_64.png</file>
-        <file>icons/8687850_ic_fluent_tag_regular_icon_512.png</file>
+        <file>icons/checkbox.svg</file>
+        <file>icons/checkbox_blank.svg</file>
+        <file>icons/checkbox_circle.svg</file>
+        <file>icons/checkbox_circle_blank.svg</file>
+        <file>icons/down_arrow.svg</file>
     </qresource>
 </RCC>

@@ -9,7 +9,7 @@ class DocumentWidget(QWidget):
     def __init__(self, resource_path=""):
         super().__init__()
         
-        self.document = QTextBrowser(self)
+        self.document = QTextEdit(self)
         file = QFile(":/texts/home.md")
         file.open(QIODevice.ReadOnly | QIODevice.Text)
         stream_file = QTextStream(file)

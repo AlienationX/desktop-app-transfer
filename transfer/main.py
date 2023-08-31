@@ -21,9 +21,9 @@ if __name__ == "__main__":
     window = MainWindow()
     
     # 当前平台自带的风格，'Windows', 'Fusion' 太丑了，没人会用
-    list_style = QStyleFactory.keys()  # 当前平台支持的 QStyle 窗口风格样式, 默认vista ['windowsvista', 'Windows', 'Fusion']
-    print(list_style)
-    app.setStyle(QStyleFactory.create(list_style[0]))  # 给 App 设置窗口风格, 其他Widget默认(无设置)使用App的风格
+    # list_style = QStyleFactory.keys()  # 当前平台支持的 QStyle 窗口风格样式, 默认vista ['windowsvista', 'Windows', 'Fusion']
+    # print(list_style)
+    # app.setStyle(QStyleFactory.create(list_style[0]))  # 给 App 设置窗口风格, 其他Widget默认(无设置)使用App的风格
 
     # # 创建系统托盘图标
     # tray_icon = QSystemTrayIcon(QIcon(":logo.png"), app)

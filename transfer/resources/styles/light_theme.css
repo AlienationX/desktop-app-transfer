@@ -1,32 +1,199 @@
 * {
-    font-family: Microsoft YaHei;
+    font-family: "Segoe UI", "Microsoft YaHei", "Consolas";
+    font-size: 12px;
     margin: 0;
     padding: 0;
+    border: 0;
     /* border: 1px solid red; */
     /* 测试 */
 }
 
-QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
-    border: none;
+QListWidget {
+    color: #2962ff;
+    background-color: rgb(240, 240, 240);
 }
 
-QTreeWidget {
-    background-color: white;
+
+QListView::item:selected {
+    background-color: greenyellow;
+    font: bold 14px;
 }
+
+QListView::item:selected:active {
+    background-color: #6a6ea9;
+}
+
+QListView::item:hover {
+    font: bold 14px;
+}
+
 
 QStackedWidget {
     background-color: white;
+    padding: 10px;
+}
+
+QPushButton {
+    color: white;
+    background-color: #1976d2;
+    /* border: 1px solid #1976d2; */
+    border-radius: 5px;
+    padding: 5px 15px;
+    
+}
+
+QPushButton:hover {
+    background-color: #1565c0;
+    font: bold;
+}
+
+QLineEdit {
+    border-radius: 5px;
+    padding: 3px;
+    border: 1px solid rgb(200, 200, 200);
+}
+
+QLineEdit:hover {
+    border: 1px solid rgb(25, 118, 210);
+}
+
+QLineEdit[readOnly="true"] { 
+    color: gray;
+}
+
+QComboBox {
+    border-radius: 5px;
+    padding: 3px;
+    border: 1px solid darkgray;
+}
+
+QComboBox:hover {
+    border: 1px solid rgb(25, 118, 210);
+}
+
+QComboBox::drop-down {
+    /* subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px; */
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    /* just a single line */
+    border-left-style: solid; 
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    width: 15px;
+    height: 15px;
+    image: url(:/icons/down_arrow.svg);
+}
+
+QGroupBox {
+    border-radius: 5px;
+    border: 1px solid rgb(200, 200, 200);
+}
+
+QGroupBox::title {
+    /* background-color: greenyellow; */
 }
 
 
+QRadioButton {
+    /* background-color: red; */
+    border-radius: 5px;
+    padding: 3px;
+}
 
-/* QPushButton {
-    border: none;
+QRadioButton::indicator {
+    width: 15px;
+    height: 15px;
+}
+
+QRadioButton::indicator:unchecked {
+    image: url(:/icons/checkbox_circle_blank.svg);
+}
+
+/* QRadioButton::indicator:unchecked:hover {
+    image: url(:/images/checkbox_unchecked_hover.png);
+} */
+
+/* 按下和选中都是一个图标 */
+QRadioButton::indicator:unchecked:pressed, QRadioButton::indicator::checked {
+    image: url(:/icons/checkbox_circle.svg);
+}
+
+
+QCheckBox {
+    border-radius: 5px;
+    padding: 3px;
+}
+
+QCheckBox::indicator {
+    width: 15px;
+    height: 15px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/icons/checkbox_blank.svg);
+}
+
+/* QCheckBox::indicator:unchecked:hover {
+    image: url(:/images/checkbox_unchecked_hover.png);
+} */
+
+QCheckBox::indicator:unchecked:pressed, QCheckBox::indicator:checked {
+    image: url(:/icons/checkbox.svg);
+}
+
+/* QProgressBar {
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 3px;
+} */
+
+QProgressBar {
+    /* border: 2px solid grey; */
+    background-color: transparent;
+    border-radius: 5px;
+    color: white;
+}
+
+QProgressBar::chunk {
+    background-color: rgb(70, 204, 92);
+    border-radius: 5px;
+}
+
+
+/* QTextEdit {
+    background-color: rgb(240, 240, 240);
+} */
+
+/* QLabel {
+    background-color: rgb(204, 102, 51);
 } */
 
 QToolTip {
-    /* border: 2px solid rgb(75, 74, 68); */
+    background-color: rgb(40, 40, 40);
+    color: white;
     padding: 2px;
-    border-radius: 10px;
-    opacity: 200;
+    border-radius: 5px;
+}
+
+/* ---------------------------------- id需要放到下面单独执行，覆盖掉上面的通用设置 ---------------------------------- */
+QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    /* 背景透明 */
+    background-color: transparent;
+}
+
+QPushButton#closeBtn:hover {
+    background-color: rgb(218, 76, 76);
+}
+
+QPushButton#minBtn:hover, QPushButton#maxBtn:hover{
+    background-color: rgb(70, 204, 92);
 }
