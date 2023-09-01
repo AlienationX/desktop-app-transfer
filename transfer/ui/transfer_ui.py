@@ -3,20 +3,16 @@
 ################################################################################
 ## Form generated from reading UI file 'transfer.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.1.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtCore import *  # type: ignore
+from PySide6.QtGui import *  # type: ignore
+from PySide6.QtWidgets import *  # type: ignore
+
+import tt_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -107,11 +103,52 @@ class Ui_Form(object):
 
         self.main = QWidget(Form)
         self.main.setObjectName(u"main")
+        self.toolBox = QToolBox(self.main)
+        self.toolBox.setObjectName(u"toolBox")
+        self.toolBox.setGeometry(QRect(110, 160, 121, 241))
+        self.page_3 = QWidget()
+        self.page_3.setObjectName(u"page_3")
+        self.page_3.setGeometry(QRect(0, 0, 121, 181))
+        self.verticalLayout_6 = QVBoxLayout(self.page_3)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.pushButton_9 = QPushButton(self.page_3)
+        self.pushButton_9.setObjectName(u"pushButton_9")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/8680047_checkbox_circle_fill_icon.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_9.setIcon(icon1)
+        self.pushButton_9.setIconSize(QSize(20, 20))
+
+        self.verticalLayout_6.addWidget(self.pushButton_9)
+
+        self.pushButton_8 = QPushButton(self.page_3)
+        self.pushButton_8.setObjectName(u"pushButton_8")
+
+        self.verticalLayout_6.addWidget(self.pushButton_8, 0, Qt.AlignTop)
+
+        self.toolBox.addItem(self.page_3, u"Page 1")
+        self.page_4 = QWidget()
+        self.page_4.setObjectName(u"page_4")
+        self.page_4.setGeometry(QRect(0, 0, 121, 181))
+        self.verticalLayout_5 = QVBoxLayout(self.page_4)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.pushButton_10 = QPushButton(self.page_4)
+        self.pushButton_10.setObjectName(u"pushButton_10")
+
+        self.verticalLayout_5.addWidget(self.pushButton_10)
+
+        self.toolBox.addItem(self.page_4, u"Page 2")
+        self.label = QLabel(self.main)
+        self.label.setObjectName(u"label")
+        self.label.setGeometry(QRect(80, 70, 51, 31))
+        self.label.setPixmap(QPixmap(u":/icons/8680047_checkbox_circle_fill_icon.svg"))
 
         self.horizontalLayout.addWidget(self.main)
 
 
         self.retranslateUi(Form)
+
+        self.toolBox.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
@@ -125,5 +162,11 @@ class Ui_Form(object):
         self.pushButton_5.setText(QCoreApplication.translate("Form", u"PushButton", None))
         self.pushButton_6.setText(QCoreApplication.translate("Form", u"PushButton", None))
         self.pushButton_7.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_9.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.pushButton_8.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), QCoreApplication.translate("Form", u"Page 1", None))
+        self.pushButton_10.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), QCoreApplication.translate("Form", u"Page 2", None))
+        self.label.setText("")
     # retranslateUi
 

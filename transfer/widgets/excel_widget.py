@@ -63,18 +63,18 @@ class ExcelToCsvWidget(QWidget):
         self.inputLineEdit.setPlaceholderText("请选择Excel文件或目录")
         self.inputLineEdit.setReadOnly(True)
         
-        openBtnIcon  = qta.icon("msc.folder-opened")
+        openBtnIcon  = qta.icon("msc.folder-opened", color="white")
         self.openBtn = QPushButton(openBtnIcon, "打开文件")
 
         self.outputLineEdit = QLineEdit()
         self.outputLineEdit.setPlaceholderText("请选择保存的文件或目录")
         self.outputLineEdit.setReadOnly(True)
         
-        saveBtnIcon  = qta.icon("msc.folder-active")
+        saveBtnIcon  = qta.icon("msc.folder-active", color="white")
         self.saveBtn = QPushButton(saveBtnIcon, "保存文件")
         
         self.radioBtn1 = QRadioButton("保持原始数据")
-        self.radioBtn1.setToolTip("所有字段都用逗号分隔，如果内容存在逗号，\n打开文件可能会导致串列问题，不推荐")
+        self.radioBtn1.setToolTip("所有字段都用逗号分隔，如果内容存在逗号，打开文件可能会导致串列问题，\n不推荐")
         self.radioBtn2 = QRadioButton("单个文本使用双引号转义")
         self.radioBtn2.setToolTip("如果字段内容包括逗号，则该内容会额外增加双引号对字段内容进行包裹，\n以防止串列问题，默认值")
         self.radioBtn2.setChecked(True)
@@ -117,7 +117,7 @@ class ExcelToCsvWidget(QWidget):
         self.groupBox3.setLayout(self.vboxLayout3)
         self.groupBox3.hide()
         
-        self.startBtnIcon  = qta.icon("msc.play")
+        self.startBtnIcon  = qta.icon("msc.play", color="white")
         self.startBtn = QPushButton(self.startBtnIcon, "执行")
         
         self.progressBar = QProgressBar()

@@ -29,5 +29,6 @@
         <file>icons/checkbox_circle.svg</file>
         <file>icons/checkbox_circle_blank.svg</file>
         <file>icons/down_arrow.svg</file>
+        <file>icons/24.svg</file>
     </qresource>
 </RCC>

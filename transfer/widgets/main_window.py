@@ -10,11 +10,10 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QTreeWidgetItem,
-    
     QStatusBar,
     QStackedWidget
 )
-from PySide6.QtCore import Slot, QSize, Qt
+from PySide6.QtCore import Slot, QSize, Qt, QRect
 from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
@@ -56,7 +55,7 @@ class MainWindow(QWidget):
         # self.setWindowIcon(logoIcon)
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
-        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
+        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框 # TODO 但是需要自己实现关闭按钮、拖拽系统栏移动、拖拽边框调整大小的功能
         # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
 
         # 添加自定义样式
@@ -88,12 +87,14 @@ class MainWindow(QWidget):
         
     def setHeader(self):
         # header
-        self.headerLayout = QHBoxLayout()
+        self.headerWidget = QWidget()
+        self.headerWidget.setObjectName("header")
+        self.headerLayout = QHBoxLayout(self.headerWidget)
         # self.headerLayout.setContentsMargins(5, 0, 5, 0)
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
-        self.logoLabel.setScaledContents(True)
+        self.logoLabel.setScaledContents(True)  # 自适应
         self.minBtn = QPushButton(qta.icon("msc.chrome-minimize"), "")
         self.maxBtn = QPushButton(qta.icon("msc.collapse-all"), "")
         self.closeBtn = QPushButton(qta.icon("msc.close"), "")
@@ -105,7 +106,7 @@ class MainWindow(QWidget):
         self.headerLayout.addWidget(self.minBtn)
         self.headerLayout.addWidget(self.maxBtn)
         self.headerLayout.addWidget(self.closeBtn)
-        self.centralLayout.addLayout(self.headerLayout)        
+        self.centralLayout.addWidget(self.headerWidget)
         
         self.minBtn.clicked.connect(self.showMinimized)
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
@@ -118,25 +119,25 @@ class MainWindow(QWidget):
             self.showMaximized()
         
     def mousePressEvent(self, event):
-        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标
-        # print(self.headerLayout.geometry(), "press")
-        self.pressX = event.x()
-        self.pressY = event.y()
+        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
+        if self.headerWidget.underMouse():  # TODO 拖拽功能实现在system_bar中
+            self.pressX = event.x()
+            self.pressY = event.y()
  
     def mouseMoveEvent(self, event):
-        # print(self.headerLayout.geometry(), "move")
-        x = event.x()
-        y = event.y()   # 获取移动后的坐标
-        moveX = x - self.pressX
-        moveY = y - self.pressY  # 计算移动了多少
- 
-        positionX = self.frameGeometry().x() + moveX
-        positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
-        self.move(positionX, positionY)    # 移动主窗口
+        if self.headerWidget.underMouse():
+            x = event.x()
+            y = event.y()   # 获取移动后的坐标
+            moveX = x - self.pressX
+            moveY = y - self.pressY  # 计算移动了多少
+    
+            positionX = self.frameGeometry().x() + moveX
+            positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
+            self.move(positionX, positionY)    # 移动主窗口
         
     def setBody(self):
         self.listWidget = QListWidget()
-        self.listWidget.setMaximumWidth(200)
+        self.listWidget.setObjectName("leftMenu")
         self.menus = [
             {"id": 0, "objectName": "home", "text": "HOME", "icon": "mdi.menu-open", "class": DocumentWidget(), "level": 1},
             {"id": 1, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": "", "level": 1},
@@ -149,6 +150,17 @@ class MainWindow(QWidget):
             {"id": 8, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget(), "level": 2},
             {"id": 9, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": "", "level": 1},
             {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
+            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
         ]
         
         # 设置stackedWidget
@@ -156,9 +168,34 @@ class MainWindow(QWidget):
         
         for i in range(len(self.menus)):
             item = self.menus[i]
-            list_item = QListWidgetItem(item["text"])
-            list_item.setIcon(qta.icon(item["icon"]))
+            # list_item = QListWidgetItem(item["text"])
+            # list_item.setIcon(qta.icon(item["icon"]))
+            # self.listWidget.addItem(list_item)
+            
+            list_item = QListWidgetItem()
+            list_item.setSizeHint(QSize(160, 30))  # 必须设置大小，否则显示不出来
+            itemWidget = QWidget()
+            layout = QHBoxLayout(itemWidget)
+            leftIcon = QLabel()
+            leftIcon.setPixmap(qta.icon(item["icon"]).pixmap(QSize(20, 20)))
+            # leftIcon.setPixmap(QPixmap(":/logo2.ico"))
+            rightIcon = QLabel()
+            # rightIcon.setPixmap(QPixmap(":/icons/24.svg"))
+            # rightIcon.setPixmap(QIcon(":/icons/24.svg").pixmap(QSize(16, 16)))
+            rightIcon.setPixmap(qta.icon("msc.chevron-down").pixmap(QSize(20, 20)))
+            # rightIcon.setScaledContents(True)  # 自适应
+            # rightIcon.setFixedSize(QSize(16, 16))
+            # rightIcon.setStyleSheet("background-color: red;")
+            # leftIcon.setStyleSheet("background-color: red;")
+            
+            layout.addWidget(leftIcon)
+            layout.addWidget(QLabel(item["text"]))
+            layout.addStretch()
+            layout.addWidget(rightIcon)
+            
             self.listWidget.addItem(list_item)
+            self.listWidget.setItemWidget(list_item, itemWidget)  # addItem 和 setItemWidget 必须一起使用
+            
             setattr(self, item["objectName"], item["class"])  # 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
             if item["class"]:
                 self.stackedWidget.addWidget(getattr(self, item["objectName"]))  # 添加到stackedWidget上
@@ -168,22 +205,39 @@ class MainWindow(QWidget):
         childw.message_signal.connect(lambda msg: self.print_message(msg))
         
         # QListWidget绑定信号
-        self.listWidget.currentTextChanged.connect(self.router)
+        self.listWidget.currentRowChanged.connect(self.router)
+        
+        # 底部的按钮
+        self.msgBtn = QPushButton("Show Message")  # TODO 弹出消息窗口，遮罩
+        
+        self.settingsBtn = QPushButton("Settings")  # TODO 弹出设置窗口，挤走部件
+        self.settingsBtn.setObjectName("settings")
         
         # 创建布局
-        self.bodyLayout = QHBoxLayout()
+        self.leftBodyWight = QWidget()
+        self.leftBodyWight.setMaximumWidth(200)
+        self.leftBodyLayout = QVBoxLayout(self.leftBodyWight)
+        self.leftBodyLayout.addWidget(self.listWidget)
+        self.leftBodyLayout.addWidget(self.msgBtn)
+        self.leftBodyLayout.addWidget(self.settingsBtn)
+        
+        self.bodyWidget = QWidget()
+        self.bodyLayout = QHBoxLayout(self.bodyWidget)
         self.bodyLayout.setSpacing(0)
-        self.bodyLayout.addWidget(self.listWidget)
+        self.bodyLayout.addWidget(self.leftBodyWight)
         self.bodyLayout.addWidget(self.stackedWidget)
-        self.centralLayout.addLayout(self.bodyLayout)
+        self.centralLayout.addWidget(self.bodyWidget)
+        # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
+        # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
+        # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         
     @Slot()
-    def router(self, currentText):
-        print("menubar ==> ", currentText)
+    def router(self, currentRow):
+        print("menubar ==> ", currentRow)
         
         for i in range(len(self.menus)):
             item = self.menus[i]
-            if currentText == item["text"] and item["class"]:
+            if currentRow == i and item["class"]:
                 self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
                 return
     
@@ -192,12 +246,13 @@ class MainWindow(QWidget):
         # 自定义状态栏
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
-        self.statusLayout = QHBoxLayout()
+        self.statusWidget = QWidget()
+        self.statusLayout = QHBoxLayout(self.statusWidget)
         # self.statusLayout.setContentsMargins(5, 0, 5, 0)
         self.statusLayout.addWidget(self.messageLable)
         self.statusLayout.addStretch()
         self.statusLayout.addWidget(self.versionLable)
-        self.centralLayout.addLayout(self.statusLayout)
+        self.centralLayout.addWidget(self.statusWidget)
         
     
     def showMessage(self):

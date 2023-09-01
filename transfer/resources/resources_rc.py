@@ -3372,7 +3372,7 @@ ei;\x0a}\x0a \x0aQToolTip\
 ;\x0a    border-rad\
 ius: 10px;\x0a    o\
 pacity: 200;\x0a}\
-\x00\x00\x0e\x91\
+\x00\x00\x0fa\
 *\
  {\x0a    font-fami\
 ly: \x22Segoe UI\x22, \
@@ -3382,231 +3382,244 @@ ly: \x22Segoe UI\x22, \
 px;\x0a    margin: \
 0;\x0a    padding: \
 0;\x0a    border: 0\
-;\x0a    border: 1p\
-x solid red;\x0a   \
- /* \xe6\xb5\x8b\xe8\xaf\x95 */\x0a}\x0a\
-\x0a/* #main {\x0a    \
-border-radius: 1\
-5px;\x0a} */\x0a\x0aQList\
-Widget {\x0a    col\
-or: #2962ff;\x0a   \
- background-colo\
-r: rgb(240, 240,\
- 240);\x0a}\x0a\x0a\x0aQList\
-View::item:selec\
-ted {\x0a    backgr\
-ound-color: gree\
-nyellow;\x0a    fon\
-t: bold 14px;\x0a}\x0a\
-\x0aQListView::item\
-:selected:active\
- {\x0a    backgroun\
-d-color: #6a6ea9\
-;\x0a}\x0a\x0aQListView::\
-item:hover {\x0a   \
- font: bold 14px\
-;\x0a}\x0a\x0a\x0aQStackedWi\
-dget {\x0a    backg\
-round-color: whi\
-te;\x0a    padding:\
- 10px;\x0a}\x0a\x0aQPushB\
-utton {\x0a    colo\
-r: white;\x0a    ba\
-ckground-color: \
-#1976d2;\x0a    /* \
-border: 1px soli\
-d #1976d2; */\x0a  \
-  border-radius:\
- 5px;\x0a    paddin\
-g: 5px 15px;\x0a   \
- \x0a}\x0a\x0aQPushButton\
-:hover {\x0a    bac\
-kground-color: #\
-1565c0;\x0a    font\
-: bold;\x0a}\x0a\x0aQLine\
-Edit {\x0a    borde\
-r-radius: 5px;\x0a \
-   padding: 3px;\
-\x0a    border: 1px\
- solid rgb(200, \
-200, 200);\x0a}\x0a\x0aQL\
-ineEdit:hover {\x0a\
-    border: 1px \
-solid rgb(25, 11\
-8, 210);\x0a}\x0a\x0aQLin\
-eEdit[readOnly=\x22\
-true\x22] { \x0a    co\
-lor: gray;\x0a}\x0a\x0aQC\
-omboBox {\x0a    bo\
-rder-radius: 5px\
-;\x0a    padding: 3\
-px;\x0a    border: \
-1px solid darkgr\
-ay;\x0a}\x0a\x0aQComboBox\
-:hover {\x0a    bor\
-der: 1px solid r\
-gb(25, 118, 210)\
-;\x0a}\x0a\x0aQComboBox::\
-drop-down {\x0a    \
-/* subcontrol-or\
-igin: padding;\x0a \
-   subcontrol-po\
-sition: top righ\
-t;\x0a    width: 15\
-px; */\x0a\x0a    bord\
-er-left-width: 1\
-px;\x0a    border-l\
-eft-color: darkg\
-ray;\x0a    /* just\
- a single line *\
-/\x0a    border-lef\
-t-style: solid; \
-\x0a    border-top-\
-right-radius: 3p\
-x; /* same radiu\
-s as the QComboB\
-ox */\x0a    border\
--bottom-right-ra\
-dius: 3px;\x0a}\x0a\x0aQC\
-omboBox::down-ar\
-row {\x0a    width:\
- 15px;\x0a    heigh\
-t: 15px;\x0a    ima\
-ge: url(:/icons/\
-down_arrow.svg);\
-\x0a}\x0a\x0aQGroupBox {\x0a\
-    border-radiu\
-s: 5px;\x0a    bord\
-er: 1px solid rg\
-b(200, 200, 200)\
-;\x0a}\x0a\x0aQGroupBox::\
-title {\x0a    /* b\
-ackground-color:\
- greenyellow; */\
-\x0a}\x0a\x0a\x0aQRadioButto\
-n {\x0a    /* backg\
-round-color: red\
-; */\x0a    border-\
+;\x0a    /* border:\
+ 1px solid red; \
+*/\x0a    /* \xe6\xb5\x8b\xe8\xaf\x95\
+ */\x0a}\x0a\x0a\x0aQStacked\
+Widget {\x0a    bac\
+kground-color: w\
+hite;\x0a    paddin\
+g: 10px;\x0a}\x0a\x0aQPus\
+hButton {\x0a    co\
+lor: white;\x0a    \
+background-color\
+: #1976d2;\x0a    b\
+order-radius: 5p\
+x;\x0a    padding: \
+5px 15px;\x0a}\x0a\x0aQPu\
+shButton:hover {\
+\x0a    background-\
+color: #1565c0;\x0a\
+    /* font-weig\
+ht: bold; */\x0a}\x0a\x0a\
+QLineEdit {\x0a    \
+border-radius: 5\
+px;\x0a    padding:\
+ 3px;\x0a    border\
+: 1px solid rgb(\
+200, 200, 200);\x0a\
+}\x0a\x0aQLineEdit:hov\
+er {\x0a    border:\
+ 1px solid rgb(2\
+5, 118, 210);\x0a}\x0a\
+\x0aQLineEdit[readO\
+nly=\x22true\x22] { \x0a \
+   color: gray;\x0a\
+}\x0a\x0aQComboBox {\x0a \
+   border-radius\
+: 5px;\x0a    paddi\
+ng: 3px;\x0a    bor\
+der: 1px solid d\
+arkgray;\x0a}\x0a\x0aQCom\
+boBox:hover {\x0a  \
+  border: 1px so\
+lid rgb(25, 118,\
+ 210);\x0a}\x0a\x0aQCombo\
+Box::drop-down {\
+\x0a    /* subcontr\
+ol-origin: paddi\
+ng;\x0a    subcontr\
+ol-position: top\
+ right;\x0a    widt\
+h: 15px; */\x0a\x0a   \
+ border-left-wid\
+th: 1px;\x0a    bor\
+der-left-color: \
+darkgray;\x0a    /*\
+ just a single l\
+ine */\x0a    borde\
+r-left-style: so\
+lid; \x0a    border\
+-top-right-radiu\
+s: 3px; /* same \
+radius as the QC\
+omboBox */\x0a    b\
+order-bottom-rig\
+ht-radius: 3px;\x0a\
+}\x0a\x0aQComboBox::do\
+wn-arrow {\x0a    w\
+idth: 15px;\x0a    \
+height: 15px;\x0a  \
+  image: url(:/i\
+cons/down_arrow.\
+svg);\x0a}\x0a\x0aQGroupB\
+ox {\x0a    border-\
 radius: 5px;\x0a   \
- padding: 3px;\x0a}\
-\x0a\x0aQRadioButton::\
-indicator {\x0a    \
-width: 15px;\x0a   \
- height: 15px;\x0a}\
-\x0a\x0aQRadioButton::\
-indicator:unchec\
-ked {\x0a    image:\
- url(:/icons/che\
-ckbox_circle_bla\
-nk.svg);\x0a}\x0a\x0a/* Q\
-RadioButton::ind\
-icator:unchecked\
-:hover {\x0a    ima\
-ge: url(:/images\
-/checkbox_unchec\
-ked_hover.png);\x0a\
-} */\x0a\x0a/* \xe6\x8c\x89\xe4\xb8\x8b\xe5\
-\x92\x8c\xe9\x80\x89\xe4\xb8\xad\xe9\x83\xbd\xe6\x98\xaf\xe4\xb8\
-\x80\xe4\xb8\xaa\xe5\x9b\xbe\xe6\xa0\x87 */\x0aQR\
-adioButton::indi\
-cator:unchecked:\
-pressed, QRadioB\
-utton::indicator\
-::checked {\x0a    \
-image: url(:/ico\
-ns/checkbox_circ\
-le.svg);\x0a}\x0a\x0a\x0aQCh\
-eckBox {\x0a    bor\
-der-radius: 5px;\
-\x0a    padding: 3p\
-x;\x0a}\x0a\x0aQCheckBox:\
-:indicator {\x0a   \
- width: 15px;\x0a  \
-  height: 15px;\x0a\
-}\x0a\x0aQCheckBox::in\
+ border: 1px sol\
+id rgb(200, 200,\
+ 200);\x0a}\x0a\x0aQGroup\
+Box::title {\x0a   \
+ background-colo\
+r: greenyellow;\x0a\
+    /* margin-bo\
+ttom: 10px; */\x0a}\
+\x0a\x0a\x0aQRadioButton \
+{\x0a    /* backgro\
+und-color: red; \
+*/\x0a    border-ra\
+dius: 5px;\x0a    p\
+adding: 3px;\x0a}\x0a\x0a\
+QRadioButton::in\
+dicator {\x0a    wi\
+dth: 15px;\x0a    h\
+eight: 15px;\x0a}\x0a\x0a\
+QRadioButton::in\
 dicator:unchecke\
 d {\x0a    image: u\
 rl(:/icons/check\
-box_blank.svg);\x0a\
-}\x0a\x0a/* QCheckBox:\
-:indicator:unche\
-cked:hover {\x0a   \
- image: url(:/im\
-ages/checkbox_un\
-checked_hover.pn\
-g);\x0a} */\x0a\x0aQCheck\
-Box::indicator:u\
-nchecked:pressed\
-, QCheckBox::ind\
-icator:checked {\
-\x0a    image: url(\
-:/icons/checkbox\
-.svg);\x0a}\x0a\x0a/* QPr\
+box_circle_blank\
+.svg);\x0a}\x0a\x0a/* QRa\
+dioButton::indic\
+ator:unchecked:h\
+over {\x0a    image\
+: url(:/images/c\
+heckbox_unchecke\
+d_hover.png);\x0a} \
+*/\x0a\x0a/* \xe6\x8c\x89\xe4\xb8\x8b\xe5\x92\x8c\
+\xe9\x80\x89\xe4\xb8\xad\xe9\x83\xbd\xe6\x98\xaf\xe4\xb8\x80\xe4\
+\xb8\xaa\xe5\x9b\xbe\xe6\xa0\x87 */\x0aQRad\
+ioButton::indica\
+tor:unchecked:pr\
+essed, QRadioBut\
+ton::indicator::\
+checked {\x0a    im\
+age: url(:/icons\
+/checkbox_circle\
+.svg);\x0a}\x0a\x0a\x0aQChec\
+kBox {\x0a    borde\
+r-radius: 5px;\x0a \
+   padding: 3px;\
+\x0a}\x0a\x0aQCheckBox::i\
+ndicator {\x0a    w\
+idth: 15px;\x0a    \
+height: 15px;\x0a}\x0a\
+\x0aQCheckBox::indi\
+cator:unchecked \
+{\x0a    image: url\
+(:/icons/checkbo\
+x_blank.svg);\x0a}\x0a\
+\x0a/* QCheckBox::i\
+ndicator:uncheck\
+ed:hover {\x0a    i\
+mage: url(:/imag\
+es/checkbox_unch\
+ecked_hover.png)\
+;\x0a} */\x0a\x0aQCheckBo\
+x::indicator:unc\
+hecked:pressed, \
+QCheckBox::indic\
+ator:checked {\x0a \
+   image: url(:/\
+icons/checkbox.s\
+vg);\x0a}\x0a\x0a/* QProg\
+ressBar {\x0a    ba\
+ckground-color: \
+transparent;\x0a   \
+ border-radius: \
+5px;\x0a    padding\
+: 3px;\x0a} */\x0a\x0aQPr\
 ogressBar {\x0a    \
-background-color\
-: transparent;\x0a \
-   border-radius\
-: 5px;\x0a    paddi\
-ng: 3px;\x0a} */\x0a\x0aQ\
-ProgressBar {\x0a  \
-  /* border: 2px\
- solid grey; */\x0a\
-    background-c\
-olor: transparen\
-t;\x0a    border-ra\
-dius: 5px;\x0a    c\
-olor: white;\x0a}\x0a\x0a\
-QProgressBar::ch\
-unk {\x0a    backgr\
-ound-color: rgb(\
-70, 204, 92);\x0a  \
-  border-radius:\
- 5px;\x0a}\x0a\x0a\x0a/* QTe\
-xtEdit {\x0a    bac\
-kground-color: r\
-gb(240, 240, 240\
-);\x0a} */\x0a\x0a/* QLab\
-el {\x0a    backgro\
-und-color: rgb(2\
-04, 102, 51);\x0a} \
-*/\x0a\x0aQToolTip {\x0a \
-   background-co\
-lor: rgb(40, 40,\
- 40);\x0a    color:\
- white;\x0a    padd\
-ing: 2px;\x0a    bo\
-rder-radius: 5px\
-;\x0a}\x0a\x0a/* --------\
-----------------\
----------- id\xe9\x9c\x80\
-\xe8\xa6\x81\xe6\x94\xbe\xe5\x88\xb0\xe4\xb8\x8b\xe9\x9d\xa2\xe5\
-\x8d\x95\xe7\x8b\xac\xe6\x89\xa7\xe8\xa1\x8c\xef\xbc\x8c\xe8\xa6\
-\x86\xe7\x9b\x96\xe6\x8e\x89\xe4\xb8\x8a\xe9\x9d\xa2\xe7\x9a\x84\
-\xe9\x80\x9a\xe7\x94\xa8\xe8\xae\xbe\xe7\xbd\xae ---\
-----------------\
---------------- \
-*/\x0aQPushButton#m\
-inBtn, QPushButt\
-on#maxBtn, QPush\
-Button#closeBtn \
-{\x0a    border: no\
-ne;\x0a    border-r\
-adius: 5px;\x0a    \
-padding: 3px;\x0a  \
-  /* \xe8\x83\x8c\xe6\x99\xaf\xe9\x80\x8f\xe6\x98\
-\x8e */\x0a    backgro\
-und-color: trans\
-parent;\x0a}\x0a\x0aQPush\
-Button#closeBtn:\
-hover {\x0a    back\
-ground-color: rg\
-b(218, 76, 76);\x0a\
-}\x0a\x0aQPushButton#m\
-inBtn:hover, QPu\
-shButton#maxBtn:\
-hover{\x0a    backg\
+/* border: 2px s\
+olid grey; */\x0a  \
+  background-col\
+or: transparent;\
+\x0a    border-radi\
+us: 5px;\x0a    col\
+or: white;\x0a}\x0a\x0aQP\
+rogressBar::chun\
+k {\x0a    backgrou\
+nd-color: rgb(70\
+, 204, 92);\x0a    \
+border-radius: 5\
+px;\x0a}\x0a\x0a\x0a/* QText\
+Edit {\x0a    backg\
 round-color: rgb\
-(70, 204, 92);\x0a}\
+(240, 240, 240);\
+\x0a} */\x0a\x0a/* QLabel\
+ {\x0a    backgroun\
+d-color: rgb(204\
+, 102, 51);\x0a} */\
+\x0a\x0aQToolTip {\x0a   \
+ background-colo\
+r: rgb(40, 40, 4\
+0);\x0a    color: w\
+hite;\x0a    paddin\
+g: 2px;\x0a    bord\
+er-radius: 5px;\x0a\
+    width: 20px;\
+\x0a    height: 20p\
+x;\x0a}\x0a\x0a\x0a/* ------\
+----------------\
+------------ id\xe9\
+\x9c\x80\xe8\xa6\x81\xe6\x94\xbe\xe5\x88\xb0\xe4\xb8\x8b\xe9\x9d\
+\xa2\xe5\x8d\x95\xe7\x8b\xac\xe6\x89\xa7\xe8\xa1\x8c\xef\xbc\x8c\
+\xe8\xa6\x86\xe7\x9b\x96\xe6\x8e\x89\xe4\xb8\x8a\xe9\x9d\xa2\xe7\
+\x9a\x84\xe9\x80\x9a\xe7\x94\xa8\xe8\xae\xbe\xe7\xbd\xae -\
+----------------\
+----------------\
+- */\x0a\x0a/* #main {\
+\x0a    border-radi\
+us: 15px;\x0a} */\x0a\x0a\
+#header {\x0a    ba\
+ckground-color: \
+burlywood;\x0a}\x0a\x0a#m\
+inBtn, #maxBtn, \
+#closeBtn {\x0a    \
+border: none;\x0a  \
+  border-radius:\
+ 5px;\x0a    paddin\
+g: 3px;\x0a    /* \xe8\
+\x83\x8c\xe6\x99\xaf\xe9\x80\x8f\xe6\x98\x8e */\x0a \
+   background-co\
+lor: transparent\
+;\x0a}\x0a\x0a#closeBtn:h\
+over {\x0a    backg\
+round-color: rgb\
+(218, 76, 76);\x0a}\
+\x0a\x0a#minBtn:hover,\
+ #maxBtn:hover{\x0a\
+    background-c\
+olor: rgb(70, 20\
+4, 92);\x0a}\x0a\x0a#left\
+Menu {\x0a    color\
+: #2962ff;\x0a    b\
+ackground-color:\
+ rgb(240, 240, 2\
+40);\x0a    font: 2\
+5 9pt \x22Microsoft\
+ YaHei\x22;\x0a    out\
+line: none;  /* \
+\xe7\xa6\x81\xe7\x94\xa8\xe8\xa2\xab\xe9\x80\x89\xe4\xb8\xad\xe7\
+\x9a\x84\xe8\x99\x9a\xe7\xba\xbf */\x0a}\x0a\x0a\x0a\
+#leftMenu::item \
+{\x0a    color: #29\
+62ff;\x0a}\x0a\x0a#leftMe\
+nu::item:hover {\
+\x0a    background-\
+color: darkgrey;\
+\x0a}\x0a\x0a/* QListView\
+::item:selected \
+*/\x0a#leftMenu::it\
+em:selected {\x0a  \
+  background-col\
+or: orchid;\x0a    \
+border-left: 5px\
+ solid #2962ff;\x0a\
+}\x0a\x0a/* QListView:\
+:item:selected:a\
+ctive {\x0a    back\
+ground-color: gr\
+eenyellow;\x0a} */\x0a\
 \
 \x00\x00\x05J\
 *\
@@ -16813,6 +16826,28 @@ l=\x22url(#radialGr\
 adient-8)\x22></pat\
 h>\x0a    </g>\x0a</sv\
 g>\x0a\
+\x00\x00\x019\
+<\
+svg viewBox=\x220 0\
+ 24 24\x22 xmlns=\x22h\
+ttp://www.w3.org\
+/2000/svg\x22><path\
+ d=\x22M0 0h24v24H0\
+z\x22 fill=\x22none\x22><\
+/path><path d=\x22M\
+12 22C6.477 22 2\
+ 17.523 2 12S6.4\
+77 2 12 2s10 4.4\
+77 10 10-4.477 1\
+0-10 10zm-.997-6\
+ 7.07-7.071-1.41\
+4-1.414-5.656 5.\
+657-2.829-2.829-\
+1.414 1.414L11.0\
+03 16z\x22 fill=\x22#4\
+6cc5c\x22 class=\x22fi\
+ll-000000\x22></pat\
+h></svg>\
 \x00\x00\x018\
 <\
 svg viewBox=\x220 0\
@@ -17260,6 +17295,10 @@ qt_resource_name = b"\
 \x05\xf2e\x87\
 \x00O\
 \x00b\x00s\x00i\x00d\x00i\x00a\x00n\x00.\x00s\x00v\x00g\
+\x00\x06\
+\x03WZ\xc7\
+\x002\
+\x004\x00.\x00s\x00v\x00g\
 \x00\x0c\
 \x04V.\xe7\
 \x00c\
@@ -17292,9 +17331,9 @@ qt_resource_name = b"\
 qt_resource_struct = b"\
 \x00\x00\x00\x00\x00\x02\x00\x00\x00\x0a\x00\x00\x00\x01\
 \x00\x00\x00\x00\x00\x00\x00\x00\
-\x00\x00\x00\x22\x00\x02\x00\x00\x00\x04\x00\x00\x00\x15\
+\x00\x00\x00\x22\x00\x02\x00\x00\x00\x04\x00\x00\x00\x16\
 \x00\x00\x00\x00\x00\x00\x00\x00\
-\x00\x00\x00\x12\x00\x02\x00\x00\x00\x05\x00\x00\x00\x10\
+\x00\x00\x00\x12\x00\x02\x00\x00\x00\x06\x00\x00\x00\x10\
 \x00\x00\x00\x00\x00\x00\x00\x00\
 \x00\x00\x00\xb6\x00\x02\x00\x00\x00\x01\x00\x00\x00\x0f\
 \x00\x00\x00\x00\x00\x00\x00\x00\
@@ -17313,32 +17352,34 @@ qt_resource_struct = b"\
 \x00\x00\x00\xc6\x00\x00\x00\x00\x00\x01\x00\x00\x85G\
 \x00\x00\x01\x8a@|%\xf5\
 \x00\x00\x01P\x00\x00\x00\x00\x00\x01\x00\x00\xd1x\
-\x00\x00\x01\x8aJ\xff\x05\xb7\
+\x00\x00\x01\x8aO\xfc\x11\xb2\
 \x00\x00\x01.\x00\x00\x00\x00\x00\x01\x00\x00\xd0\xd5\
 \x00\x00\x01\x8a@?B\xc6\
-\x00\x00\x01t\x00\x00\x00\x00\x00\x01\x00\x00\xe0\x0d\
+\x00\x00\x01t\x00\x00\x00\x00\x00\x01\x00\x00\xe0\xdd\
 \x00\x00\x01\x8aI2\x17i\
-\x00\x00\x02\xd8\x00\x00\x00\x00\x00\x01\x00\x04\x1f,\
+\x00\x00\x02\xea\x00\x00\x00\x00\x00\x01\x00\x04!9\
 \x00\x00\x01\x8a*\x84{\xc9\
 \x00\x00\x01\x1a\x00\x00\x00\x00\x00\x01\x00\x00\xc6Y\
 \x00\x00\x01\x8a@\xbd\xa5Y\
-\x00\x00\x02J\x00\x00\x00\x00\x00\x01\x00\x04\x1b\x5c\
+\x00\x00\x02\x5c\x00\x00\x00\x00\x00\x01\x00\x04\x1di\
 \x00\x00\x01\x8aJ \xfdX\
-\x00\x00\x02\xae\x00\x00\x00\x00\x00\x01\x00\x04\x1d\xab\
+\x00\x00\x02\xc0\x00\x00\x00\x00\x00\x01\x00\x04\x1f\xb8\
 \x00\x00\x01\x8aJ!dN\
-\x00\x00\x02\x82\x00\x00\x00\x00\x00\x01\x00\x04\x1cn\
+\x00\x00\x02\x0a\x00\x00\x00\x00\x00\x01\x00\x04\x19q\
+\x00\x00\x01\x8aJ\x1c\xe2\xb4\
+\x00\x00\x02\x94\x00\x00\x00\x00\x00\x01\x00\x04\x1e{\
 \x00\x00\x01\x8aJ\x1e\x12!\
-\x00\x00\x02\x0a\x00\x00\x00\x00\x00\x01\x00\x04\x18\xa1\
+\x00\x00\x02\x1c\x00\x00\x00\x00\x00\x01\x00\x04\x1a\xae\
 \x00\x00\x01\x8aJ\x1e]\x12\
-\x00\x00\x02(\x00\x00\x00\x00\x00\x01\x00\x04\x19\xdd\
+\x00\x00\x02:\x00\x00\x00\x00\x00\x01\x00\x04\x1b\xea\
 \x00\x00\x01\x8aJE\x15\xb0\
-\x00\x00\x01\xce\x00\x00\x00\x00\x00\x01\x00\x01\x08\x0f\
+\x00\x00\x01\xce\x00\x00\x00\x00\x00\x01\x00\x01\x08\xdf\
 \x00\x00\x01\x8a@\x93\x1c\xc2\
-\x00\x00\x01\x98\x00\x00\x00\x00\x00\x01\x00\x00\xe5[\
+\x00\x00\x01\x98\x00\x00\x00\x00\x00\x01\x00\x00\xe6+\
 \x00\x00\x01\x8a@nO}\
-\x00\x00\x01\xec\x00\x00\x00\x00\x00\x01\x00\x03\xee\xb9\
+\x00\x00\x01\xec\x00\x00\x00\x00\x00\x01\x00\x03\xef\x89\
 \x00\x00\x01\x8a@\x91\xc3\xbb\
-\x00\x00\x01\xb4\x00\x00\x00\x00\x00\x01\x00\x01\x01\xb2\
+\x00\x00\x01\xb4\x00\x00\x00\x00\x00\x01\x00\x01\x02\x82\
 \x00\x00\x01\x8a@\x92\x93L\
 "
 

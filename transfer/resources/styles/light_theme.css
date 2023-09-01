@@ -4,31 +4,8 @@
     margin: 0;
     padding: 0;
     border: 0;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     /* 测试 */
-}
-
-/* #main {
-    border-radius: 15px;
-} */
-
-QListWidget {
-    color: #2962ff;
-    background-color: rgb(240, 240, 240);
-}
-
-
-QListView::item:selected {
-    background-color: greenyellow;
-    font: bold 14px;
-}
-
-QListView::item:selected:active {
-    background-color: #6a6ea9;
-}
-
-QListView::item:hover {
-    font: bold 14px;
 }
 
 
@@ -40,15 +17,13 @@ QStackedWidget {
 QPushButton {
     color: white;
     background-color: #1976d2;
-    /* border: 1px solid #1976d2; */
     border-radius: 5px;
     padding: 5px 15px;
-    
 }
 
 QPushButton:hover {
     background-color: #1565c0;
-    font: bold;
+    /* font-weight: bold; */
 }
 
 QLineEdit {
@@ -100,7 +75,8 @@ QGroupBox {
 }
 
 QGroupBox::title {
-    /* background-color: greenyellow; */
+    background-color: greenyellow;
+    /* margin-bottom: 10px; */
 }
 
 
@@ -183,10 +159,22 @@ QToolTip {
     color: white;
     padding: 2px;
     border-radius: 5px;
+    width: 20px;
+    height: 20px;
 }
 
+
 /* ---------------------------------- id需要放到下面单独执行，覆盖掉上面的通用设置 ---------------------------------- */
-QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
+
+/* #main {
+    border-radius: 15px;
+} */
+
+#header {
+    background-color: burlywood;
+}
+
+#minBtn, #maxBtn, #closeBtn {
     border: none;
     border-radius: 5px;
     padding: 3px;
@@ -194,10 +182,36 @@ QPushButton#minBtn, QPushButton#maxBtn, QPushButton#closeBtn {
     background-color: transparent;
 }
 
-QPushButton#closeBtn:hover {
+#closeBtn:hover {
     background-color: rgb(218, 76, 76);
 }
 
-QPushButton#minBtn:hover, QPushButton#maxBtn:hover{
+#minBtn:hover, #maxBtn:hover{
     background-color: rgb(70, 204, 92);
 }
+
+#leftMenu {
+    color: #2962ff;
+    background-color: rgb(240, 240, 240);
+    font: 25 9pt "Microsoft YaHei";
+    outline: none;  /* 禁用被选中的虚线 */
+}
+
+
+#leftMenu::item {
+    color: #2962ff;
+}
+
+#leftMenu::item:hover {
+    background-color: darkgrey;
+}
+
+/* QListView::item:selected */
+#leftMenu::item:selected {
+    background-color: orchid;
+    border-left: 5px solid #2962ff;
+}
+
+/* QListView::item:selected:active {
+    background-color: greenyellow;
+} */
