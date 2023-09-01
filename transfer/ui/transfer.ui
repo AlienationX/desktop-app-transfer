@@ -45,6 +45,16 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="C:/Users/Admin/Desktop/tt.qrc">:/icons/8680047_checkbox_circle_fill_icon.svg</pixmap>
+              </property>
+             </widget>
+            </item>
             <item alignment="Qt::AlignTop">
              <widget class="QPushButton" name="pushButton">
               <property name="text">

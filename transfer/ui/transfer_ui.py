@@ -39,6 +39,12 @@ class Ui_Form(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.label_2 = QLabel(self.frame)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setPixmap(QPixmap(u":/icons/8680047_checkbox_circle_fill_icon.svg"))
+
+        self.horizontalLayout_2.addWidget(self.label_2)
+
         self.pushButton = QPushButton(self.frame)
         self.pushButton.setObjectName(u"pushButton")
 
@@ -155,6 +161,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        self.label_2.setText("")
         self.pushButton.setText(QCoreApplication.translate("Form", u"PushButton", None))
         self.pushButton_2.setText(QCoreApplication.translate("Form", u"PushButton", None))
         self.pushButton_3.setText(QCoreApplication.translate("Form", u"PushButton", None))
