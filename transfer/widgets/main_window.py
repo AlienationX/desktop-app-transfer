@@ -17,6 +17,7 @@ from PySide6.QtCore import Slot, QSize, Qt, QRect
 from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
+from .mini_widgets.container import HContainer, VContainer
 from .excel_widget import ExcelToCsvWidget, ExcelSplitWidget
 from .csv_widget import CsvToExcelWidget
 from .word_widget import WordToPDFWidget
@@ -35,7 +36,7 @@ class MainWindow(QWidget):
         self.settings = {
             "is_vip": False,
             "is_radius": False,
-            "theme": "light_theme",  # system_theme, light_theme, dark_theme, color_theme
+            "theme": "light1_theme",  # system_theme, light_theme, dark_theme, color_theme
         }
         
         self.setupUi()
@@ -64,11 +65,17 @@ class MainWindow(QWidget):
             qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.css")  # 可以直接起名为css(其实是qss)
             self.setStyleSheet(qssStyle)
         
-        self.centralLayout = QVBoxLayout()
+        self.mainVContainer = VContainer()
         self.setHeader()
         self.setBody()
         self.setFooter()
-        self.setLayout(self.centralLayout)
+        self.setLayout(self.mainVContainer)
+        self.setContentsMargins(0, 0, 0, 0)
+
+        # self.headerHContainer.setStyleSheet("background-color: red;")
+        # self.menuVContainer.setStyleSheet("background-color:yellow")
+        # self.settingsVContainer.setStyleSheet("background-color:blue")
+        # self.setStyleSheet("background-color:green; border-radius: 100px;")
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -87,10 +94,8 @@ class MainWindow(QWidget):
         
     def setHeader(self):
         # header
-        self.headerWidget = QWidget()
-        self.headerWidget.setObjectName("header")
-        self.headerLayout = QHBoxLayout(self.headerWidget)
-        # self.headerLayout.setContentsMargins(5, 0, 5, 0)
+        self.headerHContainer = HContainer()
+        self.headerHContainer.setObjectName("header")
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
@@ -101,12 +106,12 @@ class MainWindow(QWidget):
         self.minBtn.setObjectName("minBtn")
         self.maxBtn.setObjectName("maxBtn")
         self.closeBtn.setObjectName("closeBtn")
-        self.headerLayout.addWidget(self.logoLabel)
-        self.headerLayout.addStretch()
-        self.headerLayout.addWidget(self.minBtn)
-        self.headerLayout.addWidget(self.maxBtn)
-        self.headerLayout.addWidget(self.closeBtn)
-        self.centralLayout.addWidget(self.headerWidget)
+        self.headerHContainer.addWidget(self.logoLabel)
+        self.headerHContainer.addStretch()
+        self.headerHContainer.addWidget(self.minBtn)
+        self.headerHContainer.addWidget(self.maxBtn)
+        self.headerHContainer.addWidget(self.closeBtn)
+        self.mainVContainer.addWidget(self.headerHContainer)
         
         self.minBtn.clicked.connect(self.showMinimized)
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
@@ -120,12 +125,12 @@ class MainWindow(QWidget):
         
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
-        if self.headerWidget.underMouse():  # TODO 拖拽功能实现在system_bar中
+        if self.headerHContainer.underMouse():  # TODO 拖拽功能实现在system_bar中
             self.pressX = event.x()
             self.pressY = event.y()
  
     def mouseMoveEvent(self, event):
-        if self.headerWidget.underMouse():
+        if self.headerHContainer.underMouse():
             x = event.x()
             y = event.y()   # 获取移动后的坐标
             moveX = x - self.pressX
@@ -173,9 +178,8 @@ class MainWindow(QWidget):
             # self.listWidget.addItem(list_item)
             
             list_item = QListWidgetItem()
-            list_item.setSizeHint(QSize(160, 30))  # 必须设置大小，否则显示不出来
-            itemWidget = QWidget()
-            layout = QHBoxLayout(itemWidget)
+            list_item.setSizeHint(QSize(200, 36))  # 必须设置大小，否则显示不出来
+
             leftIcon = QLabel()
             leftIcon.setPixmap(qta.icon(item["icon"]).pixmap(QSize(20, 20)))
             # leftIcon.setPixmap(QPixmap(":/logo2.ico"))
@@ -188,13 +192,14 @@ class MainWindow(QWidget):
             # rightIcon.setStyleSheet("background-color: red;")
             # leftIcon.setStyleSheet("background-color: red;")
             
-            layout.addWidget(leftIcon)
-            layout.addWidget(QLabel(item["text"]))
-            layout.addStretch()
-            layout.addWidget(rightIcon)
+            listWidgetHContainer = HContainer()
+            listWidgetHContainer.addWidget(leftIcon)
+            listWidgetHContainer.addWidget(QLabel(item["text"]))
+            listWidgetHContainer.addStretch()
+            listWidgetHContainer.addWidget(rightIcon)
             
             self.listWidget.addItem(list_item)
-            self.listWidget.setItemWidget(list_item, itemWidget)  # addItem 和 setItemWidget 必须一起使用
+            self.listWidget.setItemWidget(list_item, listWidgetHContainer)  # addItem 和 setItemWidget 必须一起使用
             
             setattr(self, item["objectName"], item["class"])  # 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
             if item["class"]:
@@ -214,22 +219,34 @@ class MainWindow(QWidget):
         self.settingsBtn.setObjectName("settings")
         
         # 创建布局
-        self.leftBodyWight = QWidget()
-        self.leftBodyWight.setMaximumWidth(200)
-        self.leftBodyLayout = QVBoxLayout(self.leftBodyWight)
-        self.leftBodyLayout.addWidget(self.listWidget)
-        self.leftBodyLayout.addWidget(self.msgBtn)
-        self.leftBodyLayout.addWidget(self.settingsBtn)
+        self.menuVContainer = VContainer()
+        # self.menuVContainer.setMinimumWidth(300)
+        self.menuVContainer.setMaximumWidth(300)
+        # self.menuVContainer.setFixedWidth(200)
+        self.menuVContainer.addWidget(self.listWidget)
+        self.menuVContainer.addWidget(self.msgBtn)
+        self.menuVContainer.addWidget(self.settingsBtn)
+
+        # self.settingsVContainer = VContainer()
+        self.settingsVContainer = QWidget()
+        self.settingsLayout = QVBoxLayout(self.settingsVContainer)
+        self.settingsVContainer.setStyleSheet("background-color: red;")
+        self.x = QPushButton("x")
+        self.x.clicked.connect(self.settingsVContainer.hide)
+        self.settingsLayout.addWidget(self.x)
+        self.settingsVContainer.hide()
         
-        self.bodyWidget = QWidget()
-        self.bodyLayout = QHBoxLayout(self.bodyWidget)
-        self.bodyLayout.setSpacing(0)
-        self.bodyLayout.addWidget(self.leftBodyWight)
-        self.bodyLayout.addWidget(self.stackedWidget)
-        self.centralLayout.addWidget(self.bodyWidget)
+        self.bodyHContainer = HContainer()
+        self.bodyHContainer.setSpacing(0)
+        self.bodyHContainer.addWidget(self.menuVContainer)
+        self.bodyHContainer.addWidget(self.settingsVContainer)
+        self.bodyHContainer.addWidget(self.stackedWidget)
+        self.mainVContainer.addWidget(self.bodyHContainer)
         # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
+
+        self.settingsBtn.clicked.connect(self.settingsVContainer.show)
         
     @Slot()
     def router(self, currentRow):
@@ -246,13 +263,11 @@ class MainWindow(QWidget):
         # 自定义状态栏
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
-        self.statusWidget = QWidget()
-        self.statusLayout = QHBoxLayout(self.statusWidget)
-        # self.statusLayout.setContentsMargins(5, 0, 5, 0)
-        self.statusLayout.addWidget(self.messageLable)
-        self.statusLayout.addStretch()
-        self.statusLayout.addWidget(self.versionLable)
-        self.centralLayout.addWidget(self.statusWidget)
+        self.statusHContainer = HContainer()
+        self.statusHContainer.addWidget(self.messageLable)
+        self.statusHContainer.addStretch()
+        self.statusHContainer.addWidget(self.versionLable)
+        self.mainVContainer.addWidget(self.statusHContainer)
         
     
     def showMessage(self):
