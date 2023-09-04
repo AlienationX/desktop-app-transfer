@@ -38,7 +38,7 @@ if __name__ == "__main__":
     # 1. pip install qtmodern，还可以，就是input文字也是黑的，看不清。不再维护
     # import qtmodern.styles
     # import qtmodern.windows
-    # qtmodern.styles.dark(app)
+    # qtmodern.styles.light(app)
     # mw = qtmodern.windows.ModernWindow(window)
     # mw.show()
     

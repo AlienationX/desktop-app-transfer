@@ -18,10 +18,12 @@ from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
 from .mini_widgets.container import HContainer, VContainer
-from .excel_widget import ExcelToCsvWidget, ExcelSplitWidget
-from .csv_widget import CsvToExcelWidget
-from .word_widget import WordToPDFWidget
-from .document_widget import DocumentWidget
+from .excel_to_csv_page import ExcelToCsvWidget
+from .excel_split_page import ExcelSplitWidget
+from .excel_overvire_page import ExcelOverviewWidget
+from .csv_page import CsvToExcelWidget
+from .word_page import WordToPDFWidget
+from .document_page import DocumentWidget
 from utils.common import CommonHelper
 from resources import resources_rc
 
@@ -47,6 +49,7 @@ class MainWindow(QWidget):
         self.resize(960, 500)
         self.setWindowTitle("TransferS - 转换工具")
         self.setWindowIconText("Transfer")
+        print("self",self.width())
         
         # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
@@ -73,7 +76,7 @@ class MainWindow(QWidget):
         self.setContentsMargins(0, 0, 0, 0)
 
         # self.headerHContainer.setStyleSheet("background-color: red;")
-        # self.menuVContainer.setStyleSheet("background-color:yellow")
+        # self.menuVContainer.setStyleSheet("background-color:orange")
         # self.settingsVContainer.setStyleSheet("background-color:blue")
         # self.setStyleSheet("background-color:green; border-radius: 100px;")
         
@@ -117,11 +120,16 @@ class MainWindow(QWidget):
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
         self.closeBtn.clicked.connect(self.close) 
     
+    @Slot()
     def changeMaxOrReset(self):
         if self.isMaximized():
             self.showNormal()
         else:
             self.showMaximized()
+            
+    def mouseDoubleClickEvent (self, event):
+        # 实现双击系统栏最大化和还原
+        self.changeMaxOrReset()
         
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
@@ -139,6 +147,7 @@ class MainWindow(QWidget):
             positionX = self.frameGeometry().x() + moveX
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
+            
         
     def setBody(self):
         self.listWidget = QListWidget()
@@ -148,7 +157,7 @@ class MainWindow(QWidget):
             {"id": 1, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": "", "level": 1},
             {"id": 2, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget(), "level": 2},
             {"id": 3, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget(), "level": 2},
-            {"id": 4, "objectName": "excel_todo1", "text": "数据概况", "icon": "msc.bookmark", "class": "", "level": 2},
+            {"id": 4, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget(), "level": 2},
             {"id": 5, "objectName": "work", "text": "WORD", "icon": "ri.file-word-2-line", "class": "", "level": 1},
             {"id": 6, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget(), "level": 2},
             {"id": 7, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": "", "level": 1},
@@ -206,8 +215,10 @@ class MainWindow(QWidget):
                 self.stackedWidget.addWidget(getattr(self, item["objectName"]))  # 添加到stackedWidget上
         
         # TODO 给子组件的信号绑定处理函数
-        childw = getattr(self, "ExcelToCsvWidget")
-        childw.message_signal.connect(lambda msg: self.print_message(msg))
+        childw1 = getattr(self, "ExcelToCsvWidget")
+        childw1.message_signal.connect(lambda msg: self.print_message(msg))
+        childw2 = getattr(self, "ExcelSplitWidget")
+        childw2.message_signal.connect(lambda msg: self.print_message(msg))
         
         # QListWidget绑定信号
         self.listWidget.currentRowChanged.connect(self.router)
@@ -221,7 +232,7 @@ class MainWindow(QWidget):
         # 创建布局
         self.menuVContainer = VContainer()
         # self.menuVContainer.setMinimumWidth(300)
-        self.menuVContainer.setMaximumWidth(300)
+        self.menuVContainer.setMaximumWidth(260)
         # self.menuVContainer.setFixedWidth(200)
         self.menuVContainer.addWidget(self.listWidget)
         self.menuVContainer.addWidget(self.msgBtn)
@@ -268,6 +279,10 @@ class MainWindow(QWidget):
         self.statusHContainer.addStretch()
         self.statusHContainer.addWidget(self.versionLable)
         self.mainVContainer.addWidget(self.statusHContainer)
+        self.statusHContainer.setStyleSheet("background-color:orange")
+        print("statusbar", self.messageLable.width())
+        print("versionLable", self.versionLable.width())
+        print("statusHContainer", self.statusHContainer.width())
         
     
     def showMessage(self):
@@ -275,6 +290,7 @@ class MainWindow(QWidget):
         pass
 
     def print_message(self, msg):
-        self.messageLable.setMaximumWidth(self.width() - 200)
+        print("==============>", self.width())
+        self.messageLable.setMaximumWidth(self.width() - 220)  # TODO 名称太长会改变窗体大小
         self.messageLable.setText(msg)
         self.messageLable.setToolTip(msg)

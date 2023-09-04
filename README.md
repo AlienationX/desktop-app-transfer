@@ -10,6 +10,7 @@ balabala
 pip install pyside6
 pip install pandas
 pip install qtawesome
+pip install ydata-profiling
 ```
 
 ## Usage

@@ -34,8 +34,8 @@ class ExcelToCsvWidget(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.inputFiles = []
-        self.outputFiles = []
+        self.input_files = []
+        self.output_files = []
         self.options = {
             "encoding": "utf-8",         # utf-8, gbk
             "quoting": csv.QUOTE_NONE,   # "QUOTE_MINIMAL", "QUOTE_ALL", "QUOTE_NONNUMERIC", "QUOTE_NONE"
@@ -231,23 +231,23 @@ class ExcelToCsvWidget(QWidget):
         
         inputPath = Path(self.inputLineEdit.text())
         outputPath = Path(self.outputLineEdit.text())
-        self.inputFiles = []   # 清空列表
-        self.outputFiles = []
+        self.input_files = []   # 清空列表
+        self.output_files = []
         if inputPath.is_dir() and outputPath.is_dir():
-            self.inputFiles = [str(x) for x in inputPath.iterdir() if x.suffix in [".xlsx", ".xls"]]  # TODO 增加子文件夹下的文件
-            self.outputFiles = [str(outputPath.joinpath(Path(x).stem).with_suffix(".csv")) for x in self.inputFiles]  
+            self.input_files = [str(x) for x in inputPath.iterdir() if x.suffix in [".xlsx", ".xls"]]  # TODO 增加子文件夹下的文件
+            self.output_files = [str(outputPath.joinpath(Path(x).stem).with_suffix(".csv")) for x in self.input_files]  
         else:
-            self.inputFiles.append(str(inputPath))
-            self.outputFiles.append(str(outputPath))
+            self.input_files.append(str(inputPath))
+            self.output_files.append(str(outputPath))
         
-        print("inputFiles = ", self.inputFiles)
-        print("outputFiles = ", self.outputFiles)
+        print("inputFiles = ", self.input_files)
+        print("outputFiles = ", self.output_files)
         
         self.progressBar.setValue(1)                                         # 预先设置为1%
         self.updateOptions()                                                 # 更新选项值
         
         workThread = WorkThread(self)                                        # 将self传进去，绑定到部件上
-        workThread.setArgs(self.inputFiles, self.outputFiles, self.options)   # 设置参数，传递进线程
+        workThread.setArgs(self.input_files, self.output_files, self.options)   # 设置参数，传递进线程
         # workThread.signal.connect(lambda x: self.progressBar.setValue(x))
         workThread.signal.connect(lambda value, msg: self.execute_work_signal(value, msg))
         workThread.started.connect(self.setStartStatus)
@@ -292,9 +292,9 @@ class WorkThread(QThread):
     # signal = Signal(int, str)  # 可以发送多个值
     
     # 参数
-    input_files = []
-    output_files = []
-    option = {}
+    # input_files = []
+    # output_files = []
+    # options = {}
     
     # 设置参数
     def setArgs(self, input_files, output_files, options):
@@ -317,23 +317,4 @@ class WorkThread(QThread):
         # TODO 双进度条更新
         df = pd.read_excel(from_file)
         df.to_csv(to_file, index=False, encoding=self.options["encoding"], quoting=self.options["quoting"])
-        
-class ExcelSplitWidget(QWidget):
-    
-    def __init__(self):
-        super().__init__()
-        self.setupUi()
-    
-    def setupUi(self):
-        """页面初始化"""
-        
-        self.label = QLabel("WELCOME EXCEL SPLIT PAGE")
-
-        # 创建布局
-        self.layout = QVBoxLayout()
-        # 将组件添加到布局中
-        self.layout.addWidget(self.label)
-
-        # 为窗体添加布局
-        self.setLayout(self.layout)
         
