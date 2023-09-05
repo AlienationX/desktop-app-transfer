@@ -74,11 +74,15 @@ class MainWindow(QWidget):
         self.setFooter()
         self.setLayout(self.mainVContainer)
         self.setContentsMargins(0, 0, 0, 0)
-
-        # self.headerHContainer.setStyleSheet("background-color: red;")
-        # self.menuVContainer.setStyleSheet("background-color:orange")
-        # self.settingsVContainer.setStyleSheet("background-color:blue")
-        # self.setStyleSheet("background-color:green; border-radius: 100px;")
+        
+        self.setStyleSheet("background-color: green;")
+        self.mainVContainer.setStyleSheet("background-color: black;")  # 不显示
+        self.headerHContainer.setStyleSheet("background-color: yellow;")
+        self.menuVContainer.setStyleSheet("background-color: red")
+        self.settingsVContainer.setStyleSheet("background-color: gray")
+        self.bodyHContainer.setStyleSheet("background-color: greenyellow;")
+        self.stackedWidget.setStyleSheet("background-color: blue;")
+        self.statusHContainer.setStyleSheet("background-color: orange;")
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -97,8 +101,7 @@ class MainWindow(QWidget):
         
     def setHeader(self):
         # header
-        self.headerHContainer = HContainer()
-        self.headerHContainer.setObjectName("header")
+        self.headerHContainer = HContainer()        
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
@@ -198,8 +201,6 @@ class MainWindow(QWidget):
             rightIcon.setPixmap(qta.icon("msc.chevron-down").pixmap(QSize(20, 20)))
             # rightIcon.setScaledContents(True)  # 自适应
             # rightIcon.setFixedSize(QSize(16, 16))
-            # rightIcon.setStyleSheet("background-color: red;")
-            # leftIcon.setStyleSheet("background-color: red;")
             
             listWidgetHContainer = HContainer()
             listWidgetHContainer.addWidget(leftIcon)
@@ -231,6 +232,7 @@ class MainWindow(QWidget):
         
         # 创建布局
         self.menuVContainer = VContainer()
+        
         # self.menuVContainer.setMinimumWidth(300)
         self.menuVContainer.setMaximumWidth(260)
         # self.menuVContainer.setFixedWidth(200)
@@ -238,13 +240,10 @@ class MainWindow(QWidget):
         self.menuVContainer.addWidget(self.msgBtn)
         self.menuVContainer.addWidget(self.settingsBtn)
 
-        # self.settingsVContainer = VContainer()
-        self.settingsVContainer = QWidget()
-        self.settingsLayout = QVBoxLayout(self.settingsVContainer)
-        self.settingsVContainer.setStyleSheet("background-color: red;")
+        self.settingsVContainer = VContainer()
         self.x = QPushButton("x")
         self.x.clicked.connect(self.settingsVContainer.hide)
-        self.settingsLayout.addWidget(self.x)
+        self.settingsVContainer.addWidget(self.x)
         self.settingsVContainer.hide()
         
         self.bodyHContainer = HContainer()
@@ -273,13 +272,12 @@ class MainWindow(QWidget):
     def setFooter(self):
         # 自定义状态栏
         self.messageLable = QLabel("Welcome")
-        self.versionLable = QLabel("CopyRight @ shuli.me 2023 v1.0.0")
+        self.versionLable = QLabel("Copyright © 2023 by shuli. All rights reserved.")
         self.statusHContainer = HContainer()
         self.statusHContainer.addWidget(self.messageLable)
         self.statusHContainer.addStretch()
         self.statusHContainer.addWidget(self.versionLable)
         self.mainVContainer.addWidget(self.statusHContainer)
-        self.statusHContainer.setStyleSheet("background-color:orange")
         print("statusbar", self.messageLable.width())
         print("versionLable", self.versionLable.width())
         print("statusHContainer", self.statusHContainer.width())

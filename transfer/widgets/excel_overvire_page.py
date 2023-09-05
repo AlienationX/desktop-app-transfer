@@ -88,8 +88,8 @@ class ExcelOverviewWidget(QWidget):
 
     @Slot()
     def execute(self):
-        # self.inputLineEdit.setText(r"C:\Users\Admin\Desktop\in\副本赣州市皮肤病医院（赣州市皮肤病研究所、赣州市麻风病康复中心、赣州市性病防治中心）-医保-src-彩色多普勒超声-收费项目明细-20230821172226247.xlsx")
-        self.inputLineEdit.setText(r"C:\Users\Admin\Desktop\in\1.xlsx")
+        self.inputLineEdit.setText(r"C:\Users\Admin\Desktop\in\副本赣州市皮肤病医院（赣州市皮肤病研究所、赣州市麻风病康复中心、赣州市性病防治中心）-医保-src-彩色多普勒超声-收费项目明细-20230821172226247.xlsx")
+        # self.inputLineEdit.setText(r"C:\Users\Admin\Desktop\in\1.xlsx")
         if not self.inputLineEdit.text():
             QMessageBox.warning(self, "Input Error", "请选择Excel文件或目录")  # 只支持QMessageBox.Icon
             return
