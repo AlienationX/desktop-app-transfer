@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 from PySide6.QtCore import Qt
 
-"""TODO 间距和背景色设置无效"""
 
 class HContainer(QWidget, QHBoxLayout):
     
