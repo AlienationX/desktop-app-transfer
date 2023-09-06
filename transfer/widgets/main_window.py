@@ -17,7 +17,8 @@ from PySide6.QtCore import Slot, QSize, Qt, QRect
 from PySide6.QtGui import QIcon, QPixmap
 import qtawesome as qta
 
-from .mini_widgets.container import HContainer, VContainer
+from .mini_widgets.addons_widget import HContainer, VContainer
+from .mini_widgets.message_box import MessageBox
 from .excel_to_csv_page import ExcelToCsvWidget
 from .excel_split_page import ExcelSplitWidget
 from .excel_overvire_page import ExcelOverviewWidget
@@ -60,7 +61,22 @@ class MainWindow(QWidget):
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
         self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框 # TODO 但是需要自己实现关闭按钮、拖拽系统栏移动、拖拽边框调整大小的功能
-        # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+        self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+
+        # 重点： 这个widget作为背景和圆角
+        _layout = QVBoxLayout(self)
+        _layout.setContentsMargins(0, 0, 0, 0)
+        self.widget = QWidget(self)
+        self.widget.setObjectName("backgroundWidget")
+        _layout.addWidget(self.widget)
+
+        self.setStyleSheet("""
+            QWidget {
+                border-radius: 5px;
+                background-color: rgb(31, 31, 31);
+                color: rgb(174, 174, 174);
+            }
+        """)
 
         # 添加自定义样式
         theme = self.settings["theme"]
@@ -69,20 +85,21 @@ class MainWindow(QWidget):
             self.setStyleSheet(qssStyle)
         
         self.mainVContainer = VContainer()
+        self.mainVContainer.setSpacing(0)
         self.setHeader()
         self.setBody()
         self.setFooter()
-        self.setLayout(self.mainVContainer)
-        self.setContentsMargins(0, 0, 0, 0)
+        self.widget.setLayout(self.mainVContainer)
+        # self.setContentsMargins(0, 0, 0, 0)
         
-        self.setStyleSheet("background-color: green;")
-        self.mainVContainer.setStyleSheet("background-color: black;")  # 不显示
-        self.headerHContainer.setStyleSheet("background-color: yellow;")
-        self.menuVContainer.setStyleSheet("background-color: red")
-        self.settingsVContainer.setStyleSheet("background-color: gray")
-        self.bodyHContainer.setStyleSheet("background-color: greenyellow;")
-        self.stackedWidget.setStyleSheet("background-color: blue;")
-        self.statusHContainer.setStyleSheet("background-color: orange;")
+        # self.setStyleSheet("background-color: green;")
+        # self.mainVContainer.setStyleSheet("background-color: black;")  # 不显示
+        # self.headerHContainer.setStyleSheet("background-color: yellow;")
+        # self.menuVContainer.setStyleSheet("background-color: red")
+        # self.settingsVContainer.setStyleSheet("background-color: gray")
+        # self.bodyHContainer.setStyleSheet("background-color: greenyellow;")
+        # self.stackedWidget.setStyleSheet("background-color: blue;")
+        # self.statusHContainer.setStyleSheet("background-color: orange;")
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -101,7 +118,8 @@ class MainWindow(QWidget):
         
     def setHeader(self):
         # header
-        self.headerHContainer = HContainer()        
+        self.headerHContainer = HContainer()
+        self.headerHContainer.setContentsMargins(12, 6, 12, 6)
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
         self.logoLabel.setFixedSize(120, 32)
@@ -136,11 +154,12 @@ class MainWindow(QWidget):
         
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
-        if self.headerHContainer.underMouse():  # TODO 拖拽功能实现在system_bar中
+        if self.headerHContainer.underMouse():
             self.pressX = event.x()
             self.pressY = event.y()
  
     def mouseMoveEvent(self, event):
+        # TODO 移动太快窗口会跟不上
         if self.headerHContainer.underMouse():
             x = event.x()
             y = event.y()   # 获取移动后的坐标
@@ -247,7 +266,15 @@ class MainWindow(QWidget):
         self.settingsVContainer.hide()
         
         self.bodyHContainer = HContainer()
+        self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
         self.bodyHContainer.setSpacing(0)
+        self.bodyHContainer.setStyleSheet("""
+            QWidget {
+                border-radius: 0px;
+                background-color: rgb(41, 41, 41);
+                color: rgb(180, 180, 180);
+            }
+""")
         self.bodyHContainer.addWidget(self.menuVContainer)
         self.bodyHContainer.addWidget(self.settingsVContainer)
         self.bodyHContainer.addWidget(self.stackedWidget)
@@ -256,6 +283,7 @@ class MainWindow(QWidget):
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
 
+        self.msgBtn.clicked.connect(self.showMessage)
         self.settingsBtn.clicked.connect(self.settingsVContainer.show)
         
     @Slot()
@@ -274,6 +302,7 @@ class MainWindow(QWidget):
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("Copyright © 2023 by shuli. All rights reserved.")
         self.statusHContainer = HContainer()
+        self.statusHContainer.setContentsMargins(12, 6, 12, 6)
         self.statusHContainer.addWidget(self.messageLable)
         self.statusHContainer.addStretch()
         self.statusHContainer.addWidget(self.versionLable)
@@ -285,7 +314,10 @@ class MainWindow(QWidget):
     
     def showMessage(self):
         """弹出信息"""
-        pass
+        print("show msg")
+        self.messageBox = MessageBox()
+        self.messageBox.setTitle("ABC")
+        self.messageBox.show()
 
     def print_message(self, msg):
         print("==============>", self.width())

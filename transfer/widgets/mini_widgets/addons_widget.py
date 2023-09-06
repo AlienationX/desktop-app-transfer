@@ -1,3 +1,4 @@
+
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 from PySide6.QtCore import Qt
 
@@ -34,6 +35,8 @@ def createContainer(layout_type):
     # 工厂函数
     if layout_type == "row":
         return HContainer
-    else:
+    elif layout_type == "col":
         return VContainer
-    
+    else:
+        raise Exception ("input layout type muse be row or col")
+
