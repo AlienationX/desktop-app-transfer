@@ -3,22 +3,16 @@
 ################################################################################
 ## Form generated from reading UI file 'transfer.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.1.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QPushButton, QSizePolicy, QToolBox, QVBoxLayout,
-    QWidget)
-import tt_rc
+from PySide6.QtCore import *  # type: ignore
+from PySide6.QtGui import *  # type: ignore
+from PySide6.QtWidgets import *  # type: ignore
+
+import tmp_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -153,6 +147,18 @@ class Ui_Form(object):
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(80, 70, 51, 31))
         self.label.setPixmap(QPixmap(u":/icons/8680047_checkbox_circle_fill_icon.svg"))
+        self.listWidget = QListWidget(self.main)
+        QListWidgetItem(self.listWidget)
+        icon2 = QIcon()
+        icon2.addFile(u"../resources/icons/feather24/alert-circle.svg", QSize(), QIcon.Normal, QIcon.Off)
+        font = QFont()
+        __qlistwidgetitem = QListWidgetItem(self.listWidget)
+        __qlistwidgetitem.setFont(font);
+        __qlistwidgetitem.setIcon(icon2);
+        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setGeometry(QRect(10, 10, 256, 192))
+        self.listWidget.setStyleSheet(u"backgroud-color:rgb(41, 255, 137);\n"
+"color:rgb(255, 66, 33);")
 
         self.horizontalLayout.addWidget(self.main)
 
@@ -181,5 +187,14 @@ class Ui_Form(object):
         self.pushButton_10.setText(QCoreApplication.translate("Form", u"PushButton", None))
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), QCoreApplication.translate("Form", u"Page 2", None))
         self.label.setText("")
+
+        __sortingEnabled = self.listWidget.isSortingEnabled()
+        self.listWidget.setSortingEnabled(False)
+        ___qlistwidgetitem = self.listWidget.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("Form", u"\u65b0\u5efa\u9879\u76ee", None));
+        ___qlistwidgetitem1 = self.listWidget.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("Form", u"1", None));
+        self.listWidget.setSortingEnabled(__sortingEnabled)
+
     # retranslateUi
 

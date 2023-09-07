@@ -10,14 +10,22 @@ class MessageBox(QWidget):
     def __init__(self,):
         super().__init__()
         
-        self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # 隐藏边框且总在最前
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
-        # self.setMaximumWidth(300)
+        self.setMaximumWidth(400)
+        
+        # 添加阴影
+        # effect = QGraphicsDropShadowEffect(self)
+        # effect.setBlurRadius(12)
+        # effect.setOffset(1, 1)
+        # effect.setColor(Qt.gray)
+        # self.setGraphicsEffect(effect)
         
         # 重点： 这个widget作为背景和圆角
-        _layout = QVBoxLayout(self)
         self.widget = QWidget(self)
         self.widget.setObjectName("backgroundWidget")
+        _layout = QVBoxLayout(self)
+        # _layout.setContentsMargins(0, 0, 0, 0)
         _layout.addWidget(self.widget)
 
         self.titleLable = QLabel("Message Title")
@@ -31,7 +39,7 @@ class MessageBox(QWidget):
         self.closeBtn.setIconSize(QSize(20, 20))
         self.closeBtn.clicked.connect(self.close)
         
-        self.contentLabel = QLabel("在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。")
+        self.contentLabel = QLabel("在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。")
         self.contentLabel.setObjectName("messageBoxText")
         self.contentLabel.setWordWrap(True)  # 自动换行
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
@@ -51,6 +59,11 @@ class MessageBox(QWidget):
         self.layout.addWidget(self.titleWidget)
         self.layout.addWidget(self.contentLabel)
         
+        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
+        # https://blog.csdn.net/weixin_42108411/article/details/108023828
+        self.show()
+        self.hide()
+        
         self.setStyleSheet("""
             QWidget {
                 border-radius: 5px;
@@ -64,7 +77,7 @@ class MessageBox(QWidget):
                 border-top-left-radius: 0px;
                 border-top-right-radius: 0px;
                 background-color: rgb(44, 45, 46);
-            }         
+            }
         """)
         
         # self.setStyleSheet("""
@@ -88,6 +101,7 @@ class MessageBox(QWidget):
     
     def setContent(self, content):
         self.contentLabel.setText(content)
+
         
 if __name__=="__main__":
     app=QApplication(sys.argv)

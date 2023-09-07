@@ -1,4 +1,4 @@
-<img src=":/TransferS-title_461x116.png" width="120" height="36"/>
+<img src=":/TransferS-title_black.png" width="150" height="36"/>
 
 # Welcome
 

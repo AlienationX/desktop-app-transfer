@@ -1,27 +1,14 @@
 
-from PySide6.QtWidgets import (
-    QWidget,
-    QLabel,
-    QMessageBox,
-    QPushButton,
-    QHBoxLayout,
-    QVBoxLayout,
-    QTreeWidget,
-    QListWidget,
-    QListWidgetItem,
-    QTreeWidgetItem,
-    QStatusBar,
-    QStackedWidget
-)
+from PySide6.QtWidgets import *
 from PySide6.QtCore import Slot, QSize, Qt, QRect
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QIcon, QPixmap, QColor
 import qtawesome as qta
 
 from .mini_widgets.addons_widget import HContainer, VContainer
 from .mini_widgets.message_box import MessageBox
 from .excel_to_csv_page import ExcelToCsvWidget
 from .excel_split_page import ExcelSplitWidget
-from .excel_overvire_page import ExcelOverviewWidget
+# from .excel_overvire_page import ExcelOverviewWidget
 from .csv_page import CsvToExcelWidget
 from .word_page import WordToPDFWidget
 from .document_page import DocumentWidget
@@ -50,7 +37,6 @@ class MainWindow(QWidget):
         self.resize(960, 500)
         self.setWindowTitle("TransferS - 转换工具")
         self.setWindowIconText("Transfer")
-        print("self",self.width())
         
         # self.setWindowIcon(QIcon(r"E:\Codes\Python\desktop-app-transfer\transfer\resources\icons\logo.ico"))
         # self.setWindowIcon(QIcon(r"transfer/resources/icons/logo.png"))  # png也是可以的
@@ -60,23 +46,15 @@ class MainWindow(QWidget):
         # self.setWindowIcon(logoIcon)
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
-        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框 # TODO 但是需要自己实现关闭按钮、拖拽系统栏移动、拖拽边框调整大小的功能
+        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
         self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
 
         # 重点： 这个widget作为背景和圆角
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
         self.widget = QWidget(self)
         self.widget.setObjectName("backgroundWidget")
+        _layout = QVBoxLayout(self)
+        _layout.setContentsMargins(0, 0, 0, 0)
         _layout.addWidget(self.widget)
-
-        self.setStyleSheet("""
-            QWidget {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-                color: rgb(174, 174, 174);
-            }
-        """)
 
         # 添加自定义样式
         theme = self.settings["theme"]
@@ -91,15 +69,6 @@ class MainWindow(QWidget):
         self.setFooter()
         self.widget.setLayout(self.mainVContainer)
         # self.setContentsMargins(0, 0, 0, 0)
-        
-        # self.setStyleSheet("background-color: green;")
-        # self.mainVContainer.setStyleSheet("background-color: black;")  # 不显示
-        # self.headerHContainer.setStyleSheet("background-color: yellow;")
-        # self.menuVContainer.setStyleSheet("background-color: red")
-        # self.settingsVContainer.setStyleSheet("background-color: gray")
-        # self.bodyHContainer.setStyleSheet("background-color: greenyellow;")
-        # self.stackedWidget.setStyleSheet("background-color: blue;")
-        # self.statusHContainer.setStyleSheet("background-color: orange;")
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -116,20 +85,116 @@ class MainWindow(QWidget):
         # setCentralWidget(self.centralwidget)
         # setStatusBar(self.statusbar)
         
+        self.setStyleSheet("""
+            QWidget {
+                border-radius: 5px;
+                background-color: rgb(31, 31, 31);
+                color: rgb(200, 200, 200);
+            }
+            """)
+        self.headerHContainer.setStyleSheet("""
+            QPushButton:hover {
+                background-color: rgb(49, 50, 50);
+            }
+        """)
+        self.bodyHContainer.setStyleSheet("""
+            QWidget {
+                border-radius: 0px;
+                background-color: rgb(41, 41, 41);
+                color: rgb(200, 200, 200);
+            }
+        """)
+        # QListWidget和QListWidgetItem都不继承QWidget，所以需要单独配置
+        self.menuVContainer.setStyleSheet("""
+            QWidget {
+                border-radius: 0px;
+                background-color: rgb(41, 41, 41);
+                color: rgb(200, 200, 200);
+            }
+            #leftMenu {
+                border-radius: 0px;
+                background-color: rgb(41, 41, 41);
+                color: rgb(200, 200, 200);
+            }
+            #leftMenu::item {
+                background: green;
+                background-color: green;
+            }
+            #leftMenu::item:alternate {
+                background: yellow;
+                background-color: yellow;
+            }
+            #leftMenu::item:hover {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                            stop: 0 #FAFBFE, stop: 1 #DCDEF1);
+                background-color: red;
+            }
+            #leftMenu::item:selected {
+                border: 1px solid red;
+                background-color: blue;
+            }
+        """)
+        # self.listWidget.setStyleSheet("""
+        #     QListView {
+        #         show-decoration-selected: 1; /* make the selection span the entire width of the view */
+        #     }
+
+        #     QListView::item:alternate {
+        #         background: #EEEEEE;
+        #     }
+
+        #     QListView::item:selected {
+        #         border: 1px solid #6a6ea9;
+        #         background-color: blue;
+        #     }
+
+        #     QListView::item:selected:!active {
+        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        #                                     stop: 0 #ABAFE5, stop: 1 #8588B2);
+        #     }
+
+        #     QListView::item:selected:active {
+        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        #                                     stop: 0 #6a6ea9, stop: 1 #888dd9);
+        #     }
+
+        #     QListView::item:hover {
+        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        #                                     stop: 0 #FAFBFE, stop: 1 #DCDEF1);
+        #         background-color: red;
+        #     }
+        # """)
+        # self.stackedWidget.setStyleSheet("""
+        #     QStackedWidget {
+        #         background-color: rgb(51, 51, 51);
+        #     }
+        #     QWidget {
+        #         border-radius: 3px;
+        #     }
+        #     QPushButton {
+        #         background-color: rgb(0, 120, 212);
+        #         padding: 3px 10px;
+        #     }
+        # """)
+        
+        
     def setHeader(self):
         # header
         self.headerHContainer = HContainer()
         self.headerHContainer.setContentsMargins(12, 6, 12, 6)
         self.logoLabel = QLabel()
-        self.logoLabel.setPixmap(QPixmap(":/TransferS-title_461x116.png"))
+        self.logoLabel.setPixmap(QPixmap(":/TransferS-title_black.png"))
         self.logoLabel.setFixedSize(120, 32)
         self.logoLabel.setScaledContents(True)  # 自适应
-        self.minBtn = QPushButton(qta.icon("msc.chrome-minimize"), "")
-        self.maxBtn = QPushButton(qta.icon("msc.collapse-all"), "")
-        self.closeBtn = QPushButton(qta.icon("msc.close"), "")
+        self.minBtn = QPushButton(qta.icon("msc.chrome-minimize", color=QColor(200, 200, 200)), "")
+        self.maxBtn = QPushButton(qta.icon("msc.collapse-all", color=QColor(200, 200, 200)), "")
+        self.closeBtn = QPushButton(qta.icon("msc.close", color=QColor(200, 200, 200)), "")
         self.minBtn.setObjectName("minBtn")
+        self.minBtn.setToolTip("最小化")
         self.maxBtn.setObjectName("maxBtn")
+        self.maxBtn.setToolTip("最大化")
         self.closeBtn.setObjectName("closeBtn")
+        self.closeBtn.setToolTip("关闭")
         self.headerHContainer.addWidget(self.logoLabel)
         self.headerHContainer.addStretch()
         self.headerHContainer.addWidget(self.minBtn)
@@ -145,8 +210,10 @@ class MainWindow(QWidget):
     def changeMaxOrReset(self):
         if self.isMaximized():
             self.showNormal()
+            self.maxBtn.setToolTip("最大化")
         else:
             self.showMaximized()
+            self.maxBtn.setToolTip("还原")
             
     def mouseDoubleClickEvent (self, event):
         # 实现双击系统栏最大化和还原
@@ -179,7 +246,7 @@ class MainWindow(QWidget):
             {"id": 1, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": "", "level": 1},
             {"id": 2, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget(), "level": 2},
             {"id": 3, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget(), "level": 2},
-            {"id": 4, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget(), "level": 2},
+            # {"id": 4, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget(), "level": 2},
             {"id": 5, "objectName": "work", "text": "WORD", "icon": "ri.file-word-2-line", "class": "", "level": 1},
             {"id": 6, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget(), "level": 2},
             {"id": 7, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": "", "level": 1},
@@ -212,12 +279,12 @@ class MainWindow(QWidget):
             list_item.setSizeHint(QSize(200, 36))  # 必须设置大小，否则显示不出来
 
             leftIcon = QLabel()
-            leftIcon.setPixmap(qta.icon(item["icon"]).pixmap(QSize(20, 20)))
+            leftIcon.setPixmap(qta.icon(item["icon"], color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
             # leftIcon.setPixmap(QPixmap(":/logo2.ico"))
             rightIcon = QLabel()
             # rightIcon.setPixmap(QPixmap(":/icons/24.svg"))
             # rightIcon.setPixmap(QIcon(":/icons/24.svg").pixmap(QSize(16, 16)))
-            rightIcon.setPixmap(qta.icon("msc.chevron-down").pixmap(QSize(20, 20)))
+            rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
             # rightIcon.setScaledContents(True)  # 自适应
             # rightIcon.setFixedSize(QSize(16, 16))
             
@@ -252,9 +319,7 @@ class MainWindow(QWidget):
         # 创建布局
         self.menuVContainer = VContainer()
         
-        # self.menuVContainer.setMinimumWidth(300)
-        self.menuVContainer.setMaximumWidth(260)
-        # self.menuVContainer.setFixedWidth(200)
+        self.menuVContainer.setMaximumWidth(240)
         self.menuVContainer.addWidget(self.listWidget)
         self.menuVContainer.addWidget(self.msgBtn)
         self.menuVContainer.addWidget(self.settingsBtn)
@@ -268,13 +333,6 @@ class MainWindow(QWidget):
         self.bodyHContainer = HContainer()
         self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
         self.bodyHContainer.setSpacing(0)
-        self.bodyHContainer.setStyleSheet("""
-            QWidget {
-                border-radius: 0px;
-                background-color: rgb(41, 41, 41);
-                color: rgb(180, 180, 180);
-            }
-""")
         self.bodyHContainer.addWidget(self.menuVContainer)
         self.bodyHContainer.addWidget(self.settingsVContainer)
         self.bodyHContainer.addWidget(self.stackedWidget)
@@ -314,9 +372,12 @@ class MainWindow(QWidget):
     
     def showMessage(self):
         """弹出信息"""
-        print("show msg")
         self.messageBox = MessageBox()
-        self.messageBox.setTitle("ABC")
+        self.messageBox.setTitle("Message")
+        print(self.messageBox.width(), self.messageBox.height())
+        x = self.geometry().right() - self.messageBox.width()
+        y = self.geometry().bottom() - self.messageBox.height() - 40
+        self.messageBox.move(x, y)
         self.messageBox.show()
 
     def print_message(self, msg):

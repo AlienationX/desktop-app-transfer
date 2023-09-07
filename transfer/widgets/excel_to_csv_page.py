@@ -46,13 +46,13 @@ class ExcelToCsvWidget(QWidget):
     def setupUi(self):
         """页面初始化"""
         
-        self.label = QLabel("WELCOME EXCEL TO CSV PAGE\nThanks for your support")
-        # self.label.setMaximumSize(QSize(16777215, 60))
-        font = QFont()
-        font.setPointSize(16)
-        font.setBold(True)
-        self.label.setFont(font)
-        self.label.setAlignment(Qt.AlignCenter|Qt.AlignLeft|Qt.AlignTop)
+        # self.label = QLabel("WELCOME EXCEL TO CSV PAGE\nThanks for your support")
+        # # self.label.setMaximumSize(QSize(16777215, 60))
+        # font = QFont()
+        # font.setPointSize(16)
+        # font.setBold(True)
+        # self.label.setFont(font)
+        # self.label.setAlignment(Qt.AlignCenter|Qt.AlignLeft|Qt.AlignTop)
         
         self.choiceComboBox = QComboBox()
         self.choiceComboBox.addItem("文件")
@@ -126,7 +126,7 @@ class ExcelToCsvWidget(QWidget):
         # 创建布局
         self.gridLayout = QGridLayout()
         # 将组件添加到布局中（N行N列）初始值序号是0，(行, 列, 宽度, 高度)
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 6)
+        # self.gridLayout.addWidget(self.label, 0, 0, 1, 6)
         self.gridLayout.addWidget(self.choiceComboBox, 1, 0)
         self.gridLayout.addWidget(self.inputLineEdit, 2, 0, 1, 5)
         self.gridLayout.addWidget(self.openBtn, 2, 5)

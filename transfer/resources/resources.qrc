@@ -2,33 +2,27 @@
 <RCC>
 <!-- prefix 配合 alias 才会增加效率，单独使用prefix路径更长 -->
     <qresource>
-        <file>logo2_164x94.png</file>
-        <file>logo2.ico</file>
-        <file>transfers.png</file>
-        <file>TransferS_88x111.png</file>
-        <file>TransferS-title_461x116.png</file>
-        <file>svgs/JSON-LD.svg</file>
-        <file>svgs/Mautic.svg</file>
-        <file>svgs/Memgraph.svg</file>
-        <file>svgs/Obsidian.svg</file>
-    </qresource>
-    <qresource>
-        <file>texts/home.md</file>
-    </qresource>
-    <qresource>
-        <file>styles/light_theme.css</file>
-        <file>styles/dark_theme.css</file>
-        <file>styles/color_theme.css</file>
-    </qresource>
-    <qresource>
-        <file>images/qtforpython.png</file>
-    </qresource>
-    <qresource>
+        <file>TransferS-title_black.png</file>
+        <file>TransferS.png</file>
+        <file>TransferS_logo.png</file>
+        <file>icons/24.svg</file>
         <file>icons/checkbox.svg</file>
         <file>icons/checkbox_blank.svg</file>
         <file>icons/checkbox_circle.svg</file>
         <file>icons/checkbox_circle_blank.svg</file>
         <file>icons/down_arrow.svg</file>
-        <file>icons/24.svg</file>
+        <file>images/qtforpython.png</file>
+        <file>styles/color_theme.css</file>
+        <file>styles/common_bak.css</file>
+        <file>styles/dark_theme.css</file>
+        <file>styles/light_theme.css</file>
+        <file>svgs/8686719_ic_fluent_apps_regular_icon.svg</file>
+        <file>svgs/8687690_ic_fluent_people_regular_icon.svg</file>
+        <file>svgs/JSON-LD.svg</file>
+        <file>svgs/Mautic.svg</file>
+        <file>svgs/Memgraph.svg</file>
+        <file>svgs/Obsidian.svg</file>
+        <file>texts/home.md</file>
+
     </qresource>
 </RCC>
