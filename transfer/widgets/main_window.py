@@ -111,25 +111,25 @@ class MainWindow(QWidget):
                 background-color: rgb(41, 41, 41);
                 color: rgb(200, 200, 200);
             }
-            #leftMenu {
+            QListView {
                 border-radius: 0px;
                 background-color: rgb(41, 41, 41);
                 color: rgb(200, 200, 200);
             }
-            #leftMenu::item {
+            QListView::item {
                 background: green;
                 background-color: green;
             }
-            #leftMenu::item:alternate {
+            QListView::item:alternate {
                 background: yellow;
                 background-color: yellow;
             }
-            #leftMenu::item:hover {
+            QListView::item:hover {
                 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                             stop: 0 #FAFBFE, stop: 1 #DCDEF1);
                 background-color: red;
             }
-            #leftMenu::item:selected {
+            QListView::item:selected {
                 border: 1px solid red;
                 background-color: blue;
             }
@@ -226,7 +226,6 @@ class MainWindow(QWidget):
             self.pressY = event.y()
  
     def mouseMoveEvent(self, event):
-        # TODO 移动太快窗口会跟不上
         if self.headerHContainer.underMouse():
             x = event.x()
             y = event.y()   # 获取移动后的坐标
@@ -376,7 +375,7 @@ class MainWindow(QWidget):
         self.messageBox.setTitle("Message")
         print(self.messageBox.width(), self.messageBox.height())
         x = self.geometry().right() - self.messageBox.width()
-        y = self.geometry().bottom() - self.messageBox.height() - 40
+        y = self.geometry().bottom() - self.messageBox.height()
         self.messageBox.move(x, y)
         self.messageBox.show()
 

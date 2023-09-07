@@ -65,17 +65,30 @@ class MenuList(QWidget):
         
         self.setStyleSheet("""
             QListView {
-                color: orange;
-                background-color: red;
-                font: 25 9pt "Microsoft YaHei";
-                outline: none;  /* 禁用被选中的虚线 */
+                border-radius: 0px;
+                background-color: rgb(41, 41, 41);
+                color: white;
             }
-            QListView::item:hover {
+            QListView::item {
+                background: green;
                 background-color: green;
             }
-            QListView::item:selected {
+            QListView::item:alternate {
+                background: yellow;
                 background-color: yellow;
             }
+            QListView::item:hover {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                            stop: 0 #FAFBFE, stop: 1 #DCDEF1);
+                background-color: red;
+            }
+            QListView::item:selected {
+                border: 10px solid red;
+                background-color: blue;
+            }
+            # QListView QWidget {
+            #     border: 10px solid red;
+            # }
         """)
         
 if __name__=="__main__":
