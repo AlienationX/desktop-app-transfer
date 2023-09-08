@@ -15,18 +15,21 @@ class MessageBox(QWidget):
         self.setMaximumWidth(400)
         
         # 添加阴影
-        # effect = QGraphicsDropShadowEffect(self)
-        # effect.setBlurRadius(12)
-        # effect.setOffset(1, 1)
-        # effect.setColor(Qt.gray)
-        # self.setGraphicsEffect(effect)
+        # shadow = QGraphicsDropShadowEffect(self)
+        # shadow.setBlurRadius(12)
+        # shadow.setOffset(1, 1)
+        # shadow.setColor(Qt.gray)
+        # self.setGraphicsEffect(shadow)
         
-        # 重点： 这个widget作为背景和圆角
-        self.widget = QWidget(self)
-        self.widget.setObjectName("backgroundWidget")
+        
+        # 重点： 这个frame作为背景和圆角
+        self.frame = QFrame(self)
+        self.frame.setObjectName("backgroundWidget")
+        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         _layout = QVBoxLayout(self)
-        # _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.addWidget(self.widget)
+        # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        _layout.addWidget(self.frame)
 
         self.titleLable = QLabel("Message Title")
         self.titleLable.setObjectName("titleLable")
@@ -44,7 +47,7 @@ class MessageBox(QWidget):
         self.contentLabel.setWordWrap(True)  # 自动换行
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
-        self.layout = QVBoxLayout(self.widget)
+        self.layout = QVBoxLayout(self.frame)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
         self.titleWidget = QWidget()

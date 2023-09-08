@@ -64,31 +64,27 @@ class MenuList(QWidget):
         self.setLayout(self.layout)
         
         self.setStyleSheet("""
-            QListView {
+            QWidget {
                 border-radius: 0px;
                 background-color: rgb(41, 41, 41);
-                color: white;
+                color: rgb(200, 200, 200);
             }
-            QListView::item {
-                background: green;
-                background-color: green;
+            QPushButton {
+                background-color: rgb(50, 50, 50);
             }
-            QListView::item:alternate {
-                background: yellow;
-                background-color: yellow;
+            QListView {
+                outline: none;  /* 禁用被选中的虚线 */  
             }
             QListView::item:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                            stop: 0 #FAFBFE, stop: 1 #DCDEF1);
-                background-color: red;
+                background-color: green;
             }
             QListView::item:selected {
-                border: 10px solid red;
-                background-color: blue;
+                border-left: 5px solid red;
+                background-color: orange;
             }
-            # QListView QWidget {
-            #     border: 10px solid red;
-            # }
+            QListView QWidget {
+                background-color: transparent;
+            }
         """)
         
 if __name__=="__main__":

@@ -91,91 +91,48 @@ class MainWindow(QWidget):
                 background-color: rgb(31, 31, 31);
                 color: rgb(200, 200, 200);
             }
-            """)
+        """)
         self.headerHContainer.setStyleSheet("""
             QPushButton:hover {
                 background-color: rgb(49, 50, 50);
             }
         """)
-        self.bodyHContainer.setStyleSheet("""
-            QWidget {
-                border-radius: 0px;
-                background-color: rgb(41, 41, 41);
-                color: rgb(200, 200, 200);
-            }
-        """)
+        # self.bodyHContainer.setStyleSheet("""
+        #     QWidget {
+        #         border-radius: 0px;
+        #         background-color: rgb(41, 41, 41);
+        #         color: rgb(200, 200, 200);
+        #     }
+        # """)
         # QListWidget和QListWidgetItem都不继承QWidget，所以需要单独配置
         self.menuVContainer.setStyleSheet("""
-            QWidget {
-                border-radius: 0px;
-                background-color: rgb(41, 41, 41);
-                color: rgb(200, 200, 200);
-            }
             QListView {
-                border-radius: 0px;
-                background-color: rgb(41, 41, 41);
-                color: rgb(200, 200, 200);
-            }
-            QListView::item {
-                background: green;
-                background-color: green;
-            }
-            QListView::item:alternate {
-                background: yellow;
-                background-color: yellow;
+                outline: none;  /* 禁用被选中的虚线 */
             }
             QListView::item:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                            stop: 0 #FAFBFE, stop: 1 #DCDEF1);
-                background-color: red;
+                background-color: green;
             }
             QListView::item:selected {
-                border: 1px solid red;
-                background-color: blue;
+                border-left: 5px solid red;
+                background-color: orange;
+            }
+            QListView QWidget {
+                background-color: transparent;  /* 重点，设置为透明 */
             }
         """)
-        # self.listWidget.setStyleSheet("""
-        #     QListView {
-        #         show-decoration-selected: 1; /* make the selection span the entire width of the view */
-        #     }
-
-        #     QListView::item:alternate {
-        #         background: #EEEEEE;
-        #     }
-
-        #     QListView::item:selected {
-        #         border: 1px solid #6a6ea9;
-        #         background-color: blue;
-        #     }
-
-        #     QListView::item:selected:!active {
-        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        #                                     stop: 0 #ABAFE5, stop: 1 #8588B2);
-        #     }
-
-        #     QListView::item:selected:active {
-        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        #                                     stop: 0 #6a6ea9, stop: 1 #888dd9);
-        #     }
-
-        #     QListView::item:hover {
-        #         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        #                                     stop: 0 #FAFBFE, stop: 1 #DCDEF1);
-        #         background-color: red;
-        #     }
-        # """)
-        # self.stackedWidget.setStyleSheet("""
-        #     QStackedWidget {
-        #         background-color: rgb(51, 51, 51);
-        #     }
-        #     QWidget {
-        #         border-radius: 3px;
-        #     }
-        #     QPushButton {
-        #         background-color: rgb(0, 120, 212);
-        #         padding: 3px 10px;
-        #     }
-        # """)
+        
+        self.stackedWidget.setStyleSheet("""
+            QStackedWidget {
+                background-color: rgb(51, 51, 51);
+            }
+            QWidget {
+                border-radius: 3px;
+            }
+            QPushButton {
+                background-color: rgb(0, 120, 212);
+                padding: 3px 10px;
+            }
+        """)
         
         
     def setHeader(self):
@@ -217,7 +174,8 @@ class MainWindow(QWidget):
             
     def mouseDoubleClickEvent (self, event):
         # 实现双击系统栏最大化和还原
-        self.changeMaxOrReset()
+        if self.headerHContainer.underMouse():
+            self.changeMaxOrReset()
         
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
@@ -287,11 +245,18 @@ class MainWindow(QWidget):
             # rightIcon.setScaledContents(True)  # 自适应
             # rightIcon.setFixedSize(QSize(16, 16))
             
-            listWidgetHContainer = HContainer()
-            listWidgetHContainer.addWidget(leftIcon)
-            listWidgetHContainer.addWidget(QLabel(item["text"]))
-            listWidgetHContainer.addStretch()
-            listWidgetHContainer.addWidget(rightIcon)
+            # listWidgetHContainer = HContainer()
+            # listWidgetHContainer.addWidget(leftIcon)
+            # listWidgetHContainer.addWidget(QLabel(item["text"]))
+            # listWidgetHContainer.addStretch()
+            # listWidgetHContainer.addWidget(rightIcon)
+            
+            listWidgetHContainer = QWidget()
+            listWidgetHLayout = QHBoxLayout(listWidgetHContainer)
+            listWidgetHLayout.addWidget(leftIcon)
+            listWidgetHLayout.addWidget(QLabel(item["text"]))
+            listWidgetHLayout.addStretch()
+            listWidgetHLayout.addWidget(rightIcon)
             
             self.listWidget.addItem(list_item)
             self.listWidget.setItemWidget(list_item, listWidgetHContainer)  # addItem 和 setItemWidget 必须一起使用
