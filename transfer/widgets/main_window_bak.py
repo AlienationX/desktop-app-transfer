@@ -339,8 +339,8 @@ class MainWindow(QWidget):
         self.messageBox.show()
 
     def print_message(self, msg):
-        print("==> self=", self.width())
-        print("==> self.versionLable=", self.versionLable.width())
-        self.messageLable.setMaximumWidth(self.width() - self.versionLable.width() - 10)  # TODO 名称太长会改变窗体大小
+        print("==> self =", self.width())
+        print("==> self.versionLable =", self.versionLable.width())
+        self.messageLable.setFixedWidth(self.width() - self.versionLable.width() - 10)  # TODO 名称太长会改变窗体大小
         self.messageLable.setText(msg)
         self.messageLable.setToolTip(msg)

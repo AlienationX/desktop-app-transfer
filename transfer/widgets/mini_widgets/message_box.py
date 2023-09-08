@@ -6,7 +6,13 @@ import qtawesome as qta
 import sys
 
 class MessageBox(QWidget):
-    
+    """
+    msgBox.setWindowTitle("Message Box Titil")  # 设置标题，附加一个关闭按钮
+    msgBox.setText("The document has been modified.")  # 主文本
+    msgBox.setDetailedText("Do you want to save your changes?")  # 副文本
+    # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮 自定义
+    # msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
+    """
     def __init__(self,):
         super().__init__()
         
@@ -25,8 +31,8 @@ class MessageBox(QWidget):
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame(self)
         self.frame.setObjectName("backgroundWidget")
-        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         _layout = QVBoxLayout(self)
         # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
@@ -98,6 +104,15 @@ class MessageBox(QWidget):
         #         background-color: white;
         #     }
         # """)
+    
+    def enterEvent(self, event):
+        # 鼠标进入增加阴影
+        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+    
+    def leaveEvent(self, event):
+        # 鼠标移开取消阴影
+        self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影
         
     def setTitle(self, title):
         self.titleLable.setText(title)
