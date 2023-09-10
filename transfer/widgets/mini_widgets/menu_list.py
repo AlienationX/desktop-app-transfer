@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 import qtawesome as qta
 
-from addons_widget import HContainer
+from transfer.widgets.mini_widgets.addons_widget import HContainer
 import sys
 
 class MenuList(QWidget):
@@ -15,44 +15,52 @@ class MenuList(QWidget):
         self.resize(300, 600)
         
         self.menus = [
-            {"id": 0, "objectName": "home", "text": "HOME", "icon": "mdi.menu-open", "class": "DocumentWidget()", "pid": -1},
-            {"id": 1, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": "", "pid": -1},
-            {"id": 2, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": "ExcelToCsvWidget()", "pid": 1},
-            {"id": 3, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": "ExcelSplitWidget()", "pid": 1},
-            # {"id": 4, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget(), "pid": 1},
-            {"id": 5, "objectName": "word", "text": "WORD", "icon": "ri.file-word-2-line", "class": "", "pid": -1},
-            {"id": 6, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": "WordToPDFWidget()", "pid": 5},
-            {"id": 7, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": "", "pid": -1},
-            {"id": 8, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": "CsvToExcelWidget()", "pid": 7},
-            {"id": 9, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": "", "pid": -1},
-            {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "pid": 9},
-            {"id": 11, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": "", "pid": 9},
+            {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "mdi.menu-open", "class": "DocumentWidget()"},
+            {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
+            {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": "ExcelToCsvWidget()"},
+            {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": "ExcelSplitWidget()"},
+            # {"id":  4, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
+            {"id":  5, "pid": -1, "expended": False, "objectName": "word", "text": "WORD", "icon": "ri.file-word-2-line", "class": ""},
+            {"id":  6, "pid":  5, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": "WordToPDFWidget()"},
+            {"id":  7, "pid": -1, "expended": False, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": ""},
+            {"id":  8, "pid":  7, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": "CsvToExcelWidget()"},
+            {"id":  9, "pid": -1, "expended": False, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": ""},
+            {"id": 10, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
         ]
         
         self.listWidget = QListWidget()
         self.listWidget.setMinimumWidth(260)
         self.listWidget.setObjectName("leftMenu")
         for i in range(len(self.menus)):
-            item = self.menus[i]
+            menu_item = self.menus[i]
 
             list_item = QListWidgetItem()
             list_item.setSizeHint(QSize(200, 32))  # 必须设置大小，否则显示不出来
 
-            list_item.leftIcon = QLabel()
-            list_item.leftIcon.setPixmap(qta.icon(item["icon"], color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-            list_item.rightIcon = QLabel()
-            list_item.rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-            
+            list_item.dataX = menu_item  # 每个对象添加dataX属性简化遍历和查找
+
             listWidgetHContainer = HContainer()
-            listWidgetHContainer.addWidget(list_item.leftIcon)
-            listWidgetHContainer.addWidget(QLabel(item["text"]))
-            listWidgetHContainer.addStretch()
-            listWidgetHContainer.addWidget(list_item.rightIcon)
-            
+            if menu_item["pid"] == -1:
+                list_item.leftIcon = QLabel()
+                list_item.leftIcon.setStyleSheet("margin-left: 16px")
+                list_item.leftIcon.setPixmap(qta.icon(menu_item["icon"], color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
+                listWidgetHContainer.addWidget(list_item.leftIcon)
+                listWidgetHContainer.addWidget(QLabel(menu_item["text"]))
+                listWidgetHContainer.addStretch()
+                if menu_item["text"] != "HOME":
+                    list_item.rightIcon = QLabel()
+                    list_item.rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
+                    listWidgetHContainer.addWidget(list_item.rightIcon)
+            else:
+                textLable = QLabel(menu_item["text"])
+                textLable.setStyleSheet("margin-left: 40px")
+                listWidgetHContainer.addWidget(textLable)
+
             self.listWidget.addItem(list_item)
             self.listWidget.setItemWidget(list_item, listWidgetHContainer)  # addItem 和 setItemWidget 必须一起使用
             
-            if item["pid"] != -1:
+            if menu_item["pid"] != -1:
                 list_item.setHidden(True)
             
         self.layout = HContainer()
@@ -62,22 +70,20 @@ class MenuList(QWidget):
         
         self.setStyleSheet("""
             QWidget {
-                border-radius: 0px;
-                background-color: rgb(41, 41, 41);
+                border-radius: 5px;
+                background-color: rgb(31, 31, 31);
                 color: rgb(200, 200, 200);
-            }
-            QPushButton {
-                background-color: rgb(50, 50, 50);
+                font-size: 13px;
             }
             QListView {
                 outline: none;  /* 禁用被选中的虚线 */
             }
             QListView::item:hover {
-                background-color: rgb(20, 113, 145);
+                background-color: rgb(4, 57, 94);
             }
             QListView::item:selected {
-                border-left: 5px solid rgb(218, 112, 214);
-                background-color: rgb(4, 57, 94);
+                border-left: 5px solid rgb(30, 74, 28);
+                background-color: rgb(58, 46, 86);
             }
             QListView QWidget {
                 background-color: transparent;  /* 重点，设置为透明 */
@@ -89,18 +95,23 @@ class MenuList(QWidget):
         self.listWidget.itemClicked.connect(self.change)
         
     def change(self, item):
-        print(item)
-        print(self.listWidget.itemWidget(item))
-        for label in self.listWidget.itemWidget(item).findChildren(QLabel):
-            print(label)
-            
-        item.rightIcon.setPixmap(qta.icon("msc.chevron-up", color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-            
-        # for i in range(len(self.menus)):
-        #     menu_item = self.menus[i]
-        #     if item["pid"] == -1:
-        #         self.listWidget.itemWidget(menu_item).findChildren(QLabel)[2].setPixmap(qta.icon("msc.chevron-up", color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-                
+        # for label in self.listWidget.itemWidget(item).findChildren(QLabel):
+        #     print(label)
+        print(item.dataX)
+        if item.dataX["text"] != "HOME" and item.dataX["pid"] == -1 and item.dataX["expended"] == True:
+            item.rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
+            item.dataX["expended"] = False
+        elif item.dataX["text"] != "HOME" and item.dataX["pid"] == -1 and item.dataX["expended"] == False:
+            item.rightIcon.setPixmap(qta.icon("msc.chevron-up", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
+            item.dataX["expended"] = True
+        
+        for i in range(self.listWidget.count()):
+            list_item = self.listWidget.item(i)
+            if list_item.dataX["pid"] == item.dataX["id"]:
+                if item.dataX["expended"] == True:
+                    list_item.setHidden(False)
+                else:
+                    list_item.setHidden(True)
                 
         
 if __name__=="__main__":

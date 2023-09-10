@@ -107,7 +107,7 @@ class MessageBox(QWidget):
     
     def enterEvent(self, event):
         # 鼠标进入增加阴影
-        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
         self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
     
     def leaveEvent(self, event):

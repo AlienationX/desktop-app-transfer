@@ -52,8 +52,8 @@ class MainWindow(QWidget):
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
         self.frame.setObjectName("backgroundFrame")
-        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
+        # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
         _layout = QVBoxLayout(self)
         _layout.setContentsMargins(0, 0, 0, 0)
         _layout.addWidget(self.frame)
@@ -92,16 +92,17 @@ class MainWindow(QWidget):
                 border-radius: 5px;
                 background-color: rgb(31, 31, 31);
                 color: rgb(200, 200, 200);
+                font-size: 13px;
             }
             #leftMenu {
                 outline: none;  /* 禁用被选中的虚线 */
             }
             #leftMenu::item:hover {
-                background-color: rgb(20, 113, 145);
+                background-color: rgb(4, 57, 94);
             }
             #leftMenu::item:selected {
-                border-left: 5px solid rgb(218, 112, 214);
-                background-color: rgb(4, 57, 94);
+                border-left: 5px solid rgb(30, 74, 28);
+                background-color: rgb(58, 46, 86);
             }
             #leftMenu QWidget {
                 background-color: transparent;  /* 重点，设置为透明 */
@@ -114,6 +115,14 @@ class MainWindow(QWidget):
                 background-color: rgb(49, 50, 50);
             }
         """)
+        self.menuVContainer.setStyleSheet("""
+            QPushButton {
+                text-align: left;
+                                          padding: 1px solid red;
+                                          background-color: blue;
+            }
+            
+        """)
         self.stackedWidget.setStyleSheet("""
             QStackedWidget {
                 border-radius: 0px;
@@ -124,7 +133,10 @@ class MainWindow(QWidget):
                 padding: 4px 10px;
             }
             QPushButton {
-                background-color: rgb(0, 120, 212);
+                background-color: rgb(51, 118, 205);
+            }
+            QPushButton:hover {
+                background-color: rgb(47, 108, 187);
             }
         """)
         
@@ -162,9 +174,11 @@ class MainWindow(QWidget):
         if self.isMaximized():
             self.showNormal()
             self.maxBtn.setToolTip("最大化")
+            # self.frame.setGraphicsEffect(self.shadow)  # 非最大化有阴影
         else:
             self.showMaximized()
             self.maxBtn.setToolTip("还原")
+            # self.frame.setGraphicsEffect(None)  # 最大化无阴影
             
     def mouseDoubleClickEvent (self, event):
         # 实现双击系统栏最大化和还原
@@ -255,7 +269,7 @@ class MainWindow(QWidget):
             self.listWidget.addItem(list_item)
             self.listWidget.setItemWidget(list_item, listWidgetHContainer)  # addItem 和 setItemWidget 必须一起使用
             
-            setattr(self, item["objectName"], item["class"])  # 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
+            setattr(self, item["objectName"], item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
             if item["class"]:
                 self.stackedWidget.addWidget(getattr(self, item["objectName"]))  # 添加到stackedWidget上
         
@@ -273,7 +287,9 @@ class MainWindow(QWidget):
         
         self.settingsBtn = QPushButton("Settings")  # TODO 弹出设置窗口，挤走部件
         self.settingsBtn.setObjectName("settings")
-        
+
+        self.aboutBtn = QPushButton("About")  # TODO 弹出设置窗口，挤走部件
+
         # 创建布局
         self.menuVContainer = VContainer()
         
@@ -283,7 +299,7 @@ class MainWindow(QWidget):
         self.menuVContainer.addWidget(self.settingsBtn)
 
         self.settingsVContainer = VContainer()
-        self.x = QPushButton("x")
+        self.x = QPushButton("pushbutton")
         self.x.clicked.connect(self.settingsVContainer.hide)
         self.settingsVContainer.addWidget(self.x)
         self.settingsVContainer.hide()

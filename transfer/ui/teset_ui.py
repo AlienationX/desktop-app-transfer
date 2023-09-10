@@ -3,16 +3,21 @@
 ################################################################################
 ## Form generated from reading UI file 'teset.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.1.3
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import *  # type: ignore
-from PySide6.QtGui import *  # type: ignore
-from PySide6.QtWidgets import *  # type: ignore
-
-import tmp_rc
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QToolBox, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -62,7 +67,7 @@ class Ui_Form(object):
         self.pushButton_2 = QPushButton(self.frame_2)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
-        self.verticalLayout_3.addWidget(self.pushButton_2)
+        self.verticalLayout_3.addWidget(self.pushButton_2, 0, Qt.AlignLeft)
 
         self.pushButton_3 = QPushButton(self.frame_2)
         self.pushButton_3.setObjectName(u"pushButton_3")
@@ -114,7 +119,7 @@ class Ui_Form(object):
         self.toolBox.setGeometry(QRect(110, 160, 121, 241))
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 121, 181))
+        self.page_3.setGeometry(QRect(0, 0, 124, 173))
         self.verticalLayout_6 = QVBoxLayout(self.page_3)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.pushButton_9 = QPushButton(self.page_3)
@@ -134,7 +139,7 @@ class Ui_Form(object):
         self.toolBox.addItem(self.page_3, u"Page 1")
         self.page_4 = QWidget()
         self.page_4.setObjectName(u"page_4")
-        self.page_4.setGeometry(QRect(0, 0, 121, 181))
+        self.page_4.setGeometry(QRect(0, 0, 124, 173))
         self.verticalLayout_5 = QVBoxLayout(self.page_4)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.pushButton_10 = QPushButton(self.page_4)
@@ -165,7 +170,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(Form)
