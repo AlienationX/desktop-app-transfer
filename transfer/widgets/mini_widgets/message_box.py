@@ -13,7 +13,7 @@ class MessageBox(QWidget):
     # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮 自定义
     # msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
     """
-    def __init__(self,):
+    def __init__(self):
         super().__init__()
         
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # 隐藏边框且总在最前

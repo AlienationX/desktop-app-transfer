@@ -216,7 +216,10 @@ class MainWindow(QWidget):
         
         self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
         self.ellipsisBtn.setIconSize(QSize(20, 20))
-        # self.ellipsisBtn.setMenu()  # TODO 增加弹出按钮菜单
+        self.ellipsisMenu = QMenu()
+        self.ellipsisMenu.addAction("About")
+        self.ellipsisMenu.addAction("Help")
+        self.ellipsisBtn.setMenu(self.ellipsisMenu)  # TODO 增加弹出按钮菜单
         self.ellipsisBtn.setToolTip("其他功能按钮")
     
         self.toggleBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")

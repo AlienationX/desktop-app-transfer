@@ -15,10 +15,12 @@ class Test(QWidget):
                 
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.btn)
+        self.setLayout(self.layout)
         
     def show(self):
         self.dialog = QDialog(self)
-        
+        self.dialog.setModal(True)
+        self.dialog.show()
         
         
 if __name__=="__main__":
