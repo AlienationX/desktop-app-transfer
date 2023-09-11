@@ -1,5 +1,6 @@
 
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout
+from typing import Optional
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget
 from PySide6.QtCore import Qt
 
 

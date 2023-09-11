@@ -11,16 +11,22 @@ class Test(QWidget):
         self.resize(400, 300)
         
         self.btn = QPushButton("show")
-        self.btn.clicked.connect(self.show)
+        self.btn.clicked.connect(self.showed)
                 
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.btn)
         self.setLayout(self.layout)
         
-    def show(self):
+    def showed(self):
         self.dialog = QDialog(self)
+        self.dialog.setWindowTitle("welcome")
+        
+        _layout = QVBoxLayout()
+        _layout.addWidget(QPushButton("hello world"))
+        self.dialog.setLayout(_layout)
+
         self.dialog.setModal(True)
-        self.dialog.show()
+        self.dialog.exec()
         
         
 if __name__=="__main__":
