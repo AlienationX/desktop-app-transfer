@@ -8,8 +8,8 @@ import sys
 class MessageBox(QWidget):
     """
     msgBox.setWindowTitle("Message Box Titil")  # 设置标题，附加一个关闭按钮
-    msgBox.setText("The document has been modified.")  # 主文本
-    msgBox.setDetailedText("Do you want to save your changes?")  # 副文本
+    msgBox.setTitle("The document has been modified.")  # 主文本
+    msgBox.setText("Do you want to save your changes?")  # 副文本
     # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮 自定义
     # msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
     """
@@ -26,7 +26,6 @@ class MessageBox(QWidget):
         # shadow.setOffset(1, 1)
         # shadow.setColor(Qt.gray)
         # self.setGraphicsEffect(shadow)
-        
         
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame(self)
@@ -104,21 +103,24 @@ class MessageBox(QWidget):
         #         background-color: white;
         #     }
         # """)
+        
+    def setWindowTitle(self, window_title):
+        pass
+    
+    def setTitle(self, title):
+        self.titleLable.setText(title)
+    
+    def setText(self, content):
+        self.contentLabel.setText(content)
     
     def enterEvent(self, event):
         # 鼠标进入增加阴影
-        shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
+        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
     
     def leaveEvent(self, event):
         # 鼠标移开取消阴影
-        self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影
-        
-    def setTitle(self, title):
-        self.titleLable.setText(title)
-    
-    def setContent(self, content):
-        self.contentLabel.setText(content)
+        self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
 
         
 if __name__=="__main__":

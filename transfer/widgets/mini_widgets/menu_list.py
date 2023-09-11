@@ -4,6 +4,7 @@ from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer
+from transfer.widgets.pages import ExcelToCsvWidget, ExcelSplitWidget, CsvToExcelWidget, WordToPDFWidget, DocumentWidget
 import sys
 
 class MenuList(QWidget):
@@ -12,25 +13,32 @@ class MenuList(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.resize(300, 600)
+        self.resize(300, 400)
         
         self.menus = [
-            {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "mdi.menu-open", "class": "DocumentWidget()"},
+            {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "msc.menu", "class": DocumentWidget()},
             {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
-            {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": "ExcelToCsvWidget()"},
-            {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": "ExcelSplitWidget()"},
+            {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget()},
+            {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget()},
             # {"id":  4, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
             {"id":  5, "pid": -1, "expended": False, "objectName": "word", "text": "WORD", "icon": "ri.file-word-2-line", "class": ""},
-            {"id":  6, "pid":  5, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": "WordToPDFWidget()"},
+            {"id":  6, "pid":  5, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget()},
             {"id":  7, "pid": -1, "expended": False, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": ""},
-            {"id":  8, "pid":  7, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": "CsvToExcelWidget()"},
+            {"id":  8, "pid":  7, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget()},
             {"id":  9, "pid": -1, "expended": False, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": ""},
             {"id": 10, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
             {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
         ]
         
         self.listWidget = QListWidget()
-        self.listWidget.setMinimumWidth(260)
         self.listWidget.setObjectName("leftMenu")
         for i in range(len(self.menus)):
             menu_item = self.menus[i]
@@ -43,7 +51,7 @@ class MenuList(QWidget):
             listWidgetHContainer = HContainer()
             if menu_item["pid"] == -1:
                 list_item.leftIcon = QLabel()
-                list_item.leftIcon.setStyleSheet("margin-left: 16px")
+                list_item.leftIcon.setStyleSheet("margin-left: 10px")
                 list_item.leftIcon.setPixmap(qta.icon(menu_item["icon"], color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
                 listWidgetHContainer.addWidget(list_item.leftIcon)
                 listWidgetHContainer.addWidget(QLabel(menu_item["text"]))
@@ -51,10 +59,11 @@ class MenuList(QWidget):
                 if menu_item["text"] != "HOME":
                     list_item.rightIcon = QLabel()
                     list_item.rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
+                    # list_item.rightIcon.setStyleSheet("margin-right: 10px")
                     listWidgetHContainer.addWidget(list_item.rightIcon)
             else:
                 textLable = QLabel(menu_item["text"])
-                textLable.setStyleSheet("margin-left: 40px")
+                textLable.setStyleSheet("margin-left: 34px")
                 listWidgetHContainer.addWidget(textLable)
 
             self.listWidget.addItem(list_item)
@@ -65,7 +74,6 @@ class MenuList(QWidget):
             
         self.layout = HContainer()
         self.layout.addWidget(self.listWidget)
-        self.layout.addWidget(QPushButton("ok"))
         self.setLayout(self.layout)
         
         self.setStyleSheet("""

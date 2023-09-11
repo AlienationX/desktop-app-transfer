@@ -4,16 +4,11 @@ from PySide6.QtCore import Slot, QSize, Qt, QRect
 from PySide6.QtGui import QIcon, QPixmap, QColor
 import qtawesome as qta
 
-from .mini_widgets.addons_widget import HContainer, VContainer
-from .mini_widgets.message_box import MessageBox
-from .excel_to_csv_page import ExcelToCsvWidget
-from .excel_split_page import ExcelSplitWidget
-# from .excel_overvire_page import ExcelOverviewWidget
-from .csv_page import CsvToExcelWidget
-from .word_page import WordToPDFWidget
-from .document_page import DocumentWidget
-from utils.common import CommonHelper
-from resources import resources_rc
+from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer
+from transfer.widgets.mini_widgets.message_box import MessageBox
+from transfer.widgets.mini_widgets.menu_list import MenuList
+from transfer.utils.common import CommonHelper
+from transfer.resources import resources_rc
 
 
 class MainWindow(QWidget):
@@ -52,7 +47,7 @@ class MainWindow(QWidget):
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
         self.frame.setObjectName("backgroundFrame")
-        # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
+        # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
         _layout = QVBoxLayout(self)
         _layout.setContentsMargins(0, 0, 0, 0)
@@ -94,21 +89,6 @@ class MainWindow(QWidget):
                 color: rgb(200, 200, 200);
                 font-size: 13px;
             }
-            #leftMenu {
-                outline: none;  /* 禁用被选中的虚线 */
-            }
-            #leftMenu::item:hover {
-                background-color: rgb(4, 57, 94);
-            }
-            #leftMenu::item:selected {
-                border-left: 5px solid rgb(30, 74, 28);
-                background-color: rgb(58, 46, 86);
-            }
-            #leftMenu QWidget {
-                background-color: transparent;  /* 重点，设置为透明 */
-                border-radius: 0px;
-                color: rgb(200, 200, 200);
-            }
         """)
         self.headerHContainer.setStyleSheet("""
             QPushButton:hover {
@@ -116,12 +96,9 @@ class MainWindow(QWidget):
             }
         """)
         self.menuVContainer.setStyleSheet("""
-            QPushButton {
-                text-align: left;
-                                          padding: 1px solid red;
-                                          background-color: blue;
+            QPushButton:hover {
+                background-color: rgb(49, 50, 50);
             }
-            
         """)
         self.stackedWidget.setStyleSheet("""
             QStackedWidget {
@@ -204,74 +181,15 @@ class MainWindow(QWidget):
             
         
     def setBody(self):
-        self.listWidget = QListWidget()
-        self.listWidget.setObjectName("leftMenu")
-        self.menus = [
-            {"id": 0, "objectName": "home", "text": "HOME", "icon": "mdi.menu-open", "class": DocumentWidget(), "level": 1},
-            {"id": 1, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": "", "level": 1},
-            {"id": 2, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget(), "level": 2},
-            {"id": 3, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget(), "level": 2},
-            # {"id": 4, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget(), "level": 2},
-            {"id": 5, "objectName": "work", "text": "WORD", "icon": "ri.file-word-2-line", "class": "", "level": 1},
-            {"id": 6, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget(), "level": 2},
-            {"id": 7, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": "", "level": 1},
-            {"id": 8, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget(), "level": 2},
-            {"id": 9, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": "", "level": 1},
-            {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-            # {"id": 10, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": "", "level": 2},
-        ]
         
-        # 设置stackedWidget
+        self.menuList = MenuList()
         self.stackedWidget = QStackedWidget()
-        
-        for i in range(len(self.menus)):
-            item = self.menus[i]
-            # list_item = QListWidgetItem(item["text"])
-            # list_item.setIcon(qta.icon(item["icon"]))
-            # self.listWidget.addItem(list_item)
-            
-            list_item = QListWidgetItem()
-            list_item.setSizeHint(QSize(200, 36))  # 必须设置大小，否则显示不出来
-
-            leftIcon = QLabel()
-            leftIcon.setPixmap(qta.icon(item["icon"], color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-            # leftIcon.setPixmap(QPixmap(":/logo2.ico"))
-            rightIcon = QLabel()
-            # rightIcon.setPixmap(QPixmap(":/icons/24.svg"))
-            # rightIcon.setPixmap(QIcon(":/icons/24.svg").pixmap(QSize(16, 16)))
-            rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(20, 20)))
-            # rightIcon.setScaledContents(True)  # 自适应
-            # rightIcon.setFixedSize(QSize(16, 16))
-            
-            # listWidgetHContainer = HContainer()
-            # listWidgetHContainer.addWidget(leftIcon)
-            # listWidgetHContainer.addWidget(QLabel(item["text"]))
-            # listWidgetHContainer.addStretch()
-            # listWidgetHContainer.addWidget(rightIcon)
-            
-            listWidgetHContainer = QWidget()
-            listWidgetHLayout = QHBoxLayout(listWidgetHContainer)
-            listWidgetHLayout.addWidget(leftIcon)
-            listWidgetHLayout.addWidget(QLabel(item["text"]))
-            listWidgetHLayout.addStretch()
-            listWidgetHLayout.addWidget(rightIcon)
-            
-            self.listWidget.addItem(list_item)
-            self.listWidget.setItemWidget(list_item, listWidgetHContainer)  # addItem 和 setItemWidget 必须一起使用
-            
-            setattr(self, item["objectName"], item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
-            if item["class"]:
-                self.stackedWidget.addWidget(getattr(self, item["objectName"]))  # 添加到stackedWidget上
+         
+        for i in range(len(self.menuList.menus)):        
+            menu_item = self.menuList.menus[i]
+            setattr(self, menu_item["objectName"], menu_item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
+            if menu_item["class"]:
+                self.stackedWidget.addWidget(getattr(self, menu_item["objectName"]))  # 添加到stackedWidget上
         
         # TODO 给子组件的信号绑定处理函数
         childw1 = getattr(self, "ExcelToCsvWidget")
@@ -280,23 +198,45 @@ class MainWindow(QWidget):
         childw2.message_signal.connect(lambda msg: self.print_message(msg))
         
         # QListWidget绑定信号
-        self.listWidget.currentRowChanged.connect(self.router)
+        self.menuList.listWidget.currentRowChanged.connect(self.router)
         
         # 底部的按钮
-        self.msgBtn = QPushButton("Show Message")  # TODO 弹出消息窗口，遮罩
+        self.extendHContainer = HContainer()
+        self.msgBtn = QPushButton()  # TODO 弹出设置窗口，挤走部件  # TODO 弹出消息窗口，遮罩
+        self.msgBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
+        self.msgBtn.setIconSize(QSize(20, 20))
         
-        self.settingsBtn = QPushButton("Settings")  # TODO 弹出设置窗口，挤走部件
-        self.settingsBtn.setObjectName("settings")
+        self.settingsBtn = QPushButton(qta.icon("msc.settings-gear", color=QColor(200, 200, 200)), "")
+        self.settingsBtn.setIconSize(QSize(20, 20))
+        self.settingsBtn.setToolTip("设置")
 
-        self.aboutBtn = QPushButton("About")  # TODO 弹出设置窗口，挤走部件
-
+        self.helpBtn = QPushButton(qta.icon("mdi.help-circle-outline", color=QColor(200, 200, 200)), "")
+        self.helpBtn.setIconSize(QSize(20, 20))
+        self.helpBtn.setToolTip("帮助")
+        
+        self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
+        self.ellipsisBtn.setIconSize(QSize(20, 20))
+        # self.ellipsisBtn.setMenu()  # TODO 增加弹出按钮菜单
+        self.ellipsisBtn.setToolTip("其他功能按钮")
+    
+        self.toggleBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")
+        self.toggleBtn.setIconSize(QSize(20, 20))
+        self.toggleBtn.setToolTip("收起菜单栏")
+        
+        self.extendHContainer.addWidget(self.msgBtn)
+        self.extendHContainer.addWidget(self.settingsBtn)
+        self.extendHContainer.addWidget(self.helpBtn)
+        self.extendHContainer.addWidget(self.ellipsisBtn)
+        self.extendHContainer.addStretch()
+        self.extendHContainer.addWidget(self.toggleBtn)
+        
         # 创建布局
         self.menuVContainer = VContainer()
+        self.menuVContainer.setObjectName("menuVContainer")
         
         self.menuVContainer.setMaximumWidth(240)
-        self.menuVContainer.addWidget(self.listWidget)
-        self.menuVContainer.addWidget(self.msgBtn)
-        self.menuVContainer.addWidget(self.settingsBtn)
+        self.menuVContainer.addWidget(self.menuList)
+        self.menuVContainer.addWidget(self.extendHContainer)
 
         self.settingsVContainer = VContainer()
         self.x = QPushButton("pushbutton")
@@ -308,8 +248,8 @@ class MainWindow(QWidget):
         self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
         self.bodyHContainer.setSpacing(0)
         self.bodyHContainer.addWidget(self.menuVContainer)
-        self.bodyHContainer.addWidget(self.settingsVContainer)
         self.bodyHContainer.addWidget(self.stackedWidget)
+        self.bodyHContainer.addWidget(self.settingsVContainer)
         self.mainVContainer.addWidget(self.bodyHContainer)
         # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
@@ -322,8 +262,8 @@ class MainWindow(QWidget):
     def router(self, currentRow):
         print("menubar ==> ", currentRow)
         
-        for i in range(len(self.menus)):
-            item = self.menus[i]
+        for i in range(len(self.menuList.menus)):
+            item = self.menuList.menus[i]
             if currentRow == i and item["class"]:
                 self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
                 return
