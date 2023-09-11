@@ -224,7 +224,7 @@ class MainWindow(QWidget):
     
         self.toggleBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")
         self.toggleBtn.setIconSize(QSize(20, 20))
-        self.toggleBtn.setToolTip("收起菜单栏")
+        self.toggleBtn.setToolTip("隐藏菜单栏")
         
         self.extendHContainer.addWidget(self.msgBtn)
         self.extendHContainer.addWidget(self.settingsBtn)
