@@ -4,6 +4,19 @@ from PySide6.QtGui import *
 
 import sys
 
+"""
+什么是层级关系
+区别于控件间的父子关系，层级关系是值显示的顺序。
+一般来说，当两个控件显示范围出现重叠时，如果两个控件的父子关系为同一级，那么后定义的控件将显示在先定义的控件之上；但是可以使用以下 API 进行层级关系的调整。
+
+lower()
+作用：将控件降低到最底层
+raise_()
+作用：将控件提升到最上层
+a.stackUnder(b)
+作用：让 a 置于 b 下
+"""
+
 class Test(QWidget):
     
     def __init__(self) -> None:
@@ -54,7 +67,7 @@ class Test(QWidget):
         self.dialog.setStyleSheet("background-color: green")
         
         self.dialog.btn = QPushButton("hello world")
-        self.dialog.btn.clicked.connect(self.dialog.close)  # TODO 无法关闭
+        self.dialog.btn.clicked.connect(self.dialog.hide)  # TODO 无法关闭
         _layout = QVBoxLayout()
         _layout.addWidget(QPushButton("hello world"))
         self.dialog.setLayout(_layout)
@@ -81,7 +94,6 @@ class Test(QWidget):
             self.dialog.move(x, y)
 
         self.dialog.setModal(True)
-        # self.dialog.setWindowModality(Qt.ApplicationModal)  # 还有个动画效果
         self.dialog.exec()
 
 

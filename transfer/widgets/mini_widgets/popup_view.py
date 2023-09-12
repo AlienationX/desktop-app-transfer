@@ -3,7 +3,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 import sys
 
-class popup(QWidget):
+class PopupView(QWidget):
     def __init__(self, parent = None, widget=None):    
         QWidget.__init__(self, parent)
         layout = QGridLayout(self)
@@ -37,11 +37,11 @@ class Window(QWidget):
         self.resize(600, 200)
 
     def handleOpenDialog(self):
-        self.popup = popup(self, self.button)
+        self.popup = PopupView(self, self.button)
         self.popup.show()
 
 if __name__ == '__main__':
         app = QApplication([])
         win = Window()
         win.show()
-        sys.exit(app.exec_())
+        sys.exit(app.exec())

@@ -146,12 +146,12 @@ class Ui_Transfer:
             self.maxBtn.setToolTip("还原")
             
     def mouseDoubleClickEvent (self, event):
-        # 实现双击系统栏最大化和还原
+        # 实现双击标题栏最大化和还原
         if self.headerHContainer.underMouse():
             self.changeMaxOrReset()
         
     def mousePressEvent(self, event):
-        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限系统栏支持拖拽移动
+        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限标题栏支持拖拽移动
         if self.headerHContainer.underMouse():
             self.pressX = event.x()
             self.pressY = event.y()
