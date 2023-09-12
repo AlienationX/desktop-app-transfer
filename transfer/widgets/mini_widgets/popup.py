@@ -7,17 +7,18 @@ class popup(QWidget):
     def __init__(self, parent = None, widget=None):    
         QWidget.__init__(self, parent)
         layout = QGridLayout(self)
-        button = QPushButton("Very Interesting Text Popup. Here's an arrow   ^")
+        button = QPushButton("Very Interesting Text Popup. Here's an arrow")
         layout.addWidget(button)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
-        self.adjustSize()
+        self.adjustSize()  # 适应窗口大小
         # tag this widget as a popup
         self.setWindowFlags(Qt.Popup)  # Popup or ToolTip
         self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
 
         print(widget.rect())
         point = widget.rect().bottomRight()
+        print(point)
         # map that point as a global position
         global_point = widget.mapToGlobal(point)
         print(global_point)
