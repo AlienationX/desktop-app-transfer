@@ -16,7 +16,7 @@ class MenuList(QWidget):
         self.resize(300, 400)
         
         self.menus = [
-            {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "msc.menu", "class": DocumentWidget()},
+            {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "ri.menu-fill", "class": DocumentWidget()},
             {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
             {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget()},
             {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget()},
@@ -27,6 +27,14 @@ class MenuList(QWidget):
             {"id":  8, "pid":  7, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget()},
             {"id":  9, "pid": -1, "expended": False, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": ""},
             {"id": 10, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
             {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
             {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
             {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},

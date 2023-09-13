@@ -34,29 +34,28 @@ class Test(QWidget):
         self.setLayout(self.layout)
         
     def showed(self):
-        # d = CustomDialog()
-        # d.exec()
-        
         print("==> ", self.size())
         print("==> ", self.width())
         print("==> ", self.height())
         print("==> ", self.geometry())               # 窗体位置和大小，强烈推荐
-        print("--> ", self.geometry().top())         # 距离顶部的高度
+        print("--> ", self.geometry().left())        # 左边距距离左侧的长度
+        print("--> ", self.geometry().right())       # 右边距距离左侧的长度
+        print("--> ", self.geometry().top())         # 上边距距离顶部的高度
+        print("--> ", self.geometry().bottom())      # 下边距距离顶部的高度
         print("--> ", self.geometry().topLeft())     # 左上角坐标
         print("--> ", self.geometry().topRight())    # 右上角坐标
-        print("--> ", self.geometry().bottom())      # 距离顶部的高度
         print("--> ", self.geometry().bottomLeft())  # 左下角坐标
         print("--> ", self.geometry().bottomRight()) # 右下角坐标
         
         self.dialog = QDialog()
-        self.dialog.setWindowFlags(Qt.FramelessWindowHint)
+        self.dialog.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)  # Qt.Tool 任务栏不会显示新开的窗体
         self.dialog.setWindowTitle("welcome")
         self.dialog.setStyleSheet("background-color: green")
         
         self.dialog.btn = QPushButton("hello world")
-        self.dialog.btn.clicked.connect(self.dialog.close)  # TODO 无法关闭
+        self.dialog.btn.clicked.connect(self.dialog.close)
         _layout = QVBoxLayout()
-        _layout.addWidget(QPushButton("hello world"))
+        _layout.addWidget(self.dialog.btn)
         self.dialog.setLayout(_layout)
         
         print("dialog ", self.dialog.width())
@@ -80,23 +79,10 @@ class Test(QWidget):
             y = self.geometry().topLeft().y() + self.height() - self.dialog.height()
             self.dialog.move(x, y)
 
-        self.dialog.setModal(True)
-        # self.dialog.setWindowModality(Qt.ApplicationModal)  # 还有个动画效果
-        self.dialog.exec()
+        # self.dialog.setModal(True)
+        self.dialog.setWindowModality(Qt.ApplicationModal)  # 还有个动画效果
+        self.dialog.show()
 
-
-class CustomDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setModal(True)
-
-        layout = QVBoxLayout(self)
-        self.setLayout(layout)
-
-        label = QLabel("Hello World!", self)
-        layout.addWidget(label)  
         
 if __name__=="__main__":
     app=QApplication(sys.argv)

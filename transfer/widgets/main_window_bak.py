@@ -121,51 +121,48 @@ QScrollBar::sub-line:horizontal {
     subcontrol-position: left;
     subcontrol-origin: margin;
 }
-QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal
-{
-     background: none;
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
+    background: none;
 }
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
-{
-     background: none;
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
 }
- QScrollBar:vertical {
-	border: none;
+QScrollBar:vertical {	
+    border: none;
     background: rgb(52, 59, 72);
     width: 8px;
-    margin: 21px 0 21px 0;
-	border-radius: 0px;
- }
- QScrollBar::handle:vertical {	
-	background: rgb(189, 147, 249);
-    min-height: 25px;
-	border-radius: 4px
- }
- QScrollBar::add-line:vertical {
-     border: none;
+    margin: 21px 0 21px 0;	
+    border-radius: 0px;
+}
+QScrollBar::handle:vertical {		
+    background: rgb(189, 147, 249);
+    min-height: 25px;	
+    border-radius: 4px
+}
+QScrollBar::add-line:vertical {
+    border: none;
     background: rgb(55, 63, 77);
-     height: 20px;
-	border-bottom-left-radius: 4px;
+    height: 20px;	
+    border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-     subcontrol-position: bottom;
-     subcontrol-origin: margin;
- }
- QScrollBar::sub-line:vertical {
-	border: none;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {	
+    border: none;
     background: rgb(55, 63, 77);
-     height: 20px;
-	border-top-left-radius: 4px;
+    height: 20px;	
+    border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-     subcontrol-position: top;
-     subcontrol-origin: margin;
- }
- QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-     background: none;
- }
-
- QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-     background: none;
- }
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    background: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
         """)
         self.headerHContainer.setStyleSheet("""
             QPushButton:hover {
@@ -204,14 +201,17 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
         self.logoLabel.setFixedSize(120, 32)
         self.logoLabel.setScaledContents(True)  # 自适应
         self.minBtn = QPushButton(qta.icon("msc.chrome-minimize", color=QColor(200, 200, 200)), "")
-        self.maxBtn = QPushButton(qta.icon("msc.collapse-all", color=QColor(200, 200, 200)), "")
-        self.closeBtn = QPushButton(qta.icon("msc.close", color=QColor(200, 200, 200)), "")
         self.minBtn.setObjectName("minBtn")
         self.minBtn.setToolTip("最小化")
+        self.minBtn.setIconSize(QSize(20, 20))
+        self.maxBtn = QPushButton(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)), "")
         self.maxBtn.setObjectName("maxBtn")
         self.maxBtn.setToolTip("最大化")
+        self.maxBtn.setIconSize(QSize(20, 20))
+        self.closeBtn = QPushButton(qta.icon("msc.close", color=QColor(200, 200, 200)), "")
         self.closeBtn.setObjectName("closeBtn")
         self.closeBtn.setToolTip("关闭")
+        self.closeBtn.setIconSize(QSize(20, 20))
         self.headerHContainer.addWidget(self.logoLabel)
         self.headerHContainer.addStretch()
         self.headerHContainer.addWidget(self.minBtn)
@@ -228,10 +228,12 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
         if self.isMaximized():
             self.showNormal()
             self.maxBtn.setToolTip("最大化")
+            self.maxBtn.setIcon(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)))
             # self.frame.setGraphicsEffect(self.shadow)  # 非最大化有阴影
         else:
             self.showMaximized()
             self.maxBtn.setToolTip("还原")
+            self.maxBtn.setIcon(qta.icon("msc.chrome-restore", color=QColor(200, 200, 200)))
             # self.frame.setGraphicsEffect(None)  # 最大化无阴影
             
     def mouseDoubleClickEvent (self, event):
@@ -294,21 +296,43 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
         self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
         self.ellipsisBtn.setIconSize(QSize(20, 20))
         self.ellipsisMenu = QMenu()
-        self.ellipsisMenu.addAction("About")
-        self.ellipsisMenu.addAction("Help")
+        self.ellipsisMenu.addAction(qta.icon("msc.feedback", color=QColor(200, 200, 200)), "Feedback")  # 反馈
+        self.ellipsisMenu.addAction(qta.icon("mdi.math-log", color=QColor(200, 200, 200)), "UpdateLog")  # 更新日志
+        self.ellipsisMenu.addAction(qta.icon("ph.snapchat-logo", color=QColor(200, 200, 200)), "About")  # 关于
         self.ellipsisBtn.setMenu(self.ellipsisMenu)  # TODO 增加弹出按钮菜单
         self.ellipsisBtn.setToolTip("其他功能按钮")
     
-        self.toggleBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")
-        self.toggleBtn.setIconSize(QSize(20, 20))
-        self.toggleBtn.setToolTip("隐藏菜单栏")
+        self.hideMenuBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")
+        self.hideMenuBtn.setIconSize(QSize(16, 16))
+        self.hideMenuBtn.setToolTip("隐藏菜单栏")
+        self.hideMenuBtn.clicked.connect(self.hide_menu)
+        
+        self.showMenuBtn = QPushButton(qta.icon("fa.angle-double-right", color=QColor(200, 200, 200)), "")
+        self.showMenuBtn.setIconSize(QSize(16, 16))
+        self.showMenuBtn.setToolTip("弹出菜单栏")
+        self.showMenuBtn.clicked.connect(self.show_menu)
+        self.showMenuBtn.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
+        self.showMenuBtn.setStyleSheet("""
+        QWidget {
+            background-color: transparent;  /* 重点，设置为透明 */
+            border-radius: 0px;
+            margin: 0;
+            padding: 0;
+        }
+        QPushButtom:hover {
+            background-color: transparent;  /* 重点，设置为透明 */
+            border-radius: 0px;
+            margin: 0;
+            padding: 0;
+        }
+        """)
         
         self.extendHContainer.addWidget(self.msgBtn)
         self.extendHContainer.addWidget(self.settingsBtn)
         self.extendHContainer.addWidget(self.helpBtn)
         self.extendHContainer.addWidget(self.ellipsisBtn)
         self.extendHContainer.addStretch()
-        self.extendHContainer.addWidget(self.toggleBtn)
+        self.extendHContainer.addWidget(self.hideMenuBtn)
         
         # 创建布局
         self.menuVContainer = VContainer()
@@ -348,6 +372,23 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
                 self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
                 return
     
+    @Slot()
+    def hide_menu(self):
+        # TODO 隐藏菜单栏
+        self.menuVContainer.hide()
+        x = self.stackedWidget.geometry().left()
+        y = self.stackedWidget.geometry().bottom()
+        print(self.stackedWidget.geometry())
+        print(x , y)
+        self.showMenuBtn.move(x, y)
+        self.showMenuBtn.show()
+        
+    @Slot()
+    def show_menu(self):
+        # TODO 弹出菜单栏
+        self.menuVContainer.show()
+        self.showMenuBtn.hide()
+        
     
     def setFooter(self):
         # 自定义状态栏
@@ -363,12 +404,14 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
         print("versionLable", self.versionLable.width())
         print("statusHContainer", self.statusHContainer.width())
         
-    
     def showMessage(self):
         """弹出信息"""
         self.messageBox = MessageBox()
         self.messageBox.setTitle("Message")
         print(self.messageBox.width(), self.messageBox.height())
+        print(self.geometry())
+        print(self.geometry().right())
+        print(self.geometry().bottom())
         x = self.geometry().right() - self.messageBox.width()
         y = self.geometry().bottom() - self.messageBox.height()
         self.messageBox.move(x, y)
@@ -377,6 +420,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
     def print_message(self, msg):
         print("==> self =", self.width())
         print("==> self.versionLable =", self.versionLable.width())
-        self.messageLable.setFixedWidth(self.width() - self.versionLable.width() - 10)  # TODO 名称太长会改变窗体大小
+        self.messageLable.setMaximumWidth(self.width() - self.versionLable.width() - 10)  # TODO 名称太长会改变窗体大小
         self.messageLable.setText(msg)
         self.messageLable.setToolTip(msg)

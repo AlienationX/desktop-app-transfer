@@ -32,8 +32,9 @@ class MessageBox(QWidget):
         self.frame.setObjectName("backgroundWidget")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        
         _layout = QVBoxLayout(self)
-        # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
         self.titleLable = QLabel("Message Title")
@@ -69,8 +70,11 @@ class MessageBox(QWidget):
         
         # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
         # https://blog.csdn.net/weixin_42108411/article/details/108023828
-        self.show()
-        self.hide()
+        # self.show()
+        # self.hide()
+        print("box", self.width(), self.height())
+        print("box", self.geometry())
+        
         
         self.setStyleSheet("""
             QWidget {
@@ -103,6 +107,10 @@ class MessageBox(QWidget):
         #         background-color: white;
         #     }
         # """)
+    
+    def showEvent(self, envet):
+        # show之前处理的事件，可以获取真正的窗体大小
+        print("envet", self.width(), self.height())
         
     def setWindowTitle(self, window_title):
         pass
@@ -114,14 +122,18 @@ class MessageBox(QWidget):
         self.contentLabel.setText(content)
     
     def enterEvent(self, event):
-        # 鼠标进入增加阴影
+        # TODO 鼠标进入增加阴影
+        print("enter")
         shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        # self.setStyleSheet("#backgroundWidget {border: 1px solid red;}")
     
     def leaveEvent(self, event):
-        # 鼠标移开取消阴影
+        # TODO 鼠标移开取消阴影
+        print("leave")
         self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
-
+        # self.setStyleSheet("#backgroundWidget {border: 0;}")
+        
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
