@@ -124,15 +124,30 @@ class MessageBox(QWidget):
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
         print("enter")
-        shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
-        # self.setStyleSheet("#backgroundWidget {border: 1px solid red;}")
+        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        # self.setStyleSheet("""
+        # QWidget {
+        #         border-radius: 5px;
+        #         background-color: rgb(31, 31, 31);
+        #         color: rgb(174, 174, 174);
+        #                    border: 1px solid red;
+        #     }
+        #     QPushButton:hover {
+        #         background-color: rgb(49, 50, 50);
+        #     }
+        #     #messageBoxText {
+        #         border-top-left-radius: 0px;
+        #         border-top-right-radius: 0px;
+        #         background-color: rgb(44, 45, 46);
+        #     }                 
+        # """)
     
     def leaveEvent(self, event):
         # TODO 鼠标移开取消阴影
         print("leave")
-        self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
-        # self.setStyleSheet("#backgroundWidget {border: 0;}")
+        # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
+        # self.setStyleSheet("#backgroundWidget {border: none;}")
         
         
 if __name__=="__main__":

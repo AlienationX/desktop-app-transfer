@@ -52,7 +52,7 @@ class MenuList(QWidget):
             menu_item = self.menus[i]
 
             list_item = QListWidgetItem()
-            list_item.setSizeHint(QSize(200, 32))  # 必须设置大小，否则显示不出来
+            list_item.setSizeHint(QSize(220, 32))  # 必须设置大小，否则显示不出来
 
             list_item.dataX = menu_item  # 每个对象添加dataX属性简化遍历和查找
 

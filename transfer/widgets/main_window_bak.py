@@ -47,11 +47,11 @@ class MainWindow(QWidget):
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
         self.frame.setObjectName("backgroundFrame")
-        # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.addWidget(self.frame)
+        # shadow = QGraphicsDropShadowEffect(self, blurRadius=20, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
+        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(self.frame)
 
         # 添加自定义样式
         theme = self.settings["theme"]
@@ -131,7 +131,7 @@ QScrollBar:vertical {
     border: none;
     background: rgb(52, 59, 72);
     width: 8px;
-    margin: 21px 0 21px 0;	
+    margin: 0;	  /* 21px 0 21px 0;	中间外边距*/
     border-radius: 0px;
 }
 QScrollBar::handle:vertical {		
@@ -142,7 +142,7 @@ QScrollBar::handle:vertical {
 QScrollBar::add-line:vertical {
     border: none;
     background: rgb(55, 63, 77);
-    height: 20px;	
+    height: 0px;	/* 20px 上高度*/
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     subcontrol-position: bottom;
@@ -151,7 +151,7 @@ QScrollBar::add-line:vertical {
 QScrollBar::sub-line:vertical {	
     border: none;
     background: rgb(55, 63, 77);
-    height: 20px;	
+    height: 0px;    /* 20px 下高度*/
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     subcontrol-position: top;
@@ -226,15 +226,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     @Slot()
     def changeMaxOrReset(self):
         if self.isMaximized():
-            self.showNormal()
             self.maxBtn.setToolTip("最大化")
             self.maxBtn.setIcon(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)))
-            # self.frame.setGraphicsEffect(self.shadow)  # 非最大化有阴影
+            # self.layout.setContentsMargins(6, 6, 6, 6)
+            # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
+            # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
+            self.showNormal()
         else:
-            self.showMaximized()
             self.maxBtn.setToolTip("还原")
             self.maxBtn.setIcon(qta.icon("msc.chrome-restore", color=QColor(200, 200, 200)))
+            # self.layout.setContentsMargins(0, 0, 0, 0)
             # self.frame.setGraphicsEffect(None)  # 最大化无阴影
+            self.showMaximized()
             
     def mouseDoubleClickEvent (self, event):
         # 实现双击标题栏最大化和还原
@@ -262,6 +265,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     def setBody(self):
         
         self.menuList = MenuList()
+        self.menuList.setMinimumWidth(230)
+        self.menuList.setMaximumWidth(300)
         self.stackedWidget = QStackedWidget()
          
         for i in range(len(self.menuList.menus)):        
@@ -378,7 +383,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.menuVContainer.hide()
         x = self.stackedWidget.geometry().left()
         y = self.stackedWidget.geometry().bottom()
-        print(self.stackedWidget.geometry())
+        print(self.stackedWidget.geometry())  # 距离父组件的坐标，且是没变化之前的
         print(x , y)
         self.showMenuBtn.move(x, y)
         self.showMenuBtn.show()
