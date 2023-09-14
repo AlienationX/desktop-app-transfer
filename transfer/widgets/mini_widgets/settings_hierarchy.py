@@ -17,99 +17,84 @@ a.stackUnder(b)
 作用：让 a 置于 b 下
 """
 
-class Test(QWidget):
+from typing import Optional
+
+class SettingsHierarchy(QFrame):
     
-    def __init__(self) -> None:
-        super().__init__()
-        self.resize(400, 300)
+    def __init__(self, parent:QWidget=None) -> None:
+        super().__init__(parent)
+        self.resize(400, 600)
+        self.parent = parent
         
-        # 没有show之前的坐标是不准确的
-        print(self.size())
-        print(self.geometry())
-        print(self.pos())
-        print(self.mapToGlobal(self.pos()))
-        print(self.rect())
+        # self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
+        # self.setModal(True)
+        self.setStyleSheet("background-color: green;")
         
+        self.closeBtn = QPushButton("close")
+        self.closeBtn.clicked.connect(self.close)
         self.btn1 = QPushButton("TopLeft")
         self.btn2 = QPushButton("TopRight")
         self.btn3 = QPushButton("BottomLeft")
         self.btn4 = QPushButton("BottomRight")
-        self.btn1.clicked.connect(self.showed)
-        self.btn2.clicked.connect(self.showed)
-        self.btn3.clicked.connect(self.showed)
-        self.btn4.clicked.connect(self.showed)
                 
-        self.layout = QVBoxLayout(self)
+        self.layout = QGridLayout(self)
+        self.layout.addWidget(self.closeBtn)
         self.layout.addWidget(self.btn1)
         self.layout.addWidget(self.btn2)
         self.layout.addWidget(self.btn3)
         self.layout.addWidget(self.btn4)
         self.setLayout(self.layout)
+        self.hide()  # 需要默认隐藏
+    
+    def showEvent(self, event) -> None:
+        print(self.parent.geometry())
+        print(self.parent.geometry().right())
+        print(self.parent.geometry().top())
+        print(self.parent.geometry().bottom())
+        self.resize(min(self.width(), self.parent.width()), self.parent.height())
         
-    def showed(self):
-        # d = CustomDialog()
-        # d.exec()
+        x = self.parent.width() - self.width() + 1
+        y = 0
         
-        print("==> ", self.size())
-        print("==> ", self.width())
-        print("==> ", self.height())
-        print("==> ", self.geometry())               # 窗体位置和大小，强烈推荐
-        print("--> ", self.geometry().top())         # 距离顶部的高度
-        print("--> ", self.geometry().topLeft())     # 左上角坐标
-        print("--> ", self.geometry().topRight())    # 右上角坐标
-        print("--> ", self.geometry().bottom())      # 距离顶部的高度
-        print("--> ", self.geometry().bottomLeft())  # 左下角坐标
-        print("--> ", self.geometry().bottomRight()) # 右下角坐标
+        self.anim = QPropertyAnimation(self, b"geometry")
+        self.anim.setStartValue(QRect(self.parent.geometry().width(), y, self.width(), self.height()))
+        self.anim.setEndValue(QRect(x, y, self.width(), self.height()))
+        self.anim.setDuration(200)
+        self.anim.start()
         
-        self.dialog = QDialog()
-        self.dialog.setWindowFlags(Qt.FramelessWindowHint)
-        self.dialog.setWindowTitle("welcome")
-        self.dialog.setStyleSheet("background-color: green")
+        # self.move(x, y)
+    
+class Test(QWidget):
+    
+    def __init__(self) -> None:
+        super().__init__()
+        self.resize(600, 400)
+        self.setWindowTitle("Test")
+        # self.setWindowOpacity(0.8)  # 设置窗口透明度
+        self.btn = QPushButton("show", self)
+        self.label = QLabel("aa", self)
+        self.label.move(0, 50)
+        self.label1 = QLabel("asdfsadfasdfsdfsfa", self)
+        self.label1.move(400, 50)
         
-        self.dialog.btn = QPushButton("hello world")
-        self.dialog.btn.clicked.connect(self.dialog.hide)  # TODO 无法关闭
-        _layout = QVBoxLayout()
-        _layout.addWidget(QPushButton("hello world"))
-        self.dialog.setLayout(_layout)
+        self.settingsFrame = SettingsHierarchy(self)
+        self.btn.clicked.connect(self.settingsFrame.show)
+    
+    def showEvent(self, event) -> None:
+        # return super().showEvent(event)
+        print("parent show")
+        self.resize(self.size())  # 更新实际的尺寸大小
         
-        print("dialog ", self.dialog.width())
-        self.dialog.show()
-        self.dialog.hide()
-        print("dialog ", self.dialog.width())
+    def resizeEvent(self, event) -> None:
+        # return super().resizeEvent(event)
+        self.settingsFrame.resize(self.width()-self.settingsFrame.width(), self.height())
         
-        direction = self.sender().text()  # 获取发送信号过来的部件的文本信息
-        if direction == "TopLeft":
-            self.dialog.move(self.geometry().topLeft())
-        if direction == "TopRight":
-            x = self.geometry().topLeft().x() + self.width() - self.dialog.width()
-            y = self.geometry().topLeft().y()
-            self.dialog.move(x, y)
-        if direction == "BottomLeft":
-            x = self.geometry().topLeft().x()
-            y = self.geometry().topLeft().y() + self.height() - self.dialog.height()
-            self.dialog.move(x, y)
-        if direction == "BottomRight":
-            x = self.geometry().topLeft().x() + self.width() - self.dialog.width()
-            y = self.geometry().topLeft().y() + self.height() - self.dialog.height()
-            self.dialog.move(x, y)
+    def mousePressEvent(self, event) -> None:
+        if not self.settingsFrame.underMouse():
+            print("click")
+            self.settingsFrame.hide()
+        
 
-        self.dialog.setModal(True)
-        self.dialog.exec()
-
-
-class CustomDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setModal(True)
-
-        layout = QVBoxLayout(self)
-        self.setLayout(layout)
-
-        label = QLabel("Hello World!", self)
-        layout.addWidget(label)  
-        
 if __name__=="__main__":
     app=QApplication(sys.argv)
     m=Test()

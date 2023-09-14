@@ -18,251 +18,73 @@
     <normaloff>../resources/logo.ico</normaloff>../resources/logo.ico</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="QWidget" name="left" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QWidget" name="leftSub" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QFrame" name="frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="pixmap">
-               <pixmap>:/icons/8680047_checkbox_circle_fill_icon.svg</pixmap>
-              </property>
-             </widget>
-            </item>
-            <item alignment="Qt::AlignTop">
-             <widget class="QPushButton" name="pushButton">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="frame_2">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item alignment="Qt::AlignLeft">
-             <widget class="QPushButton" name="pushButton_2">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_3">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="frame_3">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QPushButton" name="pushButton_5">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_6">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_7">
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>PushButton</string>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="main" native="true">
-     <widget class="QToolBox" name="toolBox">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLineEdit" name="lineEdit">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>160</y>
-        <width>121</width>
-        <height>241</height>
+        <x>10</x>
+        <y>20</y>
+        <width>113</width>
+        <height>22</height>
        </rect>
       </property>
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <widget class="QWidget" name="page_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>124</width>
-         <height>173</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 1</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <widget class="QPushButton" name="pushButton_9">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>:/icons/8680047_checkbox_circle_fill_icon.svg</normaloff>:/icons/8680047_checkbox_circle_fill_icon.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item alignment="Qt::AlignTop">
-         <widget class="QPushButton" name="pushButton_8">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="page_4">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>124</width>
-         <height>173</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 2</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <item>
-         <widget class="QPushButton" name="pushButton_10">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>70</y>
-        <width>51</width>
-        <height>31</height>
+        <x>20</x>
+        <y>0</y>
+        <width>55</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>:/icons/8680047_checkbox_circle_fill_icon.svg</pixmap>
+       <string>TextLabel</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="listWidget">
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="pushButton_2">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>256</width>
-        <height>192</height>
+        <x>30</x>
+        <y>100</y>
+        <width>75</width>
+        <height>24</height>
        </rect>
       </property>
-      <property name="styleSheet">
-       <string notr="true">backgroud-color:rgb(41, 255, 137);
-color:rgb(255, 66, 33);</string>
+      <property name="text">
+       <string>PushButton</string>
       </property>
-      <item>
-       <property name="text">
-        <string>新建项目</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1</string>
-       </property>
-       <property name="font">
-        <font/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../resources/icons/feather24/alert-circle.svg</normaloff>../resources/icons/feather24/alert-circle.svg</iconset>
-       </property>
-      </item>
      </widget>
     </widget>
    </item>
   </layout>
+  <zorder>frame_2</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>frame</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -312,26 +312,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.hideMenuBtn.setToolTip("隐藏菜单栏")
         self.hideMenuBtn.clicked.connect(self.hide_menu)
         
-        self.showMenuBtn = QPushButton(qta.icon("fa.angle-double-right", color=QColor(200, 200, 200)), "")
-        self.showMenuBtn.setIconSize(QSize(16, 16))
-        self.showMenuBtn.setToolTip("弹出菜单栏")
-        self.showMenuBtn.clicked.connect(self.show_menu)
-        self.showMenuBtn.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
-        self.showMenuBtn.setStyleSheet("""
-        QWidget {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 0px;
-            margin: 0;
-            padding: 0;
-        }
-        QPushButtom:hover {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 0px;
-            margin: 0;
-            padding: 0;
-        }
-        """)
-        
         self.extendHContainer.addWidget(self.msgBtn)
         self.extendHContainer.addWidget(self.settingsBtn)
         self.extendHContainer.addWidget(self.helpBtn)
@@ -358,7 +338,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.bodyHContainer.setSpacing(0)
         self.bodyHContainer.addWidget(self.menuVContainer)
         self.bodyHContainer.addWidget(self.stackedWidget)
-        self.bodyHContainer.addWidget(self.settingsVContainer)
+        # self.bodyHContainer.addWidget(self.settingsVContainer)
         self.mainVContainer.addWidget(self.bodyHContainer)
         # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
@@ -381,12 +361,36 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     def hide_menu(self):
         # TODO 隐藏菜单栏
         self.menuVContainer.hide()
-        x = self.stackedWidget.geometry().left()
-        y = self.stackedWidget.geometry().bottom()
-        print(self.stackedWidget.geometry())  # 距离父组件的坐标，且是没变化之前的
-        print(x , y)
-        self.showMenuBtn.move(x, y)
+        x = self.bodyHContainer.geometry().left()
+        y = self.bodyHContainer.geometry().bottom()
+        print("bodyHContainer", self.bodyHContainer.geometry())  # 距离父组件的坐标，且是没变化之前的
+        print("bodyHContainer", x, y)
+        self.showMenuBtn = QPushButton(qta.icon("fa.angle-double-right", color=QColor(200, 200, 200)), "", self.bodyHContainer)
+        self.showMenuBtn.setIconSize(QSize(16, 16))
+        self.showMenuBtn.setToolTip("弹出菜单栏")
+        self.showMenuBtn.clicked.connect(self.show_menu)
+        self.showMenuBtn.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         self.showMenuBtn.show()
+        self.showMenuBtn.hide()
+        print("showMenuBtn", self.showMenuBtn.geometry())  # 距离父组件的坐标，且是没变化之前的
+        print("showMenuBtn", x, y)
+        self.showMenuBtn.show()
+        
+        self.showMenuBtn.setStyleSheet("""
+        QWidget {
+            background-color: transparent;  /* 重点，设置为透明 */
+            border-radius: 0px;
+            margin: 0;
+            padding: 0;
+        }
+        QPushButtom:hover {
+            background-color: transparent;  /* 重点，设置为透明 */
+            border-radius: 0px;
+            margin: 0;
+            padding: 0;
+        }
+        """)
+        
         
     @Slot()
     def show_menu(self):
