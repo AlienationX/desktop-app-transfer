@@ -57,7 +57,7 @@ class SettingsHierarchy(QFrame):
         self.showAnim.setStartValue(QRect(self.parent.width(), y, self.width(), self.height()))
         self.showAnim.setEndValue(QRect(x, y, self.width(), self.height()))
         self.showAnim.setDuration(200)
-        self.showAnim.finished.connect(self.parent().openFunction)  # 动画完成后增加遮罩
+        # self.showAnim.finished.connect(self.parent().openFunction)  # 动画完成后增加遮罩
         self.showAnim.start()
         
     def hideSelf(self) -> None:   
