@@ -31,7 +31,7 @@ class SettingsHierarchy(QFrame):
         self.setStyleSheet("background-color: green;")
         
         self.closeBtn = QPushButton("close")
-        self.closeBtn.clicked.connect(self.close)
+        self.closeBtn.clicked.connect(self.hideSelf)
         self.btn1 = QPushButton("TopLeft")
         self.btn2 = QPushButton("TopRight")
         self.btn3 = QPushButton("BottomLeft")
@@ -44,60 +44,33 @@ class SettingsHierarchy(QFrame):
         self.layout.addWidget(self.btn3)
         self.layout.addWidget(self.btn4)
         self.setLayout(self.layout)
-        self.hide()  # 需要默认隐藏
+        self.setHidden(True)  # 需要默认隐藏
     
     def showEvent(self, event) -> None:
-        print(self.parent.geometry())
-        print(self.parent.geometry().right())
-        print(self.parent.geometry().top())
-        print(self.parent.geometry().bottom())
         self.resize(min(self.width(), self.parent.width()), self.parent.height())
         
         x = self.parent.width() - self.width() + 1
         y = 0
-        
-        self.anim = QPropertyAnimation(self, b"geometry")
-        self.anim.setStartValue(QRect(self.parent.geometry().width(), y, self.width(), self.height()))
-        self.anim.setEndValue(QRect(x, y, self.width(), self.height()))
-        self.anim.setDuration(200)
-        self.anim.start()
-        
         # self.move(x, y)
-    
-class Test(QWidget):
-    
-    def __init__(self) -> None:
-        super().__init__()
-        self.resize(600, 400)
-        self.setWindowTitle("Test")
-        # self.setWindowOpacity(0.8)  # 设置窗口透明度
-        self.btn = QPushButton("show", self)
-        self.label = QLabel("aa", self)
-        self.label.move(0, 50)
-        self.label1 = QLabel("asdfsadfasdfsdfsfa", self)
-        self.label1.move(400, 50)
         
-        self.settingsFrame = SettingsHierarchy(self)
-        self.btn.clicked.connect(self.settingsFrame.show)
-    
-    def showEvent(self, event) -> None:
-        # return super().showEvent(event)
-        print("parent show")
-        self.resize(self.size())  # 更新实际的尺寸大小
+        self.showAnim = QPropertyAnimation(self, b"geometry")
+        self.showAnim.setStartValue(QRect(self.parent.width(), y, self.width(), self.height()))
+        self.showAnim.setEndValue(QRect(x, y, self.width(), self.height()))
+        self.showAnim.setDuration(200)
+        self.showAnim.finished.connect(self.parent().openFunction)  # 动画完成后增加遮罩
+        self.showAnim.start()
         
-    def resizeEvent(self, event) -> None:
-        # return super().resizeEvent(event)
-        self.settingsFrame.resize(self.width()-self.settingsFrame.width(), self.height())
+    def hideSelf(self) -> None:   
+        # self.resize(min(self.width(), self.parent.width()), self.parent.height())
         
-    def mousePressEvent(self, event) -> None:
-        if not self.settingsFrame.underMouse():
-            print("click")
-            self.settingsFrame.hide()
-        
+        x = self.parent.width() - self.width() + 1
+        y = 0
+        # self.move(x, y)
 
-if __name__=="__main__":
-    app=QApplication(sys.argv)
-    m=Test()
-    m.show()
-    app.exit(app.exec())
+        self.hideAnim = QPropertyAnimation(self, b"geometry")
+        self.hideAnim.setStartValue(QRect(x, y, self.width(), self.height()))
+        self.hideAnim.setEndValue(QRect(self.parent.width(), y, self.width(), self.height()))
+        self.hideAnim.setDuration(200)
+        self.hideAnim.finished.connect(self.hide)  # 动画完成后执行隐藏
+        self.hideAnim.start()
     

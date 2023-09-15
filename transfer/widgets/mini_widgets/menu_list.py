@@ -54,7 +54,7 @@ class MenuList(QWidget):
             list_item = QListWidgetItem()
             list_item.setSizeHint(QSize(220, 32))  # 必须设置大小，否则显示不出来
 
-            list_item.dataX = menu_item  # 每个对象添加dataX属性简化遍历和查找
+            list_item._data = menu_item  # 每个对象添加_data属性简化遍历和查找
 
             listWidgetHContainer = HContainer()
             if menu_item["pid"] == -1:
@@ -113,18 +113,18 @@ class MenuList(QWidget):
     def change(self, item):
         # for label in self.listWidget.itemWidget(item).findChildren(QLabel):
         #     print(label)
-        print(item.dataX)
-        if item.dataX["text"] != "HOME" and item.dataX["pid"] == -1 and item.dataX["expended"] == True:
+        print(item._data)
+        if item._data["text"] != "HOME" and item._data["pid"] == -1 and item._data["expended"] == True:
             item.rightIcon.setPixmap(qta.icon("msc.chevron-down", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
-            item.dataX["expended"] = False
-        elif item.dataX["text"] != "HOME" and item.dataX["pid"] == -1 and item.dataX["expended"] == False:
+            item._data["expended"] = False
+        elif item._data["text"] != "HOME" and item._data["pid"] == -1 and item._data["expended"] == False:
             item.rightIcon.setPixmap(qta.icon("msc.chevron-up", color=QColor(200, 200, 200)).pixmap(QSize(16, 16)))
-            item.dataX["expended"] = True
+            item._data["expended"] = True
         
         for i in range(self.listWidget.count()):
             list_item = self.listWidget.item(i)
-            if list_item.dataX["pid"] == item.dataX["id"]:
-                if item.dataX["expended"] == True:
+            if list_item._data["pid"] == item._data["id"]:
+                if item._data["expended"] == True:
                     list_item.setHidden(False)
                 else:
                     list_item.setHidden(True)

@@ -35,3 +35,21 @@ def createContainer(layout_type):
     else:
         raise Exception ("input layout type muse be row or col")
 
+
+# https://www.cnblogs.com/apocelipes/p/10268108.html
+class MaskWidget(QWidget):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_StyledBackground)
+        self.setStyleSheet("background: rgba(0, 0, 0, 102);")   # rgba第4个值代表透明度
+        # self.setStyleSheet("background-color: rgb(140, 140, 140);")  # 这样设置不行
+        # self.setWindowOpacity(0.5)
+        self.setHidden(True)  # 默认隐藏
+        
+    def showMaskAll(self):
+        """重写show，设置遮罩大小与parent一致"""
+        parent_rect = self.parent().geometry()
+        self.resize(parent_rect.width(), parent_rect.height())
+        self.show()
