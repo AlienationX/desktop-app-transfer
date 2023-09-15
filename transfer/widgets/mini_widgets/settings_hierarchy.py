@@ -24,7 +24,6 @@ class SettingsHierarchy(QFrame):
     def __init__(self, parent:QWidget=None) -> None:
         super().__init__(parent)
         self.resize(400, 600)
-        self.parent = parent
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         # self.setModal(True)
@@ -47,30 +46,30 @@ class SettingsHierarchy(QFrame):
         self.setHidden(True)  # 需要默认隐藏
     
     def showEvent(self, event) -> None:
-        self.resize(min(self.width(), self.parent.width()), self.parent.height())
+        self.resize(min(self.width(), self.parent().width()), self.parent().height())
         
-        x = self.parent.width() - self.width() + 1
+        x = self.parent().width() - self.width() + 1
         y = 0
         # self.move(x, y)
         
         self.showAnim = QPropertyAnimation(self, b"geometry")
-        self.showAnim.setStartValue(QRect(self.parent.width(), y, self.width(), self.height()))
+        self.showAnim.setStartValue(QRect(self.parent().width(), y, self.width(), self.height()))
         self.showAnim.setEndValue(QRect(x, y, self.width(), self.height()))
         self.showAnim.setDuration(200)
-        # self.showAnim.finished.connect(self.parent().openFunction)  # 动画完成后增加遮罩
         self.showAnim.start()
         
     def hideSelf(self) -> None:   
-        # self.resize(min(self.width(), self.parent.width()), self.parent.height())
+        # self.resize(min(self.width(), self.parent().width()), self.parent().height())
         
-        x = self.parent.width() - self.width() + 1
+        x = self.parent().width() - self.width() + 1
         y = 0
         # self.move(x, y)
 
         self.hideAnim = QPropertyAnimation(self, b"geometry")
         self.hideAnim.setStartValue(QRect(x, y, self.width(), self.height()))
-        self.hideAnim.setEndValue(QRect(self.parent.width(), y, self.width(), self.height()))
+        self.hideAnim.setEndValue(QRect(self.parent().width(), y, self.width(), self.height()))
         self.hideAnim.setDuration(200)
         self.hideAnim.finished.connect(self.hide)  # 动画完成后执行隐藏
+        self.hideAnim.finished.connect(self.parent().delayMask)  # 动画完成后去掉遮罩
         self.hideAnim.start()
     

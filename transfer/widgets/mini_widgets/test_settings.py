@@ -41,11 +41,13 @@ class TestSettingsHierarchy(QWidget):
     
     def showSettingsFrame(self):
         # 添加遮罩层
+        # self.maskWidget.resize(self.width() - self.settingsFrame.width() + 1, self.height())
+        self.maskWidget.showMaskAll()
+        self.settingsFrame.raise_()
         self.settingsFrame.show()
-    
+        
     def delayMask(self):
-        self.maskWidget.resize(self.width() - self.settingsFrame.width() + 1, self.height())
-        self.maskWidget.show()
+        self.maskWidget.hide()
     
     def showEvent(self, event) -> None:
         # return super().showEvent(event)
