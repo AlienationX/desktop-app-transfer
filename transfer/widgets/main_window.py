@@ -85,6 +85,7 @@ class MainWindow(QWidget):
         # setMenuBar(self.menubar)
         # setCentralWidget(self.centralwidget)
         # setStatusBar(self.statusbar)
+    
         
     def bind(self):
         pass 

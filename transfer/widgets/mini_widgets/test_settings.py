@@ -26,7 +26,7 @@ class TestSettingsHierarchy(QWidget):
         self.settingsFrame = SettingsHierarchy(self)
         self.maskWidget = MaskWidget(self)
         
-        self.btn.clicked.connect(self.showSettingsFrame)
+        self.btn.clicked.connect(self.show_settings)
         
         self.toggleBtn = QPushButton(">>", self)
         self.toggleBtn.setStyleSheet("""
@@ -39,14 +39,14 @@ class TestSettingsHierarchy(QWidget):
         
         self.setMinimumWidth(self.settingsFrame.width())
     
-    def showSettingsFrame(self):
+    def show_settings(self):
         # 添加遮罩层
         # self.maskWidget.resize(self.width() - self.settingsFrame.width() + 1, self.height())
         self.maskWidget.showMaskAll()
         self.settingsFrame.raise_()
         self.settingsFrame.show()
         
-    def delayMask(self):
+    def delay_mask(self):
         self.maskWidget.hide()
     
     def showEvent(self, event) -> None:

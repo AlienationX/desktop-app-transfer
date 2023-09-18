@@ -4,9 +4,10 @@ from PySide6.QtCore import Slot, QSize, Qt, QRect
 from PySide6.QtGui import QIcon, QPixmap, QColor
 import qtawesome as qta
 
-from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer
+from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
 from transfer.widgets.mini_widgets.message_box import MessageBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
+from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
 from transfer.utils.common import CommonHelper
 from transfer.resources import resources_rc
 
@@ -263,6 +264,10 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             
         
     def setBody(self):
+
+        self.bodyHContainer = HContainer()
+        self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
+        self.bodyHContainer.setSpacing(0)
         
         self.menuList = MenuList()
         self.menuList.setMinimumWidth(230)
@@ -286,6 +291,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         
         # 底部的按钮
         self.extendHContainer = HContainer()
+        self.extendHContainer.setContentsMargins(0, 0, 0, 0)
         self.msgBtn = QPushButton()  # TODO 弹出设置窗口，挤走部件  # TODO 弹出消息窗口，遮罩
         self.msgBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
         self.msgBtn.setIconSize(QSize(20, 20))
@@ -327,54 +333,24 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.menuVContainer.addWidget(self.menuList)
         self.menuVContainer.addWidget(self.extendHContainer)
 
-        self.settingsVContainer = VContainer()
-        self.x = QPushButton("pushbutton")
-        self.x.clicked.connect(self.settingsVContainer.hide)
-        self.settingsVContainer.addWidget(self.x)
-        self.settingsVContainer.hide()
+        self.settingsVContainer = SettingsHierarchy(self.bodyHContainer)
+        self.maskWidget = MaskWidget(self)
         
-        self.bodyHContainer = HContainer()
-        self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
-        self.bodyHContainer.setSpacing(0)
         self.bodyHContainer.addWidget(self.menuVContainer)
         self.bodyHContainer.addWidget(self.stackedWidget)
-        # self.bodyHContainer.addWidget(self.settingsVContainer)
+        self.bodyHContainer.addWidget(self.settingsVContainer)
         self.mainVContainer.addWidget(self.bodyHContainer)
         # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
 
         self.msgBtn.clicked.connect(self.showMessage)
-        self.settingsBtn.clicked.connect(self.settingsVContainer.show)
-        
-    @Slot()
-    def router(self, currentRow):
-        print("menubar ==> ", currentRow)
-        
-        for i in range(len(self.menuList.menus)):
-            item = self.menuList.menus[i]
-            if currentRow == i and item["class"]:
-                self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
-                return
-    
-    @Slot()
-    def hide_menu(self):
-        # TODO 隐藏菜单栏
-        self.menuVContainer.hide()
-        x = self.bodyHContainer.geometry().left()
-        y = self.bodyHContainer.geometry().bottom()
-        print("bodyHContainer", self.bodyHContainer.geometry())  # 距离父组件的坐标，且是没变化之前的
-        print("bodyHContainer", x, y)
+        self.settingsBtn.clicked.connect(self.show_settings)
+
         self.showMenuBtn = QPushButton(qta.icon("fa.angle-double-right", color=QColor(200, 200, 200)), "", self.bodyHContainer)
         self.showMenuBtn.setIconSize(QSize(16, 16))
         self.showMenuBtn.setToolTip("弹出菜单栏")
         self.showMenuBtn.clicked.connect(self.show_menu)
-        self.showMenuBtn.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
-        self.showMenuBtn.show()
-        self.showMenuBtn.hide()
-        print("showMenuBtn", self.showMenuBtn.geometry())  # 距离父组件的坐标，且是没变化之前的
-        print("showMenuBtn", x, y)
-        self.showMenuBtn.show()
         
         self.showMenuBtn.setStyleSheet("""
         QWidget {
@@ -390,6 +366,32 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             padding: 0;
         }
         """)
+
+        
+    @Slot()
+    def router(self, currentRow):
+        print("menubar ==> ", currentRow)
+        
+        for i in range(len(self.menuList.menus)):
+            item = self.menuList.menus[i]
+            if currentRow == i and item["class"]:
+                self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
+                return
+    
+    @Slot()
+    def hide_menu(self):
+        # TODO 隐藏菜单栏
+        self.menuVContainer.hide()
+        print("bodyHContainer", self.bodyHContainer.geometry())  # 距离父组件的坐标，且是没变化之前的
+        self.showMenuBtn.show()
+        self.showMenuBtn.hide()
+        print("showMenuBtn", self.showMenuBtn.geometry())  # 距离父组件的坐标，且是没变化之前的
+        x = self.bodyHContainer.geometry().left()
+        y = self.bodyHContainer.height() - self.showMenuBtn.height()
+        print(self.bodyHContainer.geometry().bottom())
+        print("showMenuBtn", x, y)
+        self.showMenuBtn.move(x, y)
+        self.showMenuBtn.show()
         
         
     @Slot()
@@ -397,6 +399,40 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         # TODO 弹出菜单栏
         self.menuVContainer.show()
         self.showMenuBtn.hide()
+
+    @Slot()
+    def show_settings(self):
+        # 添加遮罩层
+        # self.maskWidget.resize(self.width() - self.settingsVContainer.width() + 1, self.height())
+        self.maskWidget.showMaskAll()
+        self.settingsVContainer.raise_()
+        self.settingsVContainer.show()
+        
+    def delay_mask(self):
+        self.maskWidget.hide()
+    
+    def showEvent(self, event) -> None:
+        # return super().showEvent(event)
+        print("parent show")
+        self.resize(self.size())  # 更新实际的尺寸大小
+        
+    def resizeEvent(self, event) -> None:
+        # return super().resizeEvent(event)
+        self.settingsVContainer.resize(self.settingsVContainer.width(), self.height())
+        x = self.width() - self.settingsVContainer.width()
+        y = 0
+        self.settingsVContainer.move(x, y)
+        
+        # 左下角buttom也跟着移动
+        self.showMenuBtn.move(0, self.height() - self.showMenuBtn.height())
+        # 遮罩也随着调整大小
+        self.maskWidget.resize(self.width() - self.settingsVContainer.width(), self.height())
+        
+    def mousePressEvent(self, event) -> None:
+        if not self.settingsVContainer.underMouse():
+            print("click")
+            self.maskWidget.hide()
+            self.settingsVContainer.hideSelf()
         
     
     def setFooter(self):

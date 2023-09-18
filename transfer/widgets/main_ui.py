@@ -13,11 +13,11 @@ from transfer.resources import resources_rc
 
 class Ui_Transfer(QWidget):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
 
     
-    def setupUi(self, parent):
+    def setupUi(self):
         """页面初始化"""
         # 设置窗体大小及标题
         self.resize(960, 500)
@@ -32,11 +32,11 @@ class Ui_Transfer(QWidget):
         # self.setWindowIcon(logoIcon)
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
-        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
-        self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+        self.parent().setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
+        self.parent().setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
 
         # 重点： 这个frame作为背景和圆角
-        self.frame = QFrame(parent)
+        self.frame = QFrame()
         self.frame.setObjectName("backgroundFrame")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=20, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
@@ -50,7 +50,7 @@ class Ui_Transfer(QWidget):
         #     qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.css")  # 可以直接起名为css(其实是qss)
         #     self.setStyleSheet(qssStyle)
         
-        self.mainVContainer = VContainer(parent)
+        self.mainVContainer = VContainer()
         self.mainVContainer.setSpacing(0)
         self.setHeader()
         self.setBody()
@@ -353,8 +353,8 @@ if __name__ == "__main__":
             self.setWindowTitle("TransferS - 转换工具")
             self.setWindowIconText("Transfer")
             
-            self.ui = Ui_Transfer()
-            self.ui.setupUi(self)
+            self.ui = Ui_Transfer(self)
+            self.ui.setupUi()
         
     import sys
     app = QApplication(sys.argv)  # 支持命令行启动传参，提高可扩展性

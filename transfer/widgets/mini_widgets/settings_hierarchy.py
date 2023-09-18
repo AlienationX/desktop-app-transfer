@@ -70,6 +70,6 @@ class SettingsHierarchy(QFrame):
         self.hideAnim.setEndValue(QRect(self.parent().width(), y, self.width(), self.height()))
         self.hideAnim.setDuration(200)
         self.hideAnim.finished.connect(self.hide)  # 动画完成后执行隐藏
-        self.hideAnim.finished.connect(self.parent().delayMask)  # 动画完成后去掉遮罩
+        # self.hideAnim.finished.connect(self.parent().delay_mask)  # 动画完成后去掉遮罩
         self.hideAnim.start()
     
