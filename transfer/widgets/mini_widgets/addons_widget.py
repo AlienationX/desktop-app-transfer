@@ -1,13 +1,13 @@
 
 from typing import Optional
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QApplication
 from PySide6.QtCore import Qt
 
 
 class HContainer(QFrame, QHBoxLayout):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         QHBoxLayout.__init__(self, self)     # 调用QHBoxLayout的构造函数，第二个self代表绑定到自己的QFrame上
         
         # self.setAttribute(Qt.WA_StyledBackground, True)  # 无法继承背景色的设置，需要手动设置，便于测试 https://www.cnpython.com/qa/1523133
@@ -17,8 +17,8 @@ class HContainer(QFrame, QHBoxLayout):
 
 class VContainer(QFrame, QVBoxLayout):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         QVBoxLayout.__init__(self, self)
     
         # self.setAttribute(Qt.WA_StyledBackground, True)  # 无法继承背景色的设置，需要手动设置，便于测试
@@ -42,14 +42,20 @@ class MaskWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_StyledBackground)
+        
+        self.setAttribute(Qt.WA_StyledBackground)  # 自定义控件只有设置该属性后才能正常设置背景
         self.setStyleSheet("background: rgba(0, 0, 0, 102);")   # rgba第4个值代表透明度
-        # self.setStyleSheet("background-color: rgb(140, 140, 140);")  # 这样设置不行
+        
+        # 这样设置不行
+        # self.setAttribute(Qt.WA_TranslucentBackground)
+        # self.setStyleSheet("background-color: rgb(140, 140, 140);")  
         # self.setWindowOpacity(0.5)
+        
         self.setHidden(True)  # 默认隐藏
         
     def showMaskAll(self):
-        """重写show，设置遮罩大小与parent一致"""
+        """=设置遮罩大小与parent一致"""
         parent_rect = self.parent().geometry()
         self.resize(parent_rect.width(), parent_rect.height())
         self.show()
+        

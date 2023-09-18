@@ -6,12 +6,10 @@ import qtawesome as qta
 
 from .mini_widgets.addons_widget import HContainer, VContainer
 from .mini_widgets.message_box import MessageBox
-from .excel_to_csv_page import ExcelToCsvWidget
-from .excel_split_page import ExcelSplitWidget
-# from .excel_overvire_page import ExcelOverviewWidget
-from .csv_page import CsvToExcelWidget
-from .word_page import WordToPDFWidget
-from .document_page import DocumentWidget
+
+from . pages import ExcelToCsvWidget, ExcelSplitWidget, ExcelOverviewWidget, CsvToExcelWidget, WordToPDFWidget, DocumentWidget
+
+from .main_ui import Ui_Transfer
 from utils.common import CommonHelper
 from resources import resources_rc
 
@@ -30,6 +28,9 @@ class MainWindow(QWidget):
         }
         
         self.setupUi()
+        self.ui = Ui_Transfer()
+        self.ui.setupUi(self)
+        self.bind()
     
     def setupUi(self):
         """页面初始化"""
@@ -85,4 +86,21 @@ class MainWindow(QWidget):
         # setCentralWidget(self.centralwidget)
         # setStatusBar(self.statusbar)
         
+    def bind(self):
+        pass 
+        # TODO 给子组件的信号绑定处理函数
+        childw1 = getattr(self, "ExcelToCsvWidget")
+        childw1.message_signal.connect(lambda msg: self.print_message(msg))
+        childw2 = getattr(self, "ExcelSplitWidget")
+        childw2.message_signal.connect(lambda msg: self.print_message(msg))
+        
+        # QListWidget绑定信号
+        self.menuList.listWidget.currentRowChanged.connect(self.router)
+        
+        self.hideMenuBtn.clicked.connect(self.hide_menu)
+        
+        self.x.clicked.connect(self.settingsVContainer.hide)
+        
+        self.msgBtn.clicked.connect(self.showMessage)
+        self.settingsBtn.clicked.connect(self.settingsVContainer.show)
         
