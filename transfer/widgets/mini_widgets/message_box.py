@@ -13,8 +13,8 @@ class MessageBox(QWidget):
     # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮 自定义
     # msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # 隐藏边框且总在最前
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
@@ -70,8 +70,8 @@ class MessageBox(QWidget):
         
         # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
         # https://blog.csdn.net/weixin_42108411/article/details/108023828
-        # self.show()
-        # self.hide()
+        self.show()
+        self.hide()
         print("box", self.width(), self.height())
         print("box", self.geometry())
         
@@ -123,7 +123,7 @@ class MessageBox(QWidget):
     
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
-        print("enter")
+        print("enter message box")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         # self.setStyleSheet("""
@@ -145,7 +145,7 @@ class MessageBox(QWidget):
     
     def leaveEvent(self, event):
         # TODO 鼠标移开取消阴影
-        print("leave")
+        print("leave message box")
         # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
         # self.setStyleSheet("#backgroundWidget {border: none;}")
         

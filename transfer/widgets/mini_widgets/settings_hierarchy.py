@@ -27,22 +27,40 @@ class SettingsHierarchy(QFrame):
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         # self.setModal(True)
-        self.setStyleSheet("background-color: green;")
+        self.setStyleSheet("""
+            background-color: rgb(22, 130, 93);
+            border-radius: 0;
+        """)
+        self.setStyleSheet("""
+            QWidget {
+                border: 1px solid red;
+                background-color: blue;
+            }
+        """)
         
         self.closeBtn = QPushButton("close")
         self.closeBtn.clicked.connect(self.hideSelf)
+        
+        self.label1 = QLabel("Free")  # Preview / Pro
+        self.label2 = QLabel("主题选择")
+        self.label3 = QLabel("隐藏状态栏")
         self.btn1 = QPushButton("TopLeft")
         self.btn2 = QPushButton("TopRight")
         self.btn3 = QPushButton("BottomLeft")
         self.btn4 = QPushButton("BottomRight")
                 
-        self.layout = QGridLayout(self)
-        self.layout.addWidget(self.closeBtn)
-        self.layout.addWidget(self.btn1)
-        self.layout.addWidget(self.btn2)
-        self.layout.addWidget(self.btn3)
-        self.layout.addWidget(self.btn4)
-        self.setLayout(self.layout)
+        self.gridLayout = QGridLayout(self)
+        print(self.gridLayout.columnCount())
+        self.gridLayout.addWidget(self.closeBtn, 0, 1, alignment=Qt.AlignRight)
+        self.gridLayout.addWidget(self.label1, 1, 0)
+        self.gridLayout.addWidget(self.btn1, 1, 1)
+        self.gridLayout.addWidget(self.label2, 2, 0)
+        self.gridLayout.addWidget(self.btn2, 2, 1)
+        self.gridLayout.addWidget(self.label3, 3, 0)
+        self.gridLayout.addWidget(self.btn3, 3, 1)
+        self.gridLayout.addWidget(self.btn4)
+        self.gridLayout.setRowStretch(99, 1)
+        self.setLayout(self.gridLayout)
         self.setHidden(True)  # 需要默认隐藏
     
     def showEvent(self, event) -> None:
@@ -70,6 +88,6 @@ class SettingsHierarchy(QFrame):
         self.hideAnim.setEndValue(QRect(self.parent().width(), y, self.width(), self.height()))
         self.hideAnim.setDuration(200)
         self.hideAnim.finished.connect(self.hide)  # 动画完成后执行隐藏
-        # self.hideAnim.finished.connect(self.parent().delay_mask)  # 动画完成后去掉遮罩
+        self.hideAnim.finished.connect(self.parent().delay_mask)  # 动画完成后去掉遮罩
         self.hideAnim.start()
     

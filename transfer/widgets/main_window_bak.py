@@ -8,6 +8,7 @@ from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, 
 from transfer.widgets.mini_widgets.message_box import MessageBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
+from transfer.widgets.main_frame import MainFrame
 from transfer.utils.common import CommonHelper
 from transfer.resources import resources_rc
 
@@ -63,7 +64,8 @@ class MainWindow(QWidget):
         self.mainVContainer = VContainer()
         self.mainVContainer.setSpacing(0)
         self.setHeader()
-        self.setBody()
+        self.mainFrame = MainFrame()
+        self.mainVContainer.addWidget(self.mainFrame)
         self.setFooter()
         self.frame.setLayout(self.mainVContainer)
         # self.setContentsMargins(0, 0, 0, 0)
@@ -82,6 +84,9 @@ class MainWindow(QWidget):
         # setMenuBar(self.menubar)
         # setCentralWidget(self.centralwidget)
         # setStatusBar(self.statusbar)
+        
+        # 绑定事件
+        self.bind()
         
         self.setStyleSheet("""
             QWidget {
@@ -170,28 +175,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 background-color: rgb(49, 50, 50);
             }
         """)
-        self.menuVContainer.setStyleSheet("""
-            QPushButton:hover {
-                background-color: rgb(49, 50, 50);
-            }
-        """)
-        self.stackedWidget.setStyleSheet("""
-            QStackedWidget {
-                border-radius: 0px;
-                background-color: rgb(51, 51, 51);
-            }
-            QStackedWidget QWidget {
-                border-radius: 3px;
-                padding: 4px 10px;
-            }
-            QPushButton {
-                background-color: rgb(51, 118, 205);
-            }
-            QPushButton:hover {
-                background-color: rgb(47, 108, 187);
-            }
-        """)
-        
+              
         
     def setHeader(self):
         # header
@@ -222,7 +206,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         
         self.minBtn.clicked.connect(self.showMinimized)
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
-        self.closeBtn.clicked.connect(self.close) 
+        self.closeBtn.clicked.connect(self.close)
     
     @Slot()
     def changeMaxOrReset(self):
@@ -262,178 +246,17 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
             
-        
-    def setBody(self):
-
-        self.bodyHContainer = HContainer()
-        self.bodyHContainer.setContentsMargins(12, 0, 12, 0)
-        self.bodyHContainer.setSpacing(0)
-        
-        self.menuList = MenuList()
-        self.menuList.setMinimumWidth(230)
-        self.menuList.setMaximumWidth(300)
-        self.stackedWidget = QStackedWidget()
-         
-        for i in range(len(self.menuList.menus)):        
-            menu_item = self.menuList.menus[i]
-            setattr(self, menu_item["objectName"], menu_item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
-            if menu_item["class"]:
-                self.stackedWidget.addWidget(getattr(self, menu_item["objectName"]))  # 添加到stackedWidget上
-        
-        # TODO 给子组件的信号绑定处理函数
-        childw1 = getattr(self, "ExcelToCsvWidget")
-        childw1.message_signal.connect(lambda msg: self.print_message(msg))
-        childw2 = getattr(self, "ExcelSplitWidget")
-        childw2.message_signal.connect(lambda msg: self.print_message(msg))
-        
-        # QListWidget绑定信号
-        self.menuList.listWidget.currentRowChanged.connect(self.router)
-        
-        # 底部的按钮
-        self.extendHContainer = HContainer()
-        self.extendHContainer.setContentsMargins(0, 0, 0, 0)
-        self.msgBtn = QPushButton()  # TODO 弹出设置窗口，挤走部件  # TODO 弹出消息窗口，遮罩
-        self.msgBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
-        self.msgBtn.setIconSize(QSize(20, 20))
-        
-        self.settingsBtn = QPushButton(qta.icon("msc.settings-gear", color=QColor(200, 200, 200)), "")
-        self.settingsBtn.setIconSize(QSize(20, 20))
-        self.settingsBtn.setToolTip("设置")
-
-        self.helpBtn = QPushButton(qta.icon("mdi.help-circle-outline", color=QColor(200, 200, 200)), "")
-        self.helpBtn.setIconSize(QSize(20, 20))
-        self.helpBtn.setToolTip("帮助")
-        
-        self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
-        self.ellipsisBtn.setIconSize(QSize(20, 20))
-        self.ellipsisMenu = QMenu()
-        self.ellipsisMenu.addAction(qta.icon("msc.feedback", color=QColor(200, 200, 200)), "Feedback")  # 反馈
-        self.ellipsisMenu.addAction(qta.icon("mdi.math-log", color=QColor(200, 200, 200)), "UpdateLog")  # 更新日志
-        self.ellipsisMenu.addAction(qta.icon("ph.snapchat-logo", color=QColor(200, 200, 200)), "About")  # 关于
-        self.ellipsisBtn.setMenu(self.ellipsisMenu)  # TODO 增加弹出按钮菜单
-        self.ellipsisBtn.setToolTip("其他功能按钮")
-    
-        self.hideMenuBtn = QPushButton(qta.icon("fa.angle-double-left", color=QColor(200, 200, 200)), "")
-        self.hideMenuBtn.setIconSize(QSize(16, 16))
-        self.hideMenuBtn.setToolTip("隐藏菜单栏")
-        self.hideMenuBtn.clicked.connect(self.hide_menu)
-        
-        self.extendHContainer.addWidget(self.msgBtn)
-        self.extendHContainer.addWidget(self.settingsBtn)
-        self.extendHContainer.addWidget(self.helpBtn)
-        self.extendHContainer.addWidget(self.ellipsisBtn)
-        self.extendHContainer.addStretch()
-        self.extendHContainer.addWidget(self.hideMenuBtn)
-        
-        # 创建布局
-        self.menuVContainer = VContainer()
-        self.menuVContainer.setObjectName("menuVContainer")
-        
-        self.menuVContainer.setMaximumWidth(240)
-        self.menuVContainer.addWidget(self.menuList)
-        self.menuVContainer.addWidget(self.extendHContainer)
-
-        self.settingsVContainer = SettingsHierarchy(self.bodyHContainer)
-        self.maskWidget = MaskWidget(self)
-        
-        self.bodyHContainer.addWidget(self.menuVContainer)
-        self.bodyHContainer.addWidget(self.stackedWidget)
-        self.bodyHContainer.addWidget(self.settingsVContainer)
-        self.mainVContainer.addWidget(self.bodyHContainer)
-        # self.centralLayout.addLayout(self.headerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
-        # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
-        # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
-
-        self.msgBtn.clicked.connect(self.showMessage)
-        self.settingsBtn.clicked.connect(self.show_settings)
-
-        self.showMenuBtn = QPushButton(qta.icon("fa.angle-double-right", color=QColor(200, 200, 200)), "", self.bodyHContainer)
-        self.showMenuBtn.setIconSize(QSize(16, 16))
-        self.showMenuBtn.setToolTip("弹出菜单栏")
-        self.showMenuBtn.clicked.connect(self.show_menu)
-        
-        self.showMenuBtn.setStyleSheet("""
-        QWidget {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 0px;
-            margin: 0;
-            padding: 0;
-        }
-        QPushButtom:hover {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 0px;
-            margin: 0;
-            padding: 0;
-        }
-        """)
-
-        
-    @Slot()
-    def router(self, currentRow):
-        print("menubar ==> ", currentRow)
-        
-        for i in range(len(self.menuList.menus)):
-            item = self.menuList.menus[i]
-            if currentRow == i and item["class"]:
-                self.stackedWidget.setCurrentWidget(getattr(self, item["objectName"]))
-                return
-    
-    @Slot()
-    def hide_menu(self):
-        # TODO 隐藏菜单栏
-        self.menuVContainer.hide()
-        print("bodyHContainer", self.bodyHContainer.geometry())  # 距离父组件的坐标，且是没变化之前的
-        self.showMenuBtn.show()
-        self.showMenuBtn.hide()
-        print("showMenuBtn", self.showMenuBtn.geometry())  # 距离父组件的坐标，且是没变化之前的
-        x = self.bodyHContainer.geometry().left()
-        y = self.bodyHContainer.height() - self.showMenuBtn.height()
-        print(self.bodyHContainer.geometry().bottom())
-        print("showMenuBtn", x, y)
-        self.showMenuBtn.move(x, y)
-        self.showMenuBtn.show()
-        
-        
-    @Slot()
-    def show_menu(self):
-        # TODO 弹出菜单栏
-        self.menuVContainer.show()
-        self.showMenuBtn.hide()
-
-    @Slot()
-    def show_settings(self):
-        # 添加遮罩层
-        # self.maskWidget.resize(self.width() - self.settingsVContainer.width() + 1, self.height())
-        self.maskWidget.showMaskAll()
-        self.settingsVContainer.raise_()
-        self.settingsVContainer.show()
-        
-    def delay_mask(self):
-        self.maskWidget.hide()
-    
-    def showEvent(self, event) -> None:
-        # return super().showEvent(event)
-        print("parent show")
-        self.resize(self.size())  # 更新实际的尺寸大小
-        
-    def resizeEvent(self, event) -> None:
-        # return super().resizeEvent(event)
-        self.settingsVContainer.resize(self.settingsVContainer.width(), self.height())
-        x = self.width() - self.settingsVContainer.width()
-        y = 0
-        self.settingsVContainer.move(x, y)
-        
-        # 左下角buttom也跟着移动
-        self.showMenuBtn.move(0, self.height() - self.showMenuBtn.height())
-        # 遮罩也随着调整大小
-        self.maskWidget.resize(self.width() - self.settingsVContainer.width(), self.height())
-        
-    def mousePressEvent(self, event) -> None:
-        if not self.settingsVContainer.underMouse():
-            print("click")
-            self.maskWidget.hide()
-            self.settingsVContainer.hideSelf()
-        
+    # def closeEvent(self, event):
+    #     # TODO 关闭程序弹出提示框确认，使用自定义的message_box
+    #     reply = QMessageBox.question(self, '提示',
+    #                 "是否要关闭所有窗口?",
+    #                 QMessageBox.Yes | QMessageBox.No,
+    #                 QMessageBox.No)
+    #     if reply == QMessageBox.Yes:
+    #         event.accept()
+    #         sys.exit(0)   # 退出程序
+    #     else:
+    #         event.ignore()
     
     def setFooter(self):
         # 自定义状态栏
@@ -448,20 +271,14 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         print("statusbar", self.messageLable.width())
         print("versionLable", self.versionLable.width())
         print("statusHContainer", self.statusHContainer.width())
-        
-    def showMessage(self):
-        """弹出信息"""
-        self.messageBox = MessageBox()
-        self.messageBox.setTitle("Message")
-        print(self.messageBox.width(), self.messageBox.height())
-        print(self.geometry())
-        print(self.geometry().right())
-        print(self.geometry().bottom())
-        x = self.geometry().right() - self.messageBox.width()
-        y = self.geometry().bottom() - self.messageBox.height()
-        self.messageBox.move(x, y)
-        self.messageBox.show()
-
+    
+    def bind(self):
+        # TODO 给子组件的信号绑定处理函数
+        childw1 = getattr(self.mainFrame, "ExcelToCsvWidget")
+        childw1.message_signal.connect(lambda msg: self.print_message(msg))
+        childw2 = getattr(self.mainFrame, "ExcelSplitWidget")
+        childw2.message_signal.connect(lambda msg: self.print_message(msg))
+       
     def print_message(self, msg):
         print("==> self =", self.width())
         print("==> self.versionLable =", self.versionLable.width())

@@ -125,7 +125,7 @@ class ExcelToCsvWidget(QWidget):
 
         # 创建布局
         self.gridLayout = QGridLayout()
-        # 将组件添加到布局中（N行N列）初始值序号是0，(行, 列, 宽度, 高度)
+        # 将组件添加到布局中（N行N列）初始值序号是0，(行, 列, 高度, 宽度)
         # self.gridLayout.addWidget(self.label, 0, 0, 1, 6)
         self.gridLayout.addWidget(self.choiceComboBox, 1, 0)
         self.gridLayout.addWidget(self.inputLineEdit, 2, 0, 1, 5)

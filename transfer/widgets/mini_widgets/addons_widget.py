@@ -11,8 +11,11 @@ class HContainer(QFrame, QHBoxLayout):
         QHBoxLayout.__init__(self, self)     # 调用QHBoxLayout的构造函数，第二个self代表绑定到自己的QFrame上
         
         # self.setAttribute(Qt.WA_StyledBackground, True)  # 无法继承背景色的设置，需要手动设置，便于测试 https://www.cnpython.com/qa/1523133
-        # self.setContentsMargins(0, 0, 0, 0)      # 去掉默认边距 # QFrame和QHBoxLayout都有该方法，执行QHBoxLayout的才会起作用
-        QHBoxLayout.setContentsMargins(self, 0, 0, 0, 0)
+        self.setContentsMargins(0, 0, 0, 0)      # 去掉默认边距 # QFrame和QHBoxLayout都有该方法，执行QHBoxLayout的才会起作用
+    
+    def setContentsMargins(self, left, top, right, bottom):
+        # overwrite QFrame setContentsMargins
+        QHBoxLayout.setContentsMargins(self, left, top, right, bottom)
 
 
 class VContainer(QFrame, QVBoxLayout):
@@ -23,7 +26,10 @@ class VContainer(QFrame, QVBoxLayout):
     
         # self.setAttribute(Qt.WA_StyledBackground, True)  # 无法继承背景色的设置，需要手动设置，便于测试
         # self.setContentsMargins(0, 0, 0, 0)
-        QVBoxLayout.setContentsMargins(self, 0, 0, 0, 0)
+        self.setContentsMargins(0, 0, 0, 0)
+    
+    def setContentsMargins(self, left, top, right, bottom):
+        QVBoxLayout.setContentsMargins(self, left, top, right, bottom)
 
 
 def createContainer(layout_type):
