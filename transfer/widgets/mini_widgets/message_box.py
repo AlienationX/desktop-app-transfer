@@ -28,7 +28,7 @@ class MessageBox(QWidget):
         # self.setGraphicsEffect(shadow)
         
         # 重点： 这个frame作为背景和圆角
-        self.frame = QFrame(self)
+        self.frame = QFrame()
         self.frame.setObjectName("backgroundWidget")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影

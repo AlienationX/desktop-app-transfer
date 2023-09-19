@@ -191,12 +191,10 @@ class MainFrame(QWidget):
                 
     def showMessage(self):
         """弹出信息"""
-        self.messageBox = MessageBox()
+        self.messageBox = MessageBox(self)
         self.messageBox.setTitle("Message")
         print(self.messageBox.width(), self.messageBox.height())
         print(self.geometry(), self.width(), self.height())
-        print(self.geometry().right())
-        print(self.geometry().bottom())
         x = self.width() - self.messageBox.width()
         y = self.height() - self.messageBox.height()
         print("xy", x, y)
