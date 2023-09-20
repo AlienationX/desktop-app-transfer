@@ -108,9 +108,6 @@ class MessageBox(QWidget):
         #     }
         # """)
     
-    def showEvent(self, envet):
-        # show之前处理的事件，可以获取真正的窗体大小
-        print("envet", self.width(), self.height())
         
     def setWindowTitle(self, window_title):
         pass
@@ -120,6 +117,16 @@ class MessageBox(QWidget):
     
     def setText(self, content):
         self.contentLabel.setText(content)
+    
+    def addButton(self, text):
+        pass
+    
+    def getBtnText(self):
+        return self.render().text()
+    
+    def showEvent(self, envet):
+        # show之前处理的事件，可以获取真正的窗体大小
+        print("envet", self.width(), self.height())
     
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
@@ -148,6 +155,7 @@ class MessageBox(QWidget):
         print("leave message box")
         # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
         # self.setStyleSheet("#backgroundWidget {border: none;}")
+    
         
         
 if __name__=="__main__":
