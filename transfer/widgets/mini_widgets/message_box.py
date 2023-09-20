@@ -37,20 +37,26 @@ class MessageBox(QWidget):
         _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
-        self.titleLable = QLabel("Message Title")
-        self.titleLable.setObjectName("titleLable")
+        self.windowTitleLable = QLabel("MESSAGE TITLE")
+        self.windowTitleLable.setObjectName("titleLable")
         font = QFont()
         # font.setPointSize(11)
         font.setBold(True)
-        self.titleLable.setFont(font)
+        self.windowTitleLable.setFont(font)
         self.closeBtn = QPushButton()
         self.closeBtn.setIcon(qta.icon("msc.close", color=QColor(174, 174, 174)))
         self.closeBtn.setIconSize(QSize(20, 20))
         self.closeBtn.clicked.connect(self.close)
+
+        self.titleLable = QLabel()
+        self.titleLable.setWordWrap(True)
+        self.titleLable.setFont(font)
         
-        self.contentLabel = QLabel("在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。")
-        self.contentLabel.setObjectName("messageBoxText")
+        self.contentLabel = QLabel(self)
+        self.contentLabel.setText("在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。")
+        self.contentLabel.setObjectName("contentLabel")
         self.contentLabel.setWordWrap(True)  # 自动换行
+        # self.contentLabel.adjustSize()
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.layout = QVBoxLayout(self.frame)
@@ -60,12 +66,19 @@ class MessageBox(QWidget):
         self.titleWidget.setObjectName("messageBoxTitle")
         self.titleLayout = QHBoxLayout(self.titleWidget)
         self.titleLayout.setContentsMargins(0, 0, 0, 0)
-        self.titleLayout.addWidget(self.titleLable)
+        self.titleLayout.addWidget(self.windowTitleLable)
         self.titleLayout.addStretch()
         self.titleLayout.addWidget(self.closeBtn)
         self.titleWidget.setContentsMargins(6, 6, 6, 6)
+
+        self.contentWidget = QWidget()
+        self.contentWidget.setObjectName("messageBoxContent")
+        self.contentLayout = QHBoxLayout(self.contentWidget)
+        self.contentLayout.setContentsMargins(0, 0, 0, 0)
+        
         self.contentLabel.setContentsMargins(6, 6, 6, 6)
         self.layout.addWidget(self.titleWidget)
+        # self.layout.addWidget(self.titleLable)
         self.layout.addWidget(self.contentLabel)
         
         # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
@@ -85,7 +98,7 @@ class MessageBox(QWidget):
             QPushButton:hover {
                 background-color: rgb(49, 50, 50);
             }
-            #messageBoxText {
+            #contentLabel {
                 border-top-left-radius: 0px;
                 border-top-right-radius: 0px;
                 background-color: rgb(44, 45, 46);
@@ -101,7 +114,7 @@ class MessageBox(QWidget):
         #     QPushButton:hover {
         #         background-color: rgb(200, 200, 200);
         #     }
-        #     #messageBoxText {
+        #     #contentLabel {
         #         border-top-left-radius: 0px;
         #         border-top-right-radius: 0px;
         #         background-color: white;
@@ -110,7 +123,7 @@ class MessageBox(QWidget):
     
         
     def setWindowTitle(self, window_title):
-        pass
+        self.windowTitleLable.setText(window_title)
     
     def setTitle(self, title):
         self.titleLable.setText(title)
@@ -119,6 +132,10 @@ class MessageBox(QWidget):
         self.contentLabel.setText(content)
     
     def addButton(self, text):
+        button = QPushButton(None, text, self)
+        button.clicked.connect(self.getBtnText)
+
+    def setDefaultButton(self, text):
         pass
     
     def getBtnText(self):
@@ -143,7 +160,7 @@ class MessageBox(QWidget):
         #     QPushButton:hover {
         #         background-color: rgb(49, 50, 50);
         #     }
-        #     #messageBoxText {
+        #     #contentLabel {
         #         border-top-left-radius: 0px;
         #         border-top-right-radius: 0px;
         #         background-color: rgb(44, 45, 46);
@@ -156,10 +173,31 @@ class MessageBox(QWidget):
         # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
         # self.setStyleSheet("#backgroundWidget {border: none;}")
     
+    def mousePressEvent(self, event):
+        # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限标题栏支持拖拽移动
+        if self.titleWidget.underMouse():
+            self.pressX = event.x()
+            self.pressY = event.y()
+ 
+    def mouseMoveEvent(self, event):
+        if self.titleWidget.underMouse():
+            x = event.x()
+            y = event.y()   # 获取移动后的坐标
+            moveX = x - self.pressX
+            moveY = y - self.pressY  # 计算移动了多少
+    
+            positionX = self.frameGeometry().x() + moveX
+            positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
+            self.move(positionX, positionY)    # 移动主窗口
         
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
     m=MessageBox()
+    m.setWindowTitle("WINDOW TITLE")
+    m.setTitle("I am title")
+    m.setText("当面对没有分隔开的长串英文与数字、英文符号（如 '.'就是英文符号，‘。’就是中文符号）时，QLabel无法自动换行。下面利用QFontMetrics实现换行，该类通过对font属性进行解析，提供指定font下的字符、字符串宽度等获取接口。")
+    m.addButton("OK")
+    m.addButton("Cancel")
     m.show()
     app.exit(app.exec())
