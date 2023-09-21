@@ -5,7 +5,8 @@ import qtawesome as qta
 
 import sys
 
-class MessageBox(QWidget):
+class MessageBox(QDialog):
+    
     """
     msgBox.setWindowTitle("Message Box Titil")  # 设置标题，附加一个关闭按钮
     msgBox.setTitle("The document has been modified.")  # 主文本
@@ -13,12 +14,16 @@ class MessageBox(QWidget):
     # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)  # 按钮 自定义
     # msgBox.setDefaultButton(QMessageBox.Save)  # 默认(选中)按钮
     """
+    
+    signal = Signal(str)
+    
     def __init__(self, parent=None):
         super().__init__(parent)
         
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # 隐藏边框且总在最前
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
-        self.setMaximumWidth(400)
+        self.setMinimumWidth(300)
+        self.setMaximumWidth(600)
         
         # 添加阴影
         # shadow = QGraphicsDropShadowEffect(self)
@@ -37,12 +42,12 @@ class MessageBox(QWidget):
         _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
-        self.windowTitleLable = QLabel("MESSAGE TITLE")
+        self.windowTitleLable = QLabel()
         self.windowTitleLable.setObjectName("titleLable")
-        font = QFont()
+        self.font = QFont()
         # font.setPointSize(11)
-        font.setBold(True)
-        self.windowTitleLable.setFont(font)
+        self.font.setBold(True)
+        self.windowTitleLable.setFont(self.font)
         self.closeBtn = QPushButton()
         self.closeBtn.setIcon(qta.icon("msc.close", color=QColor(174, 174, 174)))
         self.closeBtn.setIconSize(QSize(20, 20))
@@ -50,44 +55,42 @@ class MessageBox(QWidget):
 
         self.titleLable = QLabel()
         self.titleLable.setWordWrap(True)
-        self.titleLable.setFont(font)
+        self.titleLable.setFont(self.font)
+        # self.titleLable.setWordWrap(True)
+        # self.titleLable.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.contentLabel = QLabel(self)
-        self.contentLabel.setText("在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。在 CSS 中，border-radius 属性可以设置圆角，对应左上角、右上角、右下角、左下角的圆角可以通过 border-top-left-radius、border-top-right-radius、border-bottom-right-radius、border-bottom-left-radius 四个属性进行设置。")
         self.contentLabel.setObjectName("contentLabel")
-        self.contentLabel.setWordWrap(True)  # 自动换行
+        self.contentLabel.setWordWrap(True)  # 自动换行，只有中文和单词存在空格等才会换行，如果是一长串字母是不会换行的
         # self.contentLabel.adjustSize()
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.layout = QVBoxLayout(self.frame)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
+        
         self.titleWidget = QWidget()
         self.titleWidget.setObjectName("messageBoxTitle")
         self.titleLayout = QHBoxLayout(self.titleWidget)
-        self.titleLayout.setContentsMargins(0, 0, 0, 0)
+        self.titleLayout.setContentsMargins(6, 6, 6, 6)
         self.titleLayout.addWidget(self.windowTitleLable)
         self.titleLayout.addStretch()
         self.titleLayout.addWidget(self.closeBtn)
-        self.titleWidget.setContentsMargins(6, 6, 6, 6)
 
         self.contentWidget = QWidget()
         self.contentWidget.setObjectName("messageBoxContent")
-        self.contentLayout = QHBoxLayout(self.contentWidget)
-        self.contentLayout.setContentsMargins(0, 0, 0, 0)
+        self.contentLayout = QVBoxLayout(self.contentWidget)
+        self.contentLayout.setContentsMargins(6, 6, 6, 6)
         
-        self.contentLabel.setContentsMargins(6, 6, 6, 6)
-        self.layout.addWidget(self.titleWidget)
-        # self.layout.addWidget(self.titleLable)
-        self.layout.addWidget(self.contentLabel)
+        self.buttonsWidget = QWidget()
+        self.buttonsWidget.setObjectName("messageBoxButtons")
+        self.buttonsLayout = QHBoxLayout(self.buttonsWidget)
+        self.buttonsLayout.setContentsMargins(0, 0, 0, 0)
+        self.buttonsLayout.addStretch()  
         
-        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
-        # https://blog.csdn.net/weixin_42108411/article/details/108023828
-        self.show()
-        self.hide()
-        print("box", self.width(), self.height())
-        print("box", self.geometry())
+        # 只增加contentWidget，其他的判断是否存在再增加
         
+        self.layout.addWidget(self.contentWidget)
         
         self.setStyleSheet("""
             QWidget {
@@ -98,10 +101,17 @@ class MessageBox(QWidget):
             QPushButton:hover {
                 background-color: rgb(49, 50, 50);
             }
-            #contentLabel {
-                border-top-left-radius: 0px;
-                border-top-right-radius: 0px;
-                background-color: rgb(44, 45, 46);
+            #messageBoxContent QWidget {
+                background-color: transparent;
+            }
+            #messageBoxContent QPushButton {
+                padding: 3px 10px;
+                color: white;
+                border: 1px solid rgb(31, 31, 31);
+            }
+            #messageBoxContent QPushButton:hover {
+                background-color: rgb(0, 120, 212);
+                font-weight: bold;
             }
         """)
         
@@ -114,7 +124,7 @@ class MessageBox(QWidget):
         #     QPushButton:hover {
         #         background-color: rgb(200, 200, 200);
         #     }
-        #     #contentLabel {
+        #     #messageBoxContent {
         #         border-top-left-radius: 0px;
         #         border-top-right-radius: 0px;
         #         background-color: white;
@@ -132,18 +142,61 @@ class MessageBox(QWidget):
         self.contentLabel.setText(content)
     
     def addButton(self, text):
-        button = QPushButton(None, text, self)
+        button = QPushButton(self)
+        button.setText(text)
+        # button.setFont(self.font)
         button.clicked.connect(self.getBtnText)
+        self.buttonsLayout.addWidget(button)
 
     def setDefaultButton(self, text):
         pass
     
+    @Slot()
     def getBtnText(self):
-        return self.render().text()
+        btnText = self.sender().text()
+        print(btnText)
+        self.signal.emit(btnText)  # 发送信号
+        self.close()
+    
+    def resizeEvent(self, envent):
+        print("resizeEvent", self.width(), self.height())
     
     def showEvent(self, envet):
         # show之前处理的事件，可以获取真正的窗体大小
-        print("envet", self.width(), self.height())
+        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
+        # https://blog.csdn.net/weixin_42108411/article/details/108023828
+        # print("showEvent", self.width(), self.height())
+        
+        if self.windowTitleLable.text():
+            self.layout.insertWidget(0, self.titleWidget)
+            self.contentWidget.setStyleSheet("""
+                #messageBoxContent {
+                    border-top-left-radius: 0px;
+                    border-top-right-radius: 0px;
+                    background-color: rgb(44, 45, 46);
+                }
+            """)
+        else:
+            # 如果没有WindowTitle，则修改为上角为圆角
+            self.contentWidget.setStyleSheet("""
+                #messageBoxContent {
+                    background-color: rgb(44, 45, 46);
+                }
+            """)
+            
+        if self.titleLable.text():
+            self.contentLayout.insertWidget(0, self.titleLable)
+            
+        if self.contentLabel.text():
+            self.contentLayout.addWidget(self.contentLabel)
+        else:
+            raise Exception ("must be set content text")
+
+        if self.buttonsWidget.findChildren(QPushButton):
+            self.contentLayout.addWidget(self.buttonsWidget)
+
+        print("showEvent", self.width(), self.height())
+        
     
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
@@ -196,7 +249,7 @@ if __name__=="__main__":
     m=MessageBox()
     m.setWindowTitle("WINDOW TITLE")
     m.setTitle("I am title")
-    m.setText("当面对没有分隔开的长串英文与数字、英文符号（如 '.'就是英文符号，‘。’就是中文符号）时，QLabel无法自动换行。下面利用QFontMetrics实现换行，该类通过对font属性进行解析，提供指定font下的字符、字符串宽度等获取接口。")
+    m.setText("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
     m.addButton("OK")
     m.addButton("Cancel")
     m.show()

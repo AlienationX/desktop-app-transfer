@@ -2,6 +2,8 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 
+import qtawesome as qta
+
 import sys
 
 """
@@ -23,45 +25,89 @@ class SettingsHierarchy(QFrame):
     
     def __init__(self, parent:QWidget=None) -> None:
         super().__init__(parent)
-        self.resize(400, 600)
+        
+        self._data = {
+            "currentTheme": "Dark",
+            "hideStatueBar": False
+        }
+        
+        self.resize(260, 600)
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         # self.setModal(True)
-        self.setStyleSheet("""
-            background-color: rgb(22, 130, 93);
-            border-radius: 0;
-        """)
-        self.setStyleSheet("""
-            QWidget {
-                border: 1px solid red;
-                background-color: blue;
-            }
-        """)
         
-        self.closeBtn = QPushButton("close")
+        self.titleLabel = QLabel("Setting")
+        font = QFont()
+        font.setBold(True)
+        self.titleLabel.setFont(font)
+        self.closeBtn = QPushButton()
+        self.closeBtn.setIcon(qta.icon("msc.arrow-circle-right", color=QColor(200, 200, 200)))  # msc.arrow-circle-right / msc.arrow-right
+        self.closeBtn.setIconSize(QSize(36, 36))
         self.closeBtn.clicked.connect(self.hideSelf)
         
-        self.label1 = QLabel("Free")  # Preview / Pro
-        self.label2 = QLabel("主题选择")
-        self.label3 = QLabel("隐藏状态栏")
-        self.btn1 = QPushButton("TopLeft")
-        self.btn2 = QPushButton("TopRight")
-        self.btn3 = QPushButton("BottomLeft")
-        self.btn4 = QPushButton("BottomRight")
-                
-        self.gridLayout = QGridLayout(self)
-        print(self.gridLayout.columnCount())
-        self.gridLayout.addWidget(self.closeBtn, 0, 1, alignment=Qt.AlignRight)
+        self.titleWidget = QWidget()
+        self.titleWidget.setObjectName("titleWidget")
+        self.titleLayout = QHBoxLayout(self.titleWidget)
+        self.titleLayout.setContentsMargins(1, 1, 1, 1)
+        self.titleLayout.addWidget(self.titleLabel)
+        self.titleLayout.addStretch()
+        self.titleLayout.addWidget(self.closeBtn)
+        
+        self.label1 = QLabel("当前版本:")  # Preview / Pro
+        self.label2 = QLabel("主题选择:")
+        self.label3 = QLabel("隐藏状态栏:")
+        
+        self.item1 = QLabel("Free")
+        
+        self.item2 = QComboBox()
+        self.item2.setMinimumWidth(80)
+        self.item2.addItem("Dark")
+        self.item2.addItem("Light")
+        self.item2.addItem("Color")
+        
+        self.item3 = QPushButton()
+        self.item3.setIcon(qta.icon("mdi.toggle-switch-off", color=QColor(200, 200, 200)))
+        self.item3.setIconSize(QSize(30, 30))
+        self.item3.clicked.connect(self.switchIcon)
+        
+        self.contentWidget = QWidget()
+        
+        self.gridLayout = QGridLayout(self.contentWidget)
+        self.gridLayout.setContentsMargins(1, 1, 1, 1)
         self.gridLayout.addWidget(self.label1, 1, 0)
-        self.gridLayout.addWidget(self.btn1, 1, 1)
+        self.gridLayout.addWidget(self.item1, 1, 1, alignment=Qt.AlignRight)
         self.gridLayout.addWidget(self.label2, 2, 0)
-        self.gridLayout.addWidget(self.btn2, 2, 1)
+        self.gridLayout.addWidget(self.item2, 2, 1, alignment=Qt.AlignRight)
         self.gridLayout.addWidget(self.label3, 3, 0)
-        self.gridLayout.addWidget(self.btn3, 3, 1)
-        self.gridLayout.addWidget(self.btn4)
+        self.gridLayout.addWidget(self.item3, 3, 1, alignment=Qt.AlignRight)
         self.gridLayout.setRowStretch(99, 1)
-        self.setLayout(self.gridLayout)
+        
+        # self.formLayout = QFormLayout(self.contentWidget)
+        # self.formLayout.addRow(self.label1, self.item1)
+        # self.formLayout.addRow(self.label2, self.item2)
+        # self.formLayout.addRow(self.label3, self.item3)
+        
+        self.layout = QVBoxLayout(self)
+        self.layout.addWidget(self.titleWidget)
+        self.layout.addWidget(self.contentWidget)
+        self.layout.addStretch()
         self.setHidden(True)  # 需要默认隐藏
+
+        self.setStyleSheet("""
+            QWidget {
+                /* border: 1px solid red; */
+                color: white;
+                background-color: rgb(48, 48, 49);
+                border-radius: 0;
+            }
+            #titleWidget {
+                border-bottom: 1px solid rgb(200, 200, 200);
+            }
+        """)
+    
+    @Slot()
+    def switchIcon(self):
+        self.item3.setIcon(qta.icon("mdi.toggle-switch", color=QColor(200, 200, 200)))
     
     def showEvent(self, event) -> None:
         self.resize(min(self.width(), self.parent().width()), self.parent().height())

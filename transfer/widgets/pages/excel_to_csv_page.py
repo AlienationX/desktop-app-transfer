@@ -65,6 +65,7 @@ class ExcelToCsvWidget(QWidget):
         
         openBtnIcon  = qta.icon("msc.folder-opened", color="white")
         self.openBtn = QPushButton(openBtnIcon, "打开文件")
+        self.openBtn.setIconSize(QSize(20, 20))
 
         self.outputLineEdit = QLineEdit()
         self.outputLineEdit.setPlaceholderText("请选择保存的文件或目录")
@@ -72,6 +73,7 @@ class ExcelToCsvWidget(QWidget):
         
         saveBtnIcon  = qta.icon("msc.folder-active", color="white")
         self.saveBtn = QPushButton(saveBtnIcon, "保存文件")
+        self.saveBtn.setIconSize(QSize(20, 20))
         
         self.radioBtn1 = QRadioButton("保持原始数据")
         self.radioBtn1.setToolTip("所有字段都用逗号分隔，如果内容存在逗号，打开文件可能会导致串列问题，\n不推荐")
@@ -119,6 +121,7 @@ class ExcelToCsvWidget(QWidget):
         
         self.startBtnIcon  = qta.icon("msc.play", color="white")
         self.startBtn = QPushButton(self.startBtnIcon, "执行")
+        self.startBtn.setIconSize(QSize(20, 20))
         
         self.progressBar = QProgressBar()
         self.progressBar.setAlignment(Qt.AlignCenter)
@@ -128,10 +131,10 @@ class ExcelToCsvWidget(QWidget):
         # 将组件添加到布局中（N行N列）初始值序号是0，(行, 列, 高度, 宽度)
         # self.gridLayout.addWidget(self.label, 0, 0, 1, 6)
         self.gridLayout.addWidget(self.choiceComboBox, 1, 0)
-        self.gridLayout.addWidget(self.inputLineEdit, 2, 0, 1, 5)
-        self.gridLayout.addWidget(self.openBtn, 2, 5)
-        self.gridLayout.addWidget(self.outputLineEdit, 3, 0, 1, 5)
-        self.gridLayout.addWidget(self.saveBtn, 3, 5)
+        self.gridLayout.addWidget(self.inputLineEdit, 2, 0, 1, 4)
+        self.gridLayout.addWidget(self.openBtn, 2, 4)
+        self.gridLayout.addWidget(self.outputLineEdit, 3, 0, 1, 4)
+        self.gridLayout.addWidget(self.saveBtn, 3, 4)
         self.gridLayout.addWidget(self.groupBox1, 4, 0)
         self.gridLayout.addWidget(self.groupBox2, 4, 1)
         self.gridLayout.addWidget(self.groupBox3, 4, 2)

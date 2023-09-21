@@ -246,17 +246,21 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
             
-    # def closeEvent(self, event):
-    #     # TODO 关闭程序弹出提示框确认，使用自定义的message_box
-    #     reply = QMessageBox.question(self, '提示',
-    #                 "是否要关闭所有窗口?",
-    #                 QMessageBox.Yes | QMessageBox.No,
-    #                 QMessageBox.No)
-    #     if reply == QMessageBox.Yes:
-    #         event.accept()
-    #         sys.exit(0)   # 退出程序
-    #     else:
-    #         event.ignore()
+    def closeEvent(self, event):
+        # TODO 关闭程序弹出提示框确认，使用自定义的message_box
+        reply = QMessageBox.question(self, 
+                    "提示",
+                    "是否要关闭所有窗口?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No)
+        print(reply)
+        print(type(reply))
+        if reply == QMessageBox.Yes:
+            # event.accept()
+            # sys.exit(0)   # 退出程序
+            self.close()
+        else:
+            event.ignore()  # 一定要增加ignore，否则还是会关闭
     
     def setFooter(self):
         # 自定义状态栏

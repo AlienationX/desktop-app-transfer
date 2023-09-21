@@ -116,9 +116,12 @@ class MainFrame(QWidget):
                 padding: 4px 10px;
             }
             QPushButton {
+                color: white;
                 background-color: rgb(51, 118, 205);
+                border: 1px solid rgb(31, 31, 31);
             }
             QPushButton:hover {
+                color: white;
                 background-color: rgb(47, 108, 187);
             }
         """)
@@ -191,15 +194,21 @@ class MainFrame(QWidget):
                 
     def showMessage(self):
         """弹出信息"""
-        self.messageBox = MessageBox(self)
-        self.messageBox.setTitle("Message")
+        # repaint() 立即绘图
+        self.messageBox = MessageBox()
+        self.messageBox.setWindowTitle("Message")
+        self.messageBox.setText("上图中直观展示出C2时共有2个异常值点，如果对C2进行分析，且分析方法对异常值敏感时（比如相关分析，回归分析等），此时需要对该2个异常值点进行处理成null或者填充，或者在分析时进行过滤。")
+        self.messageBox.addButton("OK")
+        self.messageBox.repaint()
         print(self.messageBox.width(), self.messageBox.height())
-        print(self.geometry(), self.width(), self.height())
-        x = self.width() - self.messageBox.width()
-        y = self.height() - self.messageBox.height()
+        print(self.geometry(), self.geometry().bottomRight())
+        x = self.geometry().right() - self.messageBox.width()
+        y = self.geometry().bottom() - self.messageBox.height()
         print("xy", x, y)
         self.messageBox.move(x, y)
         self.messageBox.show()
+        
+        
     
         
 if __name__=="__main__":
