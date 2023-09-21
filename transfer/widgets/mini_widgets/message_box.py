@@ -71,6 +71,7 @@ class MessageBox(QDialog):
         
         self.titleWidget = QWidget()
         self.titleWidget.setObjectName("messageBoxTitle")
+        self.titleWidget.setMaximumHeight(32)
         self.titleLayout = QHBoxLayout(self.titleWidget)
         self.titleLayout.setContentsMargins(6, 6, 6, 6)
         self.titleLayout.addWidget(self.windowTitleLable)
@@ -146,7 +147,7 @@ class MessageBox(QDialog):
         button.setText(text)
         # button.setFont(self.font)
         button.clicked.connect(self.getBtnText)
-        self.buttonsLayout.addWidget(button)
+        self.buttonsLayout.addWidget(button, alignment=Qt.AlignRight | Qt.AlignBottom)
 
     def setDefaultButton(self, text):
         pass

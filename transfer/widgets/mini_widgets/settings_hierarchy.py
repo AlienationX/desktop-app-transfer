@@ -36,7 +36,7 @@ class SettingsHierarchy(QFrame):
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         # self.setModal(True)
         
-        self.titleLabel = QLabel("Setting")
+        self.titleLabel = QLabel("Settings")
         font = QFont()
         font.setBold(True)
         self.titleLabel.setFont(font)
@@ -48,7 +48,7 @@ class SettingsHierarchy(QFrame):
         self.titleWidget = QWidget()
         self.titleWidget.setObjectName("titleWidget")
         self.titleLayout = QHBoxLayout(self.titleWidget)
-        self.titleLayout.setContentsMargins(1, 1, 1, 1)
+        self.titleLayout.setContentsMargins(12, 0, 12, 12)
         self.titleLayout.addWidget(self.titleLabel)
         self.titleLayout.addStretch()
         self.titleLayout.addWidget(self.closeBtn)
@@ -60,20 +60,21 @@ class SettingsHierarchy(QFrame):
         self.item1 = QLabel("Free")
         
         self.item2 = QComboBox()
-        self.item2.setMinimumWidth(80)
+        self.item2.setMinimumWidth(100)
         self.item2.addItem("Dark")
         self.item2.addItem("Light")
         self.item2.addItem("Color")
         
         self.item3 = QPushButton()
         self.item3.setIcon(qta.icon("mdi.toggle-switch-off", color=QColor(200, 200, 200)))
-        self.item3.setIconSize(QSize(30, 30))
+        # self.item3.setIconSize(QSize(30, 30))
         self.item3.clicked.connect(self.switchIcon)
         
         self.contentWidget = QWidget()
         
         self.gridLayout = QGridLayout(self.contentWidget)
-        self.gridLayout.setContentsMargins(1, 1, 1, 1)
+        self.gridLayout.setContentsMargins(12, 12, 12, 12)
+        self.gridLayout.setSpacing(10)
         self.gridLayout.addWidget(self.label1, 1, 0)
         self.gridLayout.addWidget(self.item1, 1, 1, alignment=Qt.AlignRight)
         self.gridLayout.addWidget(self.label2, 2, 0)
@@ -88,6 +89,7 @@ class SettingsHierarchy(QFrame):
         # self.formLayout.addRow(self.label3, self.item3)
         
         self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(12, 12, 12, 12)
         self.layout.addWidget(self.titleWidget)
         self.layout.addWidget(self.contentWidget)
         self.layout.addStretch()
@@ -96,7 +98,7 @@ class SettingsHierarchy(QFrame):
         self.setStyleSheet("""
             QWidget {
                 /* border: 1px solid red; */
-                color: white;
+                color: rgb(200, 200, 200);   /* rgb(44, 222, 133) */
                 background-color: rgb(48, 48, 49);
                 border-radius: 0;
             }

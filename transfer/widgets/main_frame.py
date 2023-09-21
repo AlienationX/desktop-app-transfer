@@ -117,6 +117,7 @@ class MainFrame(QWidget):
             }
             QPushButton {
                 color: white;
+                                         width: 120px;
                 background-color: rgb(51, 118, 205);
                 border: 1px solid rgb(31, 31, 31);
             }
