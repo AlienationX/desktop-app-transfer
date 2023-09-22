@@ -180,6 +180,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     def setHeader(self):
         # header
         self.headerHContainer = HContainer()
+        # self.headerHContainer.setFixedHeight(44)
         self.headerHContainer.setContentsMargins(12, 6, 12, 6)
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_black.png"))
@@ -206,7 +207,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         
         self.minBtn.clicked.connect(self.showMinimized)
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
-        self.closeBtn.clicked.connect(self.close)
+        self.closeBtn.clicked.connect(self.confirmClose)
     
     @Slot()
     def changeMaxOrReset(self):
@@ -246,27 +247,44 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
             
-    def closeEvent(self, event):
-        # TODO 关闭程序弹出提示框确认，使用自定义的message_box
-        reply = QMessageBox.question(self, 
-                    "提示",
-                    "是否要关闭所有窗口?",
-                    QMessageBox.Yes | QMessageBox.No,
-                    QMessageBox.No)
-        print(reply)
-        print(type(reply))
-        if reply == QMessageBox.Yes:
-            # event.accept()
-            # sys.exit(0)   # 退出程序
+    # def closeEvent(self, event):
+    #     # 关闭程序弹出提示框确认
+    #     reply = QMessageBox.question(self, 
+    #                 "提示",
+    #                 "是否要关闭所有窗口?",
+    #                 QMessageBox.Yes | QMessageBox.No,
+    #                 QMessageBox.No)
+    #     if reply == QMessageBox.Yes:
+    #         # event.accept()
+    #         # sys.exit(0)   # 退出程序
+    #         self.close()
+    #     else:
+    #         event.ignore()  # 一定要增加ignore，否则还是会关闭
+    
+    @Slot()
+    def confirmClose(self):
+        # 关闭程序弹出提示框确认，使用自定义的message_box
+        self.reply = MessageBox()
+        self.reply.setWindowTitle("Confirm")
+        self.reply.setText("Are you sure exit?")
+        self.reply.addButton("OK")
+        self.reply.addButton("Cancel")
+        self.reply.setWindowModality(Qt.ApplicationModal)
+        self.reply.signal.connect(lambda x: self.confirmExit(x))
+        # self.reply.move(self)
+        self.reply.show()
+        
+    @Slot()
+    def confirmExit(self, reply_text):
+        if reply_text == "OK": 
             self.close()
-        else:
-            event.ignore()  # 一定要增加ignore，否则还是会关闭
     
     def setFooter(self):
         # 自定义状态栏
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("Copyright © 2023 by shuli. All rights reserved.")
         self.statusHContainer = HContainer()
+        # self.statusHContainer.setFixedHeight(30)
         self.statusHContainer.setContentsMargins(12, 6, 12, 6)
         self.statusHContainer.addWidget(self.messageLable)
         self.statusHContainer.addStretch()

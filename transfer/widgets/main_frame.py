@@ -18,8 +18,6 @@ class MainFrame(QWidget):
         self.layout.setSpacing(0)
         
         self.menuList = MenuList()
-        self.menuList.setMinimumWidth(230)
-        self.menuList.setMaximumWidth(300)
         self.stackedWidget = QStackedWidget()
          
         for i in range(len(self.menuList.menus)):        
@@ -67,9 +65,17 @@ class MainFrame(QWidget):
         self.menuVContainer = VContainer()
         self.menuVContainer.setObjectName("menuVContainer")
         
-        self.menuVContainer.setMaximumWidth(240)
+        self.menuVContainer.setFixedWidth(230)
+        # self.menuVContainer.setMinimumWidth(230)
+        # self.menuVContainer.setMaximumWidth(600)
         self.menuVContainer.addWidget(self.menuList)
         self.menuVContainer.addWidget(self.extendHContainer)
+        
+        # TODO 最大化后布局大小改变
+        # self.splitter = QSplitter(self)
+        # self.splitter.addWidget(self.menuVContainer)
+        # self.splitter.addWidget(self.stackedWidget)
+        # self.layout.addWidget(self.splitter, alignment=Qt.AlignTop)
         
         self.layout.addWidget(self.menuVContainer)
         self.layout.addWidget(self.stackedWidget)

@@ -42,7 +42,7 @@ class SettingsHierarchy(QFrame):
         self.titleLabel.setFont(font)
         self.closeBtn = QPushButton()
         self.closeBtn.setIcon(qta.icon("msc.arrow-circle-right", color=QColor(200, 200, 200)))  # msc.arrow-circle-right / msc.arrow-right
-        self.closeBtn.setIconSize(QSize(36, 36))
+        self.closeBtn.setIconSize(QSize(28, 28))
         self.closeBtn.clicked.connect(self.hideSelf)
         
         self.titleWidget = QWidget()
@@ -58,6 +58,10 @@ class SettingsHierarchy(QFrame):
         self.label3 = QLabel("隐藏状态栏:")
         
         self.item1 = QLabel("Free")
+        self.item1.setObjectName("item1")
+        self.item1.setFont(font)
+        self.item1.setAlignment(Qt.AlignRight)  # Qt.AlignCenter|Qt.AlignLeft|Qt.AlignTop
+        self.item1.setMinimumWidth(100)
         
         self.item2 = QComboBox()
         self.item2.setMinimumWidth(100)
@@ -104,6 +108,10 @@ class SettingsHierarchy(QFrame):
             }
             #titleWidget {
                 border-bottom: 1px solid rgb(200, 200, 200);
+            }
+            #item1 {
+                color: rgb(204, 102, 51);
+                background-color: rgb(44, 222, 133);
             }
         """)
     

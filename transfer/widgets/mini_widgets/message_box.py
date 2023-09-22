@@ -18,12 +18,14 @@ class MessageBox(QDialog):
     signal = Signal(str)
     
     def __init__(self, parent=None):
+        
         super().__init__(parent)
         
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)  # 隐藏边框且总在最前
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
         self.setMinimumWidth(300)
         self.setMaximumWidth(600)
+        self.resize(300, 300)
         
         # 添加阴影
         # shadow = QGraphicsDropShadowEffect(self)
@@ -54,10 +56,9 @@ class MessageBox(QDialog):
         self.closeBtn.clicked.connect(self.close)
 
         self.titleLable = QLabel()
-        self.titleLable.setWordWrap(True)
         self.titleLable.setFont(self.font)
         # self.titleLable.setWordWrap(True)
-        # self.titleLable.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+        self.titleLable.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.contentLabel = QLabel(self)
         self.contentLabel.setObjectName("contentLabel")
@@ -159,14 +160,8 @@ class MessageBox(QDialog):
         self.signal.emit(btnText)  # 发送信号
         self.close()
     
-    def resizeEvent(self, envent):
-        print("resizeEvent", self.width(), self.height())
-    
-    def showEvent(self, envet):
-        # show之前处理的事件，可以获取真正的窗体大小
-        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
-        # https://blog.csdn.net/weixin_42108411/article/details/108023828
-        # print("showEvent", self.width(), self.height())
+    def resizeEvent(self, event):
+        # 调用父类的resizeEvent()方法，以确保窗口可以正常工作
         
         if self.windowTitleLable.text():
             self.layout.insertWidget(0, self.titleWidget)
@@ -186,17 +181,28 @@ class MessageBox(QDialog):
             """)
             
         if self.titleLable.text():
-            self.contentLayout.insertWidget(0, self.titleLable)
+            self.contentLayout.addWidget(self.titleLable)
             
         if self.contentLabel.text():
             self.contentLayout.addWidget(self.contentLabel)
+            self.contentLayout.addStretch()
         else:
             raise Exception ("must be set content text")
 
         if self.buttonsWidget.findChildren(QPushButton):
             self.contentLayout.addWidget(self.buttonsWidget)
-
+            
+        print("resizeEvent", self.width(), self.height())
+        # super().resizeEvent(event)
+    
+    def showEvent(self, event):
+        # show之前处理的事件，可以获取真正的窗体大小
+        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
+        # https://blog.csdn.net/weixin_42108411/article/details/108023828
+        # print("showEvent", self.width(), self.height())
+        
         print("showEvent", self.width(), self.height())
+
         
     
     def enterEvent(self, event):
@@ -247,6 +253,9 @@ class MessageBox(QDialog):
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
+    w = QWidget()
+    w.resize(600, 400)
+    
     m=MessageBox()
     m.setWindowTitle("WINDOW TITLE")
     m.setTitle("I am title")
@@ -254,4 +263,6 @@ if __name__=="__main__":
     m.addButton("OK")
     m.addButton("Cancel")
     m.show()
+    
+    w.show()
     app.exit(app.exec())
