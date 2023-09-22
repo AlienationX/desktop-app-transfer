@@ -25,7 +25,7 @@ class MessageBox(QDialog):
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
         self.setMinimumWidth(300)
         self.setMaximumWidth(600)
-        self.resize(300, 300)
+        # self.resize(300, 300)
         
         # 添加阴影
         # shadow = QGraphicsDropShadowEffect(self)
@@ -103,6 +103,9 @@ class MessageBox(QDialog):
             QPushButton:hover {
                 background-color: rgb(49, 50, 50);
             }
+            #messageBoxContent {
+                background-color: rgb(44, 45, 46);
+            }
             #messageBoxContent QWidget {
                 background-color: transparent;
             }
@@ -132,16 +135,26 @@ class MessageBox(QDialog):
         #         background-color: white;
         #     }
         # """)
-    
         
     def setWindowTitle(self, window_title):
         self.windowTitleLable.setText(window_title)
+        self.layout.insertWidget(0, self.titleWidget)
+        # 如果存在WindowTitle，则修改为上角为直角
+        self.contentWidget.setStyleSheet("""
+            #messageBoxContent {
+                border-top-left-radius: 0px;
+                border-top-right-radius: 0px;
+                background-color: rgb(44, 45, 46);
+            }
+        """)
     
     def setTitle(self, title):
         self.titleLable.setText(title)
+        self.contentLayout.addWidget(self.titleLable)
     
     def setText(self, content):
         self.contentLabel.setText(content)
+        self.contentLayout.addWidget(self.contentLabel)
     
     def addButton(self, text):
         button = QPushButton(self)
@@ -149,8 +162,9 @@ class MessageBox(QDialog):
         # button.setFont(self.font)
         button.clicked.connect(self.getBtnText)
         self.buttonsLayout.addWidget(button, alignment=Qt.AlignRight | Qt.AlignBottom)
+        self.contentLayout.addWidget(self.buttonsWidget)
 
-    def setDefaultButton(self, text):
+    def setBuleButton(self, buttons_text:list):
         pass
     
     @Slot()
@@ -159,79 +173,35 @@ class MessageBox(QDialog):
         print(btnText)
         self.signal.emit(btnText)  # 发送信号
         self.close()
-    
-    def resizeEvent(self, event):
-        # 调用父类的resizeEvent()方法，以确保窗口可以正常工作
-        
-        if self.windowTitleLable.text():
-            self.layout.insertWidget(0, self.titleWidget)
-            self.contentWidget.setStyleSheet("""
-                #messageBoxContent {
-                    border-top-left-radius: 0px;
-                    border-top-right-radius: 0px;
-                    background-color: rgb(44, 45, 46);
-                }
-            """)
-        else:
-            # 如果没有WindowTitle，则修改为上角为圆角
-            self.contentWidget.setStyleSheet("""
-                #messageBoxContent {
-                    background-color: rgb(44, 45, 46);
-                }
-            """)
-            
-        if self.titleLable.text():
-            self.contentLayout.addWidget(self.titleLable)
-            
-        if self.contentLabel.text():
-            self.contentLayout.addWidget(self.contentLabel)
-            self.contentLayout.addStretch()
-        else:
-            raise Exception ("must be set content text")
 
-        if self.buttonsWidget.findChildren(QPushButton):
-            self.contentLayout.addWidget(self.buttonsWidget)
-            
-        print("resizeEvent", self.width(), self.height())
-        # super().resizeEvent(event)
     
-    def showEvent(self, event):
-        # show之前处理的事件，可以获取真正的窗体大小
-        # 为了获取messagebox的实际大小，只有show之后才会获取到真实大小，没有show之前是默认的640×480
-        # https://blog.csdn.net/weixin_42108411/article/details/108023828
-        # print("showEvent", self.width(), self.height())
-        
-        print("showEvent", self.width(), self.height())
-
-        
+    # def enterEvent(self, event):
+    #     # TODO 鼠标进入增加阴影
+    #     print("enter message box")
+    #     # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+    #     # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+    #     # self.setStyleSheet("""
+    #     # QWidget {
+    #     #         border-radius: 5px;
+    #     #         background-color: rgb(31, 31, 31);
+    #     #         color: rgb(174, 174, 174);
+    #     #                    border: 1px solid red;
+    #     #     }
+    #     #     QPushButton:hover {
+    #     #         background-color: rgb(49, 50, 50);
+    #     #     }
+    #     #     #contentLabel {
+    #     #         border-top-left-radius: 0px;
+    #     #         border-top-right-radius: 0px;
+    #     #         background-color: rgb(44, 45, 46);
+    #     #     }                 
+    #     # """)
     
-    def enterEvent(self, event):
-        # TODO 鼠标进入增加阴影
-        print("enter message box")
-        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
-        # self.setStyleSheet("""
-        # QWidget {
-        #         border-radius: 5px;
-        #         background-color: rgb(31, 31, 31);
-        #         color: rgb(174, 174, 174);
-        #                    border: 1px solid red;
-        #     }
-        #     QPushButton:hover {
-        #         background-color: rgb(49, 50, 50);
-        #     }
-        #     #contentLabel {
-        #         border-top-left-radius: 0px;
-        #         border-top-right-radius: 0px;
-        #         background-color: rgb(44, 45, 46);
-        #     }                 
-        # """)
-    
-    def leaveEvent(self, event):
-        # TODO 鼠标移开取消阴影
-        print("leave message box")
-        # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
-        # self.setStyleSheet("#backgroundWidget {border: none;}")
+    # def leaveEvent(self, event):
+    #     # TODO 鼠标移开取消阴影
+    #     print("leave message box")
+    #     # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
+    #     # self.setStyleSheet("#backgroundWidget {border: none;}")
     
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限标题栏支持拖拽移动
@@ -256,13 +226,19 @@ if __name__=="__main__":
     w = QWidget()
     w.resize(600, 400)
     
-    m=MessageBox()
+    m=MessageBox(w)
     m.setWindowTitle("WINDOW TITLE")
-    m.setTitle("I am title")
+    # m.setTitle("I am title")
     m.setText("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
     m.addButton("OK")
     m.addButton("Cancel")
-    m.show()
     
     w.show()
+
+    print(w.width() , m.width(), w.height() , m.height())
+    x = w.width() - m.width()
+    y = w.height() - m.height()
+    print(x, y)
+    m.move(x, y)
+
     app.exit(app.exec())
