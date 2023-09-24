@@ -36,7 +36,7 @@ class MessageBox(QDialog):
         
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
-        self.frame.setObjectName("backgroundWidget")
+        self.frame.setObjectName("backgroundFrame")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         
@@ -148,15 +148,15 @@ class MessageBox(QDialog):
             }
         """)
     
-    def setTitle(self, title):
+    def set_title(self, title):
         self.titleLable.setText(title)
         self.contentLayout.addWidget(self.titleLable)
     
-    def setText(self, content):
+    def set_text(self, content):
         self.contentLabel.setText(content)
         self.contentLayout.addWidget(self.contentLabel)
     
-    def addButton(self, text):
+    def add_button(self, text):
         button = QPushButton(self)
         button.setText(text)
         # button.setFont(self.font)
@@ -164,9 +164,13 @@ class MessageBox(QDialog):
         self.buttonsLayout.addWidget(button, alignment=Qt.AlignRight | Qt.AlignBottom)
         self.contentLayout.addWidget(self.buttonsWidget)
 
-    def setBuleButton(self, buttons_text:list):
+    def set_button_color(self, buttons_text:list):
+        pass
+
+    def add_shadow(self):
         pass
     
+
     @Slot()
     def getBtnText(self):
         btnText = self.sender().text()
@@ -175,33 +179,22 @@ class MessageBox(QDialog):
         self.close()
 
     
-    # def enterEvent(self, event):
-    #     # TODO 鼠标进入增加阴影
-    #     print("enter message box")
-    #     # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-    #     # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
-    #     # self.setStyleSheet("""
-    #     # QWidget {
-    #     #         border-radius: 5px;
-    #     #         background-color: rgb(31, 31, 31);
-    #     #         color: rgb(174, 174, 174);
-    #     #                    border: 1px solid red;
-    #     #     }
-    #     #     QPushButton:hover {
-    #     #         background-color: rgb(49, 50, 50);
-    #     #     }
-    #     #     #contentLabel {
-    #     #         border-top-left-radius: 0px;
-    #     #         border-top-right-radius: 0px;
-    #     #         background-color: rgb(44, 45, 46);
-    #     #     }                 
-    #     # """)
+    def enterEvent(self, event):
+        # TODO 鼠标进入增加阴影
+        print("enter message box")
+        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
+        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+        # self.setStyleSheet("""
+        #     #backgroundFrame {
+        #         border: 1px solid rgb(51, 118, 205);
+        #     }               
+        # """)
     
-    # def leaveEvent(self, event):
-    #     # TODO 鼠标移开取消阴影
-    #     print("leave message box")
-    #     # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
-    #     # self.setStyleSheet("#backgroundWidget {border: none;}")
+    def leaveEvent(self, event):
+        # TODO 鼠标移开取消阴影
+        print("leave message box")
+        # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
+        # self.setStyleSheet("#backgroundFrame {border: none;}")
     
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限标题栏支持拖拽移动
@@ -229,9 +222,9 @@ if __name__=="__main__":
     m=MessageBox(w)
     m.setWindowTitle("WINDOW TITLE")
     # m.setTitle("I am title")
-    m.setText("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
-    m.addButton("OK")
-    m.addButton("Cancel")
+    m.set_text("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
+    m.add_button("OK")
+    m.add_button("Cancel")
     
     w.show()
 

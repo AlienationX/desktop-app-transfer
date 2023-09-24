@@ -266,9 +266,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         # 关闭程序弹出提示框确认，使用自定义的message_box
         self.reply = MessageBox()
         self.reply.setWindowTitle("Confirm")
-        self.reply.setText("    Are you sure exit?")
-        self.reply.addButton("OK")
-        self.reply.addButton("Cancel")
+        self.reply.set_text("    Are you sure exit?")
+        self.reply.add_button("OK")
+        self.reply.add_button("Cancel")
         self.reply.setWindowModality(Qt.ApplicationModal)
         self.reply.signal.connect(lambda x: self.confirmExit(x))
         # self.reply.move(self)

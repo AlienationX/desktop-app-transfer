@@ -204,8 +204,8 @@ class MainFrame(QWidget):
         # repaint() 立即绘图
         self.messageBox = MessageBox()
         self.messageBox.setWindowTitle("Message")
-        self.messageBox.setText("上图中直观展示出C2时共有2个异常值点，如果对C2进行分析，且分析方法对异常值敏感时（比如相关分析，回归分析等），此时需要对该2个异常值点进行处理成null或者填充，或者在分析时进行过滤。")
-        self.messageBox.addButton("OK")
+        self.messageBox.set_text("上图中直观展示出C2时共有2个异常值点，如果对C2进行分析，且分析方法对异常值敏感时（比如相关分析，回归分析等），此时需要对该2个异常值点进行处理成null或者填充，或者在分析时进行过滤。")
+        self.messageBox.add_button("OK")
         self.messageBox.repaint()
         print(self.messageBox.width(), self.messageBox.height())
         print(self.geometry(), self.geometry().bottomRight())
