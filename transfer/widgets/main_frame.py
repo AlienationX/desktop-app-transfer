@@ -22,7 +22,7 @@ class MainFrame(QWidget):
          
         for i in range(len(self.menuList.menus)):        
             menu_item = self.menuList.menus[i]
-            setattr(self, menu_item["objectName"], menu_item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建
+            setattr(self, menu_item["objectName"], menu_item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建，但是无法保证stackedWidget的顺序
             if menu_item["class"]:
                 self.stackedWidget.addWidget(getattr(self, menu_item["objectName"]))  # 添加到stackedWidget上
         
@@ -151,6 +151,7 @@ class MainFrame(QWidget):
         # 菜单和页面的切换
         for i in range(len(self.menuList.menus)):
             menu_item = self.menuList.menus[i]
+            print("============> ", currentRow, i)
             if currentRow == i and menu_item["class"]:
                 self.stackedWidget.setCurrentWidget(getattr(self, menu_item["objectName"]))
                 return
