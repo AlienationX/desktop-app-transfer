@@ -4,7 +4,7 @@ from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer
-from transfer.widgets.pages import ExcelToCsvWidget, ExcelSplitWidget, CsvToExcelWidget, WordToPDFWidget, DocumentWidget
+from transfer.widgets.pages import ExcelToCsvWidget, ExcelSplitWidget, ExcelOverviewWidget, CsvToExcelWidget, WordToPDFWidget, DocumentWidget
 import sys
 
 class MenuList(QWidget):
@@ -20,7 +20,7 @@ class MenuList(QWidget):
             {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
             {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget()},
             {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget()},
-            # {"id":  4, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
+            {"id":  4, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
             {"id":  5, "pid": -1, "expended": False, "objectName": "word", "text": "WORD", "icon": "ri.file-word-2-line", "class": ""},
             {"id":  6, "pid":  5, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget()},
             {"id":  7, "pid": -1, "expended": False, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": ""},

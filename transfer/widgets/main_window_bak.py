@@ -93,7 +93,7 @@ class MainWindow(QWidget):
                 border-radius: 5px;
                 background-color: rgb(31, 31, 31);
                 color: rgb(200, 200, 200);
-                font-size: 13px;
+                font-size: 12px;
             }
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 ScrollBars */
@@ -269,6 +269,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.reply.set_text("    Are you sure exit?")
         self.reply.add_button("OK")
         self.reply.add_button("Cancel")
+        self.reply.set_button_color("Cancel")
         self.reply.setWindowModality(Qt.ApplicationModal)
         self.reply.signal.connect(lambda x: self.confirmExit(x))
         # self.reply.move(self)
@@ -290,20 +291,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.statusHContainer.addStretch()
         self.statusHContainer.addWidget(self.versionLable)
         self.mainVContainer.addWidget(self.statusHContainer)
-        print("statusbar", self.messageLable.width())
-        print("versionLable", self.versionLable.width())
-        print("statusHContainer", self.statusHContainer.width())
     
     def bind(self):
         # TODO 给子组件的信号绑定处理函数
         childw1 = getattr(self.mainFrame, "ExcelToCsvWidget")
-        childw1.message_signal.connect(lambda msg: self.print_message(msg))
+        childw1.message_signal.connect(lambda msg: self.print_status_message(msg))
         childw2 = getattr(self.mainFrame, "ExcelSplitWidget")
-        childw2.message_signal.connect(lambda msg: self.print_message(msg))
+        childw2.message_signal.connect(lambda msg: self.print_status_message(msg))
        
-    def print_message(self, msg):
-        print("==> self =", self.width())
-        print("==> self.versionLable =", self.versionLable.width())
-        self.messageLable.setMaximumWidth(self.width() - self.versionLable.width() - 10)  # TODO 名称太长会改变窗体大小
+    def print_status_message(self, msg):
+        self.messageLable.setMaximumWidth(self.width() - self.versionLable.width() - 50)
         self.messageLable.setText(msg)
         self.messageLable.setToolTip(msg)

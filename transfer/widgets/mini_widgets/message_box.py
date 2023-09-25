@@ -23,9 +23,10 @@ class MessageBox(QDialog):
         
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
-        self.setMinimumWidth(300)
+        self.setMinimumWidth(360)
         self.setMaximumWidth(600)
         # self.resize(300, 300)
+        self.setObjectName("messageBox")
         
         # 添加阴影
         # shadow = QGraphicsDropShadowEffect(self)
@@ -35,8 +36,7 @@ class MessageBox(QDialog):
         # self.setGraphicsEffect(shadow)
         
         # 重点： 这个frame作为背景和圆角
-        self.frame = QFrame()
-        self.frame.setObjectName("backgroundFrame")
+        self.frame = QFrame()        
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         
@@ -165,7 +165,9 @@ class MessageBox(QDialog):
         self.contentLayout.addWidget(self.buttonsWidget)
 
     def set_button_color(self, buttons_text:list):
-        pass
+        for btn in self.buttonsWidget.findChildren(QPushButton):
+            if btn.text() in buttons_text:
+                btn.setStyleSheet("background-color: rgb(0, 120, 212)")
 
     def add_shadow(self):
         pass
@@ -178,21 +180,26 @@ class MessageBox(QDialog):
         self.signal.emit(btnText)  # 发送信号
         self.close()
 
+    # def resizeEvent(self, event) -> None:
+    #     print("resize", self.width(), self.height())
     
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
-        print("enter message box")
+        pass
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         # self.setStyleSheet("""
         #     #backgroundFrame {
+        #         border-radius: 5px;
+        #         background-color: rgb(31, 31, 31);
+        #         color: rgb(174, 174, 174);
         #         border: 1px solid rgb(51, 118, 205);
         #     }               
         # """)
     
     def leaveEvent(self, event):
         # TODO 鼠标移开取消阴影
-        print("leave message box")
+        pass
         # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
         # self.setStyleSheet("#backgroundFrame {border: none;}")
     
@@ -225,13 +232,15 @@ if __name__=="__main__":
     m.set_text("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
     m.add_button("OK")
     m.add_button("Cancel")
-    
-    w.show()
+    m.set_button_color(["OK", "Cancel"])
+    m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())
     x = w.width() - m.width()
     y = w.height() - m.height()
     print(x, y)
     m.move(x, y)
+    
+    w.show()
 
     app.exit(app.exec())

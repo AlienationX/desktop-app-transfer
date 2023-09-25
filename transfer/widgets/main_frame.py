@@ -123,7 +123,7 @@ class MainFrame(QWidget):
             }
             QPushButton {
                 color: white;
-                                         width: 120px;
+                width: 120px;
                 background-color: rgb(51, 118, 205);
                 border: 1px solid rgb(31, 31, 31);
             }
@@ -193,6 +193,12 @@ class MainFrame(QWidget):
         # maskWidget也随着调整大小
         self.maskWidget.resize(self.width() - self.settingsVContainer.width(), self.height())
         
+        # messageBox也跟着移动 # TODO 多个消息框如何处理？
+        if hasattr(self, "messageBox"):
+            x = self.width() - self.messageBox.width() - 1
+            y = self.height() - self.messageBox.height() - 1
+            self.messageBox.move(x, y)
+        
     def mousePressEvent(self, event) -> None:
         if not self.settingsVContainer.underMouse():
             print("click")
@@ -201,21 +207,16 @@ class MainFrame(QWidget):
                 
     def showMessage(self):
         """弹出信息"""
-        # repaint() 立即绘图
-        self.messageBox = MessageBox()
+        self.messageBox = MessageBox(self)
         self.messageBox.setWindowTitle("Message")
         self.messageBox.set_text("上图中直观展示出C2时共有2个异常值点，如果对C2进行分析，且分析方法对异常值敏感时（比如相关分析，回归分析等），此时需要对该2个异常值点进行处理成null或者填充，或者在分析时进行过滤。")
         self.messageBox.add_button("OK")
-        self.messageBox.repaint()
-        print(self.messageBox.width(), self.messageBox.height())
-        print(self.geometry(), self.geometry().bottomRight())
-        x = self.geometry().right() - self.messageBox.width()
-        y = self.geometry().bottom() - self.messageBox.height()
-        print("xy", x, y)
+        self.messageBox.set_button_color("OK")
+        self.messageBox.resize(self.messageBox.sizeHint())  # 关键，show之前获取建议的尺寸
+        x = self.width() - self.messageBox.width() - 1
+        y = self.height() - self.messageBox.height() - 1
         self.messageBox.move(x, y)
         self.messageBox.show()
-        
-        
     
         
 if __name__=="__main__":

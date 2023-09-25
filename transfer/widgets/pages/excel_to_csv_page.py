@@ -260,7 +260,6 @@ class ExcelToCsvWidget(QWidget):
         
     def execute_work_signal(self, value, msg):
         self.progressBar.setValue(value)
-        print(f"emit {msg} to main widget from excel_widget")
         self.message_signal.emit(msg)  # 完成一个文件，就发送给状态栏进行显示
     
     def updateOptions(self):
