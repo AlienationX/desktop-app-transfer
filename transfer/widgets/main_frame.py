@@ -71,6 +71,9 @@ class MainFrame(QWidget):
         self.menuVContainer.addWidget(self.menuList)
         self.menuVContainer.addWidget(self.extendHContainer)
         
+        self.pageHContainer = HContainer()
+        self.pageHContainer.addWidget(self.stackedWidget)
+        
         # TODO 最大化后布局大小改变
         # self.splitter = QSplitter(self)
         # self.splitter.addWidget(self.menuVContainer)
@@ -78,7 +81,7 @@ class MainFrame(QWidget):
         # self.layout.addWidget(self.splitter, alignment=Qt.AlignTop)
         
         self.layout.addWidget(self.menuVContainer)
-        self.layout.addWidget(self.stackedWidget)
+        self.layout.addWidget(self.pageHContainer)
 
         self.settingsVContainer = SettingsHierarchy(self)
         self.maskWidget = MaskWidget(self)
@@ -149,12 +152,9 @@ class MainFrame(QWidget):
     @Slot()
     def router(self, currentRow):
         # 菜单和页面的切换
-        for i in range(len(self.menuList.menus)):
-            menu_item = self.menuList.menus[i]
-            print("============> ", currentRow, i)
-            if currentRow == i and menu_item["class"]:
-                self.stackedWidget.setCurrentWidget(getattr(self, menu_item["objectName"]))
-                return
+        menu_item = self.menuList.menus[currentRow]
+        if menu_item["class"]:
+            self.stackedWidget.setCurrentWidget(getattr(self, menu_item["objectName"]))
     
     @Slot()
     def hide_menu(self):
