@@ -274,7 +274,7 @@ class ExcelToCsvWidget(QWidget):
         print(self.options)
     
     def setStartStatus(self):
-        runBtnIcon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(self.startBtn))
+        runBtnIcon = qta.icon("fa5s.spinner", color="white", animation=qta.Spin(self.startBtn))
         self.startBtn.setIcon(runBtnIcon)
         self.startBtn.setText("执行中......")
         self.startBtn.setEnabled(False)

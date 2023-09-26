@@ -134,6 +134,28 @@ class MainFrame(QWidget):
                 color: white;
                 background-color: rgb(47, 108, 187);
             }
+QListView {
+    outline: none;  /* 禁用被选中的虚线 */
+}
+QListView::item:hover {
+    border-radius: 3px;
+    background-color: rgb(4, 57, 94);
+}
+QListView::item:selected {
+    border-radius: 3px;
+    background-color: rgb(58, 46, 86);
+}
+
+QProgressBar {
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+    margin: 0;
+}
+QProgressBar::chunk {
+    background-color: rgb(3, 75, 21);
+    width: 10px;
+}
         """)
         
 
