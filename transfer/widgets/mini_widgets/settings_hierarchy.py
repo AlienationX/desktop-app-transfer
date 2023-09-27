@@ -6,6 +6,8 @@ import qtawesome as qta
 
 import sys
 
+from transfer.widgets.mini_widgets import SwitchButton
+
 """
 什么是层级关系
 区别于控件间的父子关系，层级关系是值显示的顺序。
@@ -69,10 +71,8 @@ class SettingsHierarchy(QFrame):
         self.item2.addItem("Light")
         self.item2.addItem("Color")
         
-        self.item3 = QPushButton()
-        self.item3.setIcon(qta.icon("mdi.toggle-switch-off", color=QColor(200, 200, 200)))
-        # self.item3.setIconSize(QSize(30, 30))
-        self.item3.clicked.connect(self.switchIcon)
+        self.item3 = SwitchButton()
+        self.item3.clicked.connect(self.switchEvent)
         
         self.contentWidget = QWidget()
         
@@ -116,8 +116,8 @@ class SettingsHierarchy(QFrame):
         """)
     
     @Slot()
-    def switchIcon(self):
-        self.item3.setIcon(qta.icon("mdi.toggle-switch", color=QColor(200, 200, 200)))
+    def switchEvent(self):
+        pass
     
     def showEvent(self, event) -> None:
         self.resize(min(self.width(), self.parent().width()), self.parent().height())

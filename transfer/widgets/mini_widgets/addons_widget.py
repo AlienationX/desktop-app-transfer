@@ -64,4 +64,3 @@ class MaskWidget(QWidget):
         parent_rect = self.parent().geometry()
         self.resize(parent_rect.width(), parent_rect.height())
         self.show()
-        

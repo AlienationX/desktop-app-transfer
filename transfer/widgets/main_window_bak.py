@@ -1,13 +1,14 @@
 
 from PySide6.QtWidgets import *
-from PySide6.QtCore import Slot, QSize, Qt, QRect
-from PySide6.QtGui import QIcon, QPixmap, QColor
+from PySide6.QtCore import *
+from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
 from transfer.widgets.mini_widgets.message_box import MessageBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
+
 from transfer.widgets.main_frame import MainFrame
 from transfer.utils.common import CommonHelper
 from transfer.resources import resources_rc
@@ -48,7 +49,6 @@ class MainWindow(QWidget):
 
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
-        self.frame.setObjectName("backgroundFrame")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=20, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         self.layout = QVBoxLayout(self)
@@ -186,6 +186,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_black.png"))
         self.logoLabel.setFixedSize(120, 32)
         self.logoLabel.setScaledContents(True)  # 自适应
+        
+        self.logoTextLabel = QLabel()
+        self.logoTextLabel.setText("TransferS")
+        logoFont = QFont()
+        logoFont.setBold(True)
+        logoFont.setFamily("Segoe UI")
+        logoFont.setPixelSize(40)
+        self.logoTextLabel.setFont(logoFont)
+        
         self.minBtn = QPushButton(qta.icon("msc.chrome-minimize", color=QColor(200, 200, 200)), "")
         self.minBtn.setObjectName("minBtn")
         self.minBtn.setToolTip("最小化")
@@ -199,6 +208,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.closeBtn.setToolTip("关闭")
         self.closeBtn.setIconSize(QSize(20, 20))
         self.headerHContainer.addWidget(self.logoLabel)
+        self.headerHContainer.addWidget(self.logoTextLabel)
         self.headerHContainer.addStretch()
         self.headerHContainer.addWidget(self.minBtn)
         self.headerHContainer.addWidget(self.maxBtn)

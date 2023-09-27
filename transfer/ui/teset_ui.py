@@ -38,6 +38,19 @@ class Ui_Form(object):
         self.label = QLabel(self.frame)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(20, 0, 55, 16))
+        self.progressBar = QProgressBar(self.frame)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setGeometry(QRect(10, 320, 171, 23))
+        self.progressBar.setStyleSheet(u"QProgressBar {\n"
+"    border: 1px solid grey;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QProgressBar::chunk {\n"
+"    background-color: #05B8CC;\n"
+"    width: 20px;\n"
+"}")
+        self.progressBar.setValue(24)
 
         self.horizontalLayout.addWidget(self.frame)
 

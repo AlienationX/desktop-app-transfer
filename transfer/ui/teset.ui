@@ -56,6 +56,30 @@
        <string>TextLabel</string>
       </property>
      </widget>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>320</y>
+        <width>171</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QProgressBar {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+QProgressBar::chunk {
+    background-color: #05B8CC;
+    width: 20px;
+}</string>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
     </widget>
    </item>
    <item>

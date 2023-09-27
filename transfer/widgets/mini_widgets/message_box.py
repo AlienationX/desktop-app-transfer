@@ -23,7 +23,7 @@ class MessageBox(QDialog):
         
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
-        self.setMinimumWidth(360)
+        self.setMinimumWidth(500)
         self.setMaximumWidth(600)
         # self.resize(300, 300)
         self.setObjectName("messageBox")
@@ -37,8 +37,6 @@ class MessageBox(QDialog):
         
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()        
-        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         
         _layout = QVBoxLayout(self)
         _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
@@ -96,6 +94,7 @@ class MessageBox(QDialog):
         
         self.setStyleSheet("""
             QWidget {
+                border: 1px solid red;
                 border-radius: 5px;
                 background-color: rgb(31, 31, 31);
                 color: rgb(174, 174, 174);
@@ -170,7 +169,8 @@ class MessageBox(QDialog):
                 btn.setStyleSheet("background-color: rgb(0, 120, 212)")
 
     def add_shadow(self):
-        pass
+        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
+        self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
     
 
     @Slot()

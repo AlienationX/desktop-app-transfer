@@ -1,19 +1,5 @@
 
-from PySide6.QtWidgets import (
-    QWidget,
-    QLabel,
-    QMessageBox,
-    QGroupBox,
-    QComboBox,
-    QRadioButton,
-    QCheckBox,
-    QLineEdit,
-    QProgressBar,
-    QPushButton,
-    QGridLayout,
-    QVBoxLayout,
-    QFileDialog,
-)
+from PySide6.QtWidgets import *
 from PySide6.QtCore import Slot, Qt, QSize, QStandardPaths, QFile, QSaveFile, QDir, QThread, QThreadPool, Signal
 from PySide6.QtGui import QFont, QPixmap
 
@@ -25,6 +11,8 @@ from pathlib import Path
 from datetime import datetime
 import csv
 import time
+
+from transfer.widgets.mini_widgets.message_box import MessageBox
 
 
 class ExcelToCsvWidget(QWidget):
@@ -123,8 +111,10 @@ class ExcelToCsvWidget(QWidget):
         self.startBtn = QPushButton(self.startBtnIcon, "执行")
         self.startBtn.setIconSize(QSize(20, 20))
         
-        self.progressBar = QProgressBar()
-        self.progressBar.setAlignment(Qt.AlignCenter)
+        self.detailProgressBar = QProgressBar()
+        self.detailProgressBar.setAlignment(Qt.AlignCenter)
+        self.mainProgressBar = QProgressBar()
+        self.mainProgressBar.setAlignment(Qt.AlignCenter)
 
         # 创建布局
         self.gridLayout = QGridLayout()
@@ -141,18 +131,18 @@ class ExcelToCsvWidget(QWidget):
         # self.gridLayout.addWidget(self.overwriteCheckBox, 5, 3, alignment=Qt.AlignLeft|Qt.AlignTop)  # 可以设置grid的位置
         self.gridLayout.addWidget(self.startBtn, 5, 0, 1, self.gridLayout.columnCount())
         self.gridLayout.setRowStretch(6, 1)
-        self.gridLayout.addWidget(self.progressBar, 7, 0, 1, self.gridLayout.columnCount())
+        # self.gridLayout.addWidget(self.detailProgressBar, 7, 0, 1, self.gridLayout.columnCount())
+        # self.gridLayout.addWidget(self.mainProgressBar, 8, 0, 1, self.gridLayout.columnCount())
         self.gridLayout.setVerticalSpacing(10)        # 设置每行之间的间距
         # self.gridLayout.setHorizontalSpacing(10)    # 设置每列之间的间距
         print(self.gridLayout.verticalSpacing(), "列间距")
         print(self.gridLayout.horizontalSpacing(), "行间距")
         print(self.gridLayout.rowCount(), "行", self.gridLayout.columnCount(), "列")
         
-        # TODO 文件夹形式，多文件，双进度条，动态图标
-        fa5_button = QPushButton('Font Awesome! (regular)')
-        spin_icon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(fa5_button))
-        fa5_button.setIcon(spin_icon)
-        self.gridLayout.addWidget(fa5_button, 99, 0, 1, self.gridLayout.columnCount())
+        # fa5_button = QPushButton('Font Awesome! (regular)')
+        # spin_icon = qta.icon("fa5s.spinner", color="blue", animation=qta.Spin(fa5_button))
+        # fa5_button.setIcon(spin_icon)
+        # self.gridLayout.addWidget(fa5_button, 99, 0, 1, self.gridLayout.columnCount())
         
         # 为窗体添加布局
         self.setLayout(self.gridLayout)
@@ -237,21 +227,36 @@ class ExcelToCsvWidget(QWidget):
         self.input_files = []   # 清空列表
         self.output_files = []
         if inputPath.is_dir() and outputPath.is_dir():
-            self.input_files = [str(x) for x in inputPath.iterdir() if x.suffix in [".xlsx", ".xls"]]  # TODO 增加子文件夹下的文件
+            # self.input_files = [str(x) for x in inputPath.iterdir() if x.suffix in [".xlsx", ".xls"]]  # 当前文件夹下的文件
+            self.input_files = [str(x) for x in inputPath.rglob("*.*") if x.suffix in [".xlsx", ".xls"]]  # 包含子文件夹下的文件
             self.output_files = [str(outputPath.joinpath(Path(x).stem).with_suffix(".csv")) for x in self.input_files]  
         else:
             self.input_files.append(str(inputPath))
             self.output_files.append(str(outputPath))
         
+        # TODO 为空处理
         print("inputFiles = ", self.input_files)
         print("outputFiles = ", self.output_files)
+        if not self.input_files:
+            self._tmpDialog = MessageBox()
+            self._tmpDialog.setWindowModality(Qt.ApplicationModal)
+            self._tmpDialog.setMaximumWidth(200)
+            self._tmpDialog.setWindowTitle("WARNING")
+            self._tmpDialog.set_text("所选文件夹下没有Excel文件")
+            self._tmpDialog.add_button("OK")
+            self._tmpDialog.set_button_color("OK")
+            self._tmpDialog.show()
+            print("Error: input file is null")
+            return
         
-        self.progressBar.setValue(1)                                         # 预先设置为1%
+        # self.gridLayout.addWidget(self.detailProgressBar, 7, 0, 1, self.gridLayout.columnCount())  # TODO 文件夹形式，多文件，双进度条，动态图标
+        self.gridLayout.addWidget(self.mainProgressBar, 8, 0, 1, self.gridLayout.columnCount())
+        self.mainProgressBar.setValue(1)                                         # 预先设置为1%
         self.updateOptions()                                                 # 更新选项值
         
         workThread = WorkThread(self)                                        # 将self传进去，绑定到部件上
         workThread.setArgs(self.input_files, self.output_files, self.options)   # 设置参数，传递进线程
-        # workThread.signal.connect(lambda x: self.progressBar.setValue(x))
+        # workThread.signal.connect(lambda x: self.mainProgressBar.setValue(x))
         workThread.signal.connect(lambda value, msg: self.execute_work_signal(value, msg))
         workThread.started.connect(self.setStartStatus)
         workThread.finished.connect(self.setEndStatus)
@@ -259,7 +264,7 @@ class ExcelToCsvWidget(QWidget):
         workThread.start()
         
     def execute_work_signal(self, value, msg):
-        self.progressBar.setValue(value)
+        self.mainProgressBar.setValue(value)
         self.message_signal.emit(msg)  # 完成一个文件，就发送给状态栏进行显示
     
     def updateOptions(self):

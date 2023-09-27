@@ -134,28 +134,28 @@ class MainFrame(QWidget):
                 color: white;
                 background-color: rgb(47, 108, 187);
             }
-QListView {
-    outline: none;  /* 禁用被选中的虚线 */
-}
-QListView::item:hover {
-    border-radius: 3px;
-    background-color: rgb(4, 57, 94);
-}
-QListView::item:selected {
-    border-radius: 3px;
-    background-color: rgb(58, 46, 86);
-}
-
-QProgressBar {
-    border: none;
-    border-radius: 5px;
-    padding: 0;
-    margin: 0;
-}
-QProgressBar::chunk {
-    background-color: rgb(3, 75, 21);
-    width: 10px;
-}
+            QListView {
+                outline: none;  /* 禁用被选中的虚线 */
+            }
+            QListView::item:hover {
+                border-radius: 3px;
+                background-color: rgb(4, 57, 94);
+                font-size: 13px;
+            }
+            QListView::item:selected {
+                border-radius: 3px;
+                background-color: rgb(58, 46, 86);
+            }
+            QStackedWidget QProgressBar {
+                border: 1px solid rgb(31, 31, 31);
+                border-radius: 3px;
+                padding: 0px;
+            }
+            QStackedWidget QProgressBar::chunk {
+                background-color: rgb(3, 74, 21);
+                /* width: 20px; */
+                /* margin: 0.5px; */  /* 带间隔的进度条 */
+            }
         """)
         
 

@@ -1,9 +1,35 @@
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from PySide6.QtCore import *
-
+import qtawesome as qta
 
 class SwitchButton(QPushButton):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        self.state = False  # 按钮状态：True表示开，False表示关
+        self.icon_map = {
+            True: qta.icon("mdi.toggle-switch", color=QColor(76, 175, 80)),
+            False: qta.icon("mdi.toggle-switch-off", color=QColor(137, 137, 137))
+        }
+        
+        self.setIcon(self.icon_map[self.state])
+        self.setIconSize(QSize(100, 50))
+        self.setFixedSize(50, 26)
+        self.setStyleSheet("border: 0;")
+        
+        self.clicked.connect(self.changeState)
+    
+    def re_size(self, width, height):
+        self.setFixedSize(width, height)
+    
+    @Slot()
+    def changeState(self):
+        self.state = not self.state
+        self.setIcon(self.icon_map[self.state])
+        
+class _MySwitchButton1(QPushButton):
     """自定义Switch按钮"""
 
     def __init__(self, parent=None):
@@ -77,7 +103,7 @@ class SwitchButton(QPushButton):
             painter.drawText(QRect(38, 4, 50, 20), Qt.AlignLeft, 'off')
 
 
-class MySwitch(QPushButton):
+class _MySwitchButton2(QPushButton):
     def __init__(self, parent = None):
         super().__init__(parent)
         self.setCheckable(True)
@@ -112,14 +138,13 @@ class MySwitch(QPushButton):
         painter.drawRoundedRect(sw_rect, radius, radius)
         painter.drawText(sw_rect, Qt.AlignCenter, label)
 
+
 if __name__=="__main__":
     app=QApplication([])
     w = QWidget()
     w.resize(600, 400)
     
-    # m1=SwitchButton(w)
-    m2=MySwitch(w)
-    m2.move(10, 10)
-    
+    b = SwitchButton(w)
+        
     w.show()
     app.exit(app.exec())
