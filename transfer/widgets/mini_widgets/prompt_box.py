@@ -24,7 +24,6 @@ class MessageBox(QDialog):
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明（添加阴影必须背景透明）
-        self.setMinimumWidth(600)
         self.setObjectName("messageBox")
         
         # 添加阴影
@@ -55,13 +54,12 @@ class MessageBox(QDialog):
         self.titleLable = QLabel()
         self.titleLable.setFont(self.font)
         # self.titleLable.setWordWrap(True)
-        self.titleLable.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.titleLable.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.contentLabel = QLabel()
         self.contentLabel.setObjectName("contentLabel")
         self.contentLabel.setWordWrap(True)  # 自动换行，只有中文和单词存在空格等才会换行，如果是一长串字母是不会换行的
-        # self.contentLabel.adjustSize()
+        self.contentLabel.setMinimumWidth(360)
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
         self.layout = QVBoxLayout(self.frame)
@@ -167,6 +165,9 @@ class MessageBox(QDialog):
         for btn in self.buttonsWidget.findChildren(QPushButton):
             if btn.text() in buttons_text:
                 btn.setStyleSheet("background-color: rgb(0, 120, 212)")
+                
+    def set_min_width(self, width):
+        self.contentLabel.setMinimumWidth(width)
 
     def add_shadow(self):
         self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.gray)
