@@ -5,7 +5,7 @@ from PySide6.QtWidgets import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer
-from transfer.widgets.mini_widgets.message_box import MessageBox
+from transfer.widgets.mini_widgets.prompt_box import MessageBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 
 from transfer.utils.common import CommonHelper

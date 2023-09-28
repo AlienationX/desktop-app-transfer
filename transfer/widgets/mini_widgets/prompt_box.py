@@ -21,11 +21,10 @@ class MessageBox(QDialog):
         
         super().__init__(parent)
         
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
-        self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明
-        self.setMinimumWidth(500)
-        self.setMaximumWidth(600)
-        # self.resize(300, 300)
+        # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
+        self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明（添加阴影必须背景透明）
+        self.setMinimumWidth(600)
         self.setObjectName("messageBox")
         
         # 添加阴影
@@ -39,7 +38,7 @@ class MessageBox(QDialog):
         self.frame = QFrame()        
         
         _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
         self.windowTitleLable = QLabel()
@@ -56,9 +55,10 @@ class MessageBox(QDialog):
         self.titleLable = QLabel()
         self.titleLable.setFont(self.font)
         # self.titleLable.setWordWrap(True)
+        self.titleLable.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.titleLable.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
-        self.contentLabel = QLabel(self)
+        self.contentLabel = QLabel()
         self.contentLabel.setObjectName("contentLabel")
         self.contentLabel.setWordWrap(True)  # 自动换行，只有中文和单词存在空格等才会换行，如果是一长串字母是不会换行的
         # self.contentLabel.adjustSize()
@@ -89,8 +89,8 @@ class MessageBox(QDialog):
         self.buttonsLayout.addStretch()  
         
         # 只增加contentWidget，其他的判断是否存在再增加
-        
         self.layout.addWidget(self.contentWidget)
+        
         
         self.setStyleSheet("""
             QWidget {
@@ -169,7 +169,7 @@ class MessageBox(QDialog):
                 btn.setStyleSheet("background-color: rgb(0, 120, 212)")
 
     def add_shadow(self):
-        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=50, xOffset=5, yOffset=5, color=Qt.gray)
+        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.gray)
         self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
     
 
@@ -180,8 +180,8 @@ class MessageBox(QDialog):
         self.signal.emit(btnText)  # 发送信号
         self.close()
 
-    # def resizeEvent(self, event) -> None:
-    #     print("resize", self.width(), self.height())
+    def resizeEvent(self, event) -> None:
+        print("resize", self.width(), self.height())
     
     def enterEvent(self, event):
         # TODO 鼠标进入增加阴影
@@ -219,7 +219,19 @@ class MessageBox(QDialog):
             positionX = self.frameGeometry().x() + moveX
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
-        
+
+
+class ConfirmBox(MessageBox):
+    
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+    
+
+class WarningBox(MessageBox):
+    
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+  
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
@@ -228,11 +240,12 @@ if __name__=="__main__":
     
     m=MessageBox(w)
     m.setWindowTitle("WINDOW TITLE")
-    # m.setTitle("I am title")
-    m.set_text("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而仅凭一个单独的IP地址是无法得知的。")
+    m.set_title("I am title")
+    m.set_text("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而阿什顿卡上的卡阿斯达仅凭一个单独的IP地址是无法得知的。")
     m.add_button("OK")
-    m.add_button("Cancel")
-    m.set_button_color(["OK", "Cancel"])
+    # m.add_button("Cancel")
+    # m.set_button_color(["OK", "Cancel"])
+    m.add_shadow()
     m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())

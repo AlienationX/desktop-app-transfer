@@ -5,7 +5,7 @@ from PySide6.QtGui import QIcon, QPixmap, QColor
 import qtawesome as qta
 
 from .mini_widgets.addons_widget import HContainer, VContainer
-from .mini_widgets.message_box import MessageBox
+from .mini_widgets.prompt_box import MessageBox
 
 from . pages import ExcelToCsvWidget, ExcelSplitWidget, ExcelOverviewWidget, CsvToExcelWidget, WordToPDFWidget, DocumentWidget
 

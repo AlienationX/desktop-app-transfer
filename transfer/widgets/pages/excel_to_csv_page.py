@@ -12,7 +12,7 @@ from datetime import datetime
 import csv
 import time
 
-from transfer.widgets.mini_widgets.message_box import MessageBox
+from transfer.widgets.mini_widgets.prompt_box import MessageBox
 
 
 class ExcelToCsvWidget(QWidget):
