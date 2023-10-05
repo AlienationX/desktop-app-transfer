@@ -5,7 +5,7 @@ from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
-from transfer.widgets.mini_widgets.prompt_box import MessageBox
+from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox, WarningBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
 
@@ -274,20 +274,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     @Slot()
     def confirmClose(self):
         # 关闭程序弹出提示框确认，使用自定义的message_box
-        self.reply = MessageBox()
-        self.reply.setWindowTitle("Confirm")
+        self.reply = ConfirmBox()
         self.reply.set_text("    Are you sure exit?")
-        self.reply.add_button("OK")
-        self.reply.add_button("Cancel")
-        self.reply.set_button_color("Cancel")
-        self.reply.setWindowModality(Qt.ApplicationModal)
         self.reply.signal.connect(lambda x: self.confirmExit(x))
         # self.reply.move(self)
         self.reply.show()
         
     @Slot()
     def confirmExit(self, reply_text):
-        if reply_text == "OK": 
+        if reply_text == "YES": 
             self.close()
     
     def setFooter(self):

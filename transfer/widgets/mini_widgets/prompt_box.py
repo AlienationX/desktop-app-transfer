@@ -37,7 +37,7 @@ class MessageBox(QDialog):
         self.frame = QFrame()        
         
         _layout = QVBoxLayout(self)
-        # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        _layout.setContentsMargins(6, 6, 6, 6)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
         self.windowTitleLable = QLabel()
@@ -92,7 +92,6 @@ class MessageBox(QDialog):
         
         self.setStyleSheet("""
             QWidget {
-                border: 1px solid red;
                 border-radius: 5px;
                 background-color: rgb(31, 31, 31);
                 color: rgb(174, 174, 174);
@@ -170,7 +169,7 @@ class MessageBox(QDialog):
         self.contentLabel.setMinimumWidth(width)
 
     def add_shadow(self):
-        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.gray)
+        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=QColor(79, 79, 79))
         self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
     
 
@@ -226,7 +225,12 @@ class ConfirmBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-    
+        self.setWindowModality(Qt.ApplicationModal)
+        self.add_button("YES")
+        self.add_button("NO")
+        self.set_button_color(["YES", "NO"])
+        self.set_min_width(200)
+        
 
 class WarningBox(MessageBox):
     
