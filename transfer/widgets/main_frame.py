@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 import qtawesome as qta
 
-from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, SettingsHierarchy
+from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, InformationBox, SettingsHierarchy
 import sys
 
 class MainFrame(QWidget):
@@ -29,9 +29,6 @@ class MainFrame(QWidget):
         # 底部的按钮
         self.extendHContainer = HContainer()
         # self.extendHContainer.setContentsMargins(0, 0, 0, 0)
-        self.msgBtn = QPushButton()  # TODO 测试
-        self.msgBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
-        self.msgBtn.setIconSize(QSize(20, 20))
         
         self.settingsBtn = QPushButton(qta.icon("msc.settings-gear", color=QColor(200, 200, 200)), "")
         self.settingsBtn.setIconSize(QSize(20, 20))
@@ -40,6 +37,10 @@ class MainFrame(QWidget):
         self.helpBtn = QPushButton(qta.icon("mdi.help-circle-outline", color=QColor(200, 200, 200)), "")
         self.helpBtn.setIconSize(QSize(20, 20))
         self.helpBtn.setToolTip("帮助")
+        
+        self.feedbackBtn = QPushButton()  # TODO 测试
+        self.feedbackBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
+        self.feedbackBtn.setIconSize(QSize(20, 20))
         
         self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
         self.ellipsisBtn.setIconSize(QSize(20, 20))
@@ -54,9 +55,9 @@ class MainFrame(QWidget):
         self.hideMenuBtn.setIconSize(QSize(20, 20))
         self.hideMenuBtn.setToolTip("隐藏菜单栏")
         
-        self.extendHContainer.addWidget(self.msgBtn)
         self.extendHContainer.addWidget(self.settingsBtn)
         self.extendHContainer.addWidget(self.helpBtn)
+        self.extendHContainer.addWidget(self.feedbackBtn)
         self.extendHContainer.addWidget(self.ellipsisBtn)
         self.extendHContainer.addStretch()
         self.extendHContainer.addWidget(self.hideMenuBtn)
@@ -169,7 +170,7 @@ class MainFrame(QWidget):
         self.showMenuBtn.leaveEvent = lambda e: self.showMenuBtn.setIconSize(QSize(20, 20))
         
         self.settingsBtn.clicked.connect(self.show_settings)
-        self.msgBtn.clicked.connect(self.showMessage)
+        self.feedbackBtn.clicked.connect(self.showFeedback)
         
     @Slot()
     def router(self, currentRow):
@@ -228,17 +229,14 @@ class MainFrame(QWidget):
             self.maskWidget.hide()
             self.settingsVContainer.hideSelf()
                 
-    def showMessage(self):
+    def showFeedback(self):
         """弹出信息"""
         self.messageBox = MessageBox(self)
         self.messageBox.setWindowTitle("Message")
-        self.messageBox.set_text("上图中直观展示出C2时共有2个异常值点，如果对C2进行分析，且分析方法对异常值敏感时（比如相关分析，回归分析等），此时需要对该2个异常值点进行处理成null或者填充，或者在分析时进行过滤。")
-        self.messageBox.add_button("OK")
-        self.messageBox.set_button_color("OK")
+        self.messageBox.set_title("您的反馈或意见请发送邮件至：<b>le7yi_ss@163.com</b>，感谢<br>")
+        self.messageBox.set_text("您的反馈对我们非常重要。无论是称赞还是批评，您的意见都是我们改进服务和产品的关键。您的反馈不仅可以帮助我们更好地理解您的需求和期望，还可以让我们在未来的规划和开发过程中做出更明智的决策。我们感谢您的宝贵时间和建议，期待能收到更多来自您的声音，让我们共同创造更优质的产品和服务。")
         self.messageBox.resize(self.messageBox.sizeHint())  # 关键，show之前获取建议的尺寸
-        x = self.width() - self.messageBox.width() - 1
-        y = self.height() - self.messageBox.height() - 1
-        self.messageBox.move(x, y)
+        self.messageBox.move_center()
         self.messageBox.show()
     
         

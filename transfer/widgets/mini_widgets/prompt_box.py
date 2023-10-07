@@ -145,10 +145,12 @@ class MessageBox(QDialog):
     
     def set_title(self, title):
         self.titleLable.setText(title)
+        self.titleLable.setTextInteractionFlags(Qt.TextSelectableByMouse)  # 可以用鼠标选择复制
         self.contentLayout.insertWidget(0, self.titleLable)
     
     def set_text(self, content):
         self.contentLabel.setText(content)
+        self.contentLabel.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.contentLayout.addWidget(self.contentLabel)
     
     def add_button(self, text):
@@ -170,6 +172,11 @@ class MessageBox(QDialog):
     def add_shadow(self):
         self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
         self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
+        
+    def move_center(self):
+        x = self.parent().width() / 2 - self.width() / 2
+        y = self.parent().height() / 2 - self.height() / 2
+        self.move(x, y)
     
     # @Slot()  # 需要注释掉，否则无法获取sender()的返回值
     def getBtnText(self):
@@ -229,7 +236,7 @@ class ConfirmBox(MessageBox):
         self.add_shadow()
         self.setWindowModality(Qt.ApplicationModal)
         
-class WarningBox(MessageBox):
+class InformationBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
