@@ -37,7 +37,7 @@ class MessageBox(QDialog):
         self.frame = QFrame()        
         
         _layout = QVBoxLayout(self)
-        # _layout.setContentsMargins(0, 0, 0, 0)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        _layout.setContentsMargins(6, 6, 6, 6)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
         _layout.addWidget(self.frame)
 
         self.windowTitleLable = QLabel()
@@ -235,8 +235,8 @@ class ConfirmBox(MessageBox):
         self.set_button_color("Cancel")
         self.add_shadow()
         self.setWindowModality(Qt.ApplicationModal)
-        
-class InformationBox(MessageBox):
+
+class WarningBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)

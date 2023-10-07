@@ -4,8 +4,13 @@ from PySide6.QtWidgets import *
 
 import qtawesome as qta
 
+<<<<<<< HEAD:transfer/widgets/bak_main_ui.py
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer
 from transfer.widgets.mini_widgets.prompt_box import MessageBox
+=======
+from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
+from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox, WarningBox
+>>>>>>> 89efde97a2c16943fd321b3084a4d098c9626e1e:transfer/widgets/main_window_bak.py
 from transfer.widgets.mini_widgets.menu_list import MenuList
 
 from transfer.utils.common import CommonHelper
@@ -252,6 +257,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             positionY = self.frameGeometry().y() + moveY    # 计算移动后主窗口在桌面的位置
             self.move(positionX, positionY)    # 移动主窗口
             
+<<<<<<< HEAD:transfer/widgets/bak_main_ui.py
         
     def setBody(self):
         
@@ -326,6 +332,35 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         # self.centralLayout.addLayout(self.bodyLaylout)    # 其实可以添加多个布局，但是就无法修改背景色等
         # self.centralLayout.addLayout(self.footerLaylout)  # 其实可以添加多个布局，但是就无法修改背景色等
         
+=======
+    # def closeEvent(self, event):
+    #     # 关闭程序弹出提示框确认
+    #     reply = QMessageBox.question(self, 
+    #                 "提示",
+    #                 "是否要关闭所有窗口?",
+    #                 QMessageBox.Yes | QMessageBox.No,
+    #                 QMessageBox.No)
+    #     if reply == QMessageBox.Yes:
+    #         # event.accept()
+    #         # sys.exit(0)   # 退出程序
+    #         self.close()
+    #     else:
+    #         event.ignore()  # 一定要增加ignore，否则还是会关闭
+    
+    @Slot()
+    def confirmClose(self):
+        # 关闭程序弹出提示框确认，使用自定义的message_box
+        self.reply = ConfirmBox()
+        self.reply.set_text("    Are you sure exit?")
+        self.reply.signal.connect(lambda x: self.confirmExit(x))
+        # self.reply.move(self)
+        self.reply.show()
+        
+    @Slot()
+    def confirmExit(self, reply_text):
+        if reply_text == "YES": 
+            self.close()
+>>>>>>> 89efde97a2c16943fd321b3084a4d098c9626e1e:transfer/widgets/main_window_bak.py
     
     def setFooter(self):
         # 自定义状态栏
