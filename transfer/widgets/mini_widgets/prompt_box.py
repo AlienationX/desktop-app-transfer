@@ -89,10 +89,8 @@ class MessageBox(QDialog):
         # 只增加contentWidget，其他的判断是否存在再增加
         self.layout.addWidget(self.contentWidget)
         
-        
         self.setStyleSheet("""
             QWidget {
-                border: 1px solid red;
                 border-radius: 5px;
                 background-color: rgb(31, 31, 31);
                 color: rgb(174, 174, 174);
@@ -147,18 +145,18 @@ class MessageBox(QDialog):
     
     def set_title(self, title):
         self.titleLable.setText(title)
-        self.contentLayout.addWidget(self.titleLable)
+        self.contentLayout.insertWidget(0, self.titleLable)
     
     def set_text(self, content):
         self.contentLabel.setText(content)
         self.contentLayout.addWidget(self.contentLabel)
     
     def add_button(self, text):
-        button = QPushButton(self)
-        button.setText(text)
+        self.button = QPushButton(self)
+        self.button.setText(text)
         # button.setFont(self.font)
-        button.clicked.connect(self.getBtnText)
-        self.buttonsLayout.addWidget(button, alignment=Qt.AlignRight | Qt.AlignBottom)
+        self.button.clicked.connect(self.getBtnText)
+        self.buttonsLayout.addWidget(self.button, alignment=Qt.AlignRight | Qt.AlignBottom)
         self.contentLayout.addWidget(self.buttonsWidget)
 
     def set_button_color(self, buttons_text:list):
@@ -170,14 +168,12 @@ class MessageBox(QDialog):
         self.contentLabel.setMinimumWidth(width)
 
     def add_shadow(self):
-        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.gray)
+        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
         self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
     
-
-    @Slot()
+    # @Slot()  # 需要注释掉，否则无法获取sender()的返回值
     def getBtnText(self):
         btnText = self.sender().text()
-        print(btnText)
         self.signal.emit(btnText)  # 发送信号
         self.close()
 
@@ -185,10 +181,8 @@ class MessageBox(QDialog):
         print("resize", self.width(), self.height())
     
     def enterEvent(self, event):
-        # TODO 鼠标进入增加阴影
+        # TODO 鼠标进入增加边框
         pass
-        # shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=2, yOffset=2, color=Qt.gray)
-        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         # self.setStyleSheet("""
         #     #backgroundFrame {
         #         border-radius: 5px;
@@ -199,7 +193,7 @@ class MessageBox(QDialog):
         # """)
     
     def leaveEvent(self, event):
-        # TODO 鼠标移开取消阴影
+        # TODO 鼠标移开取消边框
         pass
         # self.frame.setGraphicsEffect(None)  # 只能在frame上设置阴影  
         # self.setStyleSheet("#backgroundFrame {border: none;}")
@@ -226,12 +220,22 @@ class ConfirmBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-    
-
+        self.set_min_width(200)
+        # self.setWindowTitle("Confirm")
+        # self.set_title("Are you sure exit?")
+        self.add_button("OK")
+        self.add_button("Cancel")
+        self.set_button_color("Cancel")
+        self.add_shadow()
+        self.setWindowModality(Qt.ApplicationModal)
+        
 class WarningBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        self.add_button("Close")
+        self.set_button_color("Close")
+        self.add_shadow()
   
         
 if __name__=="__main__":
@@ -239,14 +243,8 @@ if __name__=="__main__":
     w = QWidget()
     w.resize(600, 400)
     
-    m=MessageBox(w)
-    m.setWindowTitle("WINDOW TITLE")
-    m.set_title("I am title")
-    m.set_text("抱歉，我无法根据给定的IP地址10.63.82.218确定其子网掩码。要确定子网掩码，通常需要知道IP地址属于哪个网络或子网，而阿什顿卡上的卡阿斯达仅凭一个单独的IP地址是无法得知的。")
-    m.add_button("OK")
-    # m.add_button("Cancel")
-    # m.set_button_color(["OK", "Cancel"])
-    m.add_shadow()
+    m=ConfirmBox(w)
+    m.set_title("Are you sure exit?")
     m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())
