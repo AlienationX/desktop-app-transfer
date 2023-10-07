@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication, QStyleFactory, QSystemTrayIcon, QMen
 from PySide6.QtGui import QIcon
 import qtawesome as qta
 
-from widgets.main_window_bak import MainWindow
+from widgets.main_window import MainWindow
 
 
 import platform
