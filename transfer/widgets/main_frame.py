@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 import qtawesome as qta
 
-from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, InformationBox, SettingsHierarchy
+from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, SettingsHierarchy
 import sys
 
 class MainFrame(QWidget):

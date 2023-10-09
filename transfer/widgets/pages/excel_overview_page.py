@@ -151,7 +151,8 @@ class WorkThread(QThread):
     
     # start执行的函数
     def run(self):
-        df = pd.read_excel(self.input_file)
+        # df = pd.read_excel(self.input_file)
+        df = pd.read_csv("vgsales.csv")
         profile = ProfileReport(df, title="Report Book", minimal=True)
         profile.to_file("output_file.html")
         print("done.")

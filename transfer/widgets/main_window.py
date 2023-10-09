@@ -5,7 +5,7 @@ from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
-from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox, InformationBox
+from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
 
