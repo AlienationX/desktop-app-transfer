@@ -2,6 +2,7 @@
 <RCC>
 <!-- prefix 配合 alias 才会增加效率，单独使用prefix路径更长 -->
     <qresource>
+        <file>ego_logo.png</file>
         <file>TransferS-title_black.png</file>
         <file>TransferS.png</file>
         <file>TransferS_logo.png</file>
@@ -16,6 +17,8 @@
         <file>styles/common_bak.css</file>
         <file>styles/dark_theme.css</file>
         <file>styles/light_theme.css</file>
+        <file>styles/py_dracula_dark.qss</file>
+        <file>styles/py_dracula_light.qss</file>
         <file>svgs/8686719_ic_fluent_apps_regular_icon.svg</file>
         <file>svgs/8687690_ic_fluent_people_regular_icon.svg</file>
         <file>svgs/JSON-LD.svg</file>
@@ -23,6 +26,7 @@
         <file>svgs/Memgraph.svg</file>
         <file>svgs/Obsidian.svg</file>
         <file>texts/home.md</file>
+        <file>texts/release.md</file>
 
     </qresource>
 </RCC>
