@@ -1,20 +1,5 @@
 
-from PySide6.QtWidgets import (
-    QWidget,
-    QLabel,
-    QMessageBox,
-    QTextEdit,
-    QGroupBox,
-    QComboBox,
-    QRadioButton,
-    QCheckBox,
-    QLineEdit,
-    QProgressBar,
-    QPushButton,
-    QGridLayout,
-    QVBoxLayout,
-    QFileDialog,
-)
+from PySide6.QtWidgets import *
 from PySide6.QtCore import Slot, Qt, QFile, QDir, QThread, QThreadPool, Signal, QIODevice, QTextStream
 from PySide6.QtGui import QFont, QPixmap
 
@@ -25,6 +10,7 @@ from loguru import logger
 
 from pathlib import Path
 from datetime import datetime
+from multiprocessing import Process
 import time
         
 class ExcelOverviewWidget(QWidget):
@@ -53,13 +39,11 @@ class ExcelOverviewWidget(QWidget):
         
         self.readLable = QLabel()
         self.readLable.setAlignment(Qt.AlignLeft|Qt.AlignTop)
-        self.readLable.setText("""
-1、概要：数据类型，唯一值，缺失值，内存大小
+        self.readLable.setText("""1、概要：数据类型，唯一值，缺失值，内存大小
 2、分位数统计：最小值、最大值、中位数、Q1、Q3、最大值，值域，四分位
 3、描述性统计：均值、众数、标准差、绝对中位差、变异系数、峰值、偏度系数
 4、最频繁出现的值，直方图/柱状图
-5、相关性分析可视化：突出强相关的变量，Spearman, Pearson矩阵相关性色阶图
-""")
+5、相关性分析可视化：突出强相关的变量，Spearman, Pearson矩阵相关性色阶图""")
 
         self.report = QTextEdit(self)
         self.report.setReadOnly(True)
@@ -132,9 +116,34 @@ class ExcelOverviewWidget(QWidget):
         self.startBtn.setText("预览概况")
         self.startBtn.setEnabled(True)
         self.openBtn.setEnabled(True)
+        
+    
+    def start_process(self):
+        # 创建子进程并启动
+        process = Process(target=self.child_process)
+        process.start()
+
+    def child_process(self):
+        # while True:
+        #     # 从队列中获取消息并处理
+        #     message = self.queue.get()
+        #     if message == 'exit':
+        #         break
+        #     else:
+        #         print('Received message:', message)
+        #         time.sleep(1)  # 模拟处理时间
+        #         self.queue.put('Message processed')  # 将处理结果放回队列中
+        
+        # df = pd.read_excel(self.input_file)
+        df = pd.read_csv("vgsales.csv")
+        profile = ProfileReport(df, title="Report Book", minimal=True)
+        profile.to_file("output_file.html")
+        print("process done")
 
 
+# 还是卡顿，所以使用多进程编写
 class WorkThread(QThread):
+    
     signal = Signal(int, str)
     # signal = Signal(int, str)  # 可以发送多个值
     
@@ -155,5 +164,5 @@ class WorkThread(QThread):
         df = pd.read_csv("vgsales.csv")
         profile = ProfileReport(df, title="Report Book", minimal=True)
         profile.to_file("output_file.html")
-        print("done.")
         self.signal.emit(1, self.input_file + " done .")
+        print("done")

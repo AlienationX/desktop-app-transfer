@@ -166,6 +166,9 @@ class MessageBox(QDialog):
             if btn.text() in buttons_text:
                 btn.setStyleSheet("background-color: rgb(0, 120, 212)")
                 
+    def set_background_color(self):
+        pass
+                
     def set_min_width(self, width):
         self.contentLabel.setMinimumWidth(width)
 
