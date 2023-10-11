@@ -36,6 +36,11 @@ chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
 print(chart_data)
 
 # 需要汇总后统计
+# 根据选择分组数据
+# df_grouped = df[mask].groupby(by=['评分']).count()[['年龄']]
+# df_grouped = df_grouped.rename(columns={'年龄': '计数'})
+# df_grouped = df_grouped.reset_index()
+
 data_grouped = None
 chart_data = data.pivot(index="Year", columns="Platform", values="Global_Sales")
 print(chart_data.head())
