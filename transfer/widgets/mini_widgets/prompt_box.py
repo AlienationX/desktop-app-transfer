@@ -226,6 +226,15 @@ class MessageBox(QDialog):
             self.move(positionX, positionY)    # 移动主窗口
 
 
+class InfoBox(MessageBox):
+    
+    # Success
+    pass
+
+class SuccessBox(MessageBox):
+    
+    # Success
+    pass
 class ConfirmBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
@@ -240,13 +249,16 @@ class ConfirmBox(MessageBox):
         self.setWindowModality(Qt.ApplicationModal)
 
 class WarningBox(MessageBox):
-    
+    # 橘红
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.add_button("Close")
         self.set_button_color("Close")
         self.add_shadow()
-  
+
+class ErrorBox(MessageBox):
+    # 深红
+    pass
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
