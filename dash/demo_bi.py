@@ -71,7 +71,7 @@ st.subheader("Example")
 st.text("官方示例：")
 st.write("官方示例：")
 
-tab1, tab2 = st.tabs(["📈 Chart", "🗃 Data"])
+tab1, tab2 = st.tabs(["📈 Chart", "⌨️ Data"])
 # tab1.subheader("A tab with a chart")
 tab1.line_chart(chart_data)  # 一个维度的数据可以直接使用
 # tab2.subheader("A tab with a data")
