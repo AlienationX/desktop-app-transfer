@@ -225,7 +225,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             self.maxBtn.setToolTip("最大化")
             self.maxBtn.setIcon(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)))
             # self.layout.setContentsMargins(6, 6, 6, 6)
-            # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
+            # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=5, yOffset=5, color=Qt.black)
             # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
             self.showNormal()
         else:
