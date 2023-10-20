@@ -136,21 +136,21 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 QScrollBar:vertical {	
     border: none;
     background: rgb(52, 59, 72);
-    width: 8px;
+    width: 4px;
     margin: 0;	  /* 21px 0 21px 0;	中间外边距*/
     border-radius: 0px;
 }
 QScrollBar::handle:vertical {		
     background: rgb(189, 147, 249);
     min-height: 25px;	
-    border-radius: 4px
+    border-radius: 2px
 }
 QScrollBar::add-line:vertical {
     border: none;
     background: rgb(55, 63, 77);
     height: 0px;	/* 20px 上高度*/
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
@@ -158,8 +158,8 @@ QScrollBar::sub-line:vertical {
     border: none;
     background: rgb(55, 63, 77);
     height: 0px;    /* 20px 下高度*/
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
@@ -308,3 +308,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.messageLable.setMaximumWidth(self.width() - self.versionLable.width() - 50)
         self.messageLable.setText(msg)
         self.messageLable.setToolTip(msg)
+        
+    def switch_theme(self, style_name):
+        # self.setStyle(QStyleFactory.create(style_name))
+        pass

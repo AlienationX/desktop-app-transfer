@@ -30,7 +30,7 @@ class SettingsHierarchy(QFrame):
         
         self._data = {
             "currentTheme": "Dark",
-            "hideStatueBar": False
+            "hideStatusBar": False
         }
         
         self.resize(260, 600)
