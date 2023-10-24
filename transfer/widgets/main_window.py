@@ -224,15 +224,15 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         if self.isMaximized():
             self.maxBtn.setToolTip("最大化")
             self.maxBtn.setIcon(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)))
-            # self.layout.setContentsMargins(6, 6, 6, 6)
-            # self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=5, yOffset=5, color=Qt.black)
-            # self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
+            self.layout.setContentsMargins(6, 6, 6, 6)
+            self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
+            self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
             self.showNormal()
         else:
             self.maxBtn.setToolTip("还原")
             self.maxBtn.setIcon(qta.icon("msc.chrome-restore", color=QColor(200, 200, 200)))
-            # self.layout.setContentsMargins(0, 0, 0, 0)
-            # self.frame.setGraphicsEffect(None)  # 最大化无阴影
+            self.layout.setContentsMargins(0, 0, 0, 0)
+            self.frame.setGraphicsEffect(None)  # 最大化无阴影，TODO 且都是直角
             self.showMaximized()
             
     def mouseDoubleClickEvent (self, event):
@@ -277,8 +277,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.confirm = ConfirmBox()
         self.confirm.set_title("Are you sure exit?")
         self.confirm.signal.connect(lambda x: self.confirmExit(x))
-        # self.reply.move(self)
         self.confirm.show()
+        
         
     @Slot()
     def confirmExit(self, reply_text):

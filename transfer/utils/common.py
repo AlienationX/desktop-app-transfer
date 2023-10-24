@@ -7,3 +7,7 @@ class CommonHelper:
         stream = QFile(resource_path)
         stream.open(QIODevice.ReadOnly)
         return QTextStream(stream).readAll()
+
+    @staticmethod
+    def repalceAllColors():
+        pass

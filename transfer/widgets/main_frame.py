@@ -225,7 +225,6 @@ class MainFrame(QWidget):
         
     def mousePressEvent(self, event) -> None:
         if not self.settingsVContainer.underMouse():
-            print("click")
             self.maskWidget.hide()
             self.settingsVContainer.hideSelf()
                 

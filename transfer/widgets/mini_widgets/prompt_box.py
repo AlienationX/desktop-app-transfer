@@ -5,7 +5,7 @@ import qtawesome as qta
 
 import sys
 
-class MessageBox(QDialog):
+class MessageBox(QFrame, QDialog):
     
     """
     msgBox.setWindowTitle("Message Box Titil")  # 设置标题，附加一个关闭按钮
@@ -20,6 +20,15 @@ class MessageBox(QDialog):
     def __init__(self, parent=None):
         
         super().__init__(parent)
+        
+        self.colors = {
+            "font": "rgb(200, 200, 200)",
+            "title": "rgb(31, 31, 31)",
+            "content": "rgb(44, 45, 46)",
+            "btn": "rgb(0, 120, 212)",
+            "default_border": "rgb(31, 31, 31)",
+            "enter_border": "rgb(0, 120, 212)",
+        }
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
         self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
@@ -82,40 +91,96 @@ class MessageBox(QDialog):
         # 只增加contentWidget，其他的判断是否存在再增加
         self.layout.addWidget(self.contentWidget)
         
-        self.setStyleSheet("""
-            QWidget {
-                color: rgb(174, 174, 174);
-            }
-            #messageBox {
+        self.style_sheet = """
+            QWidget {{
+                color: {colors[font]};
+            }}
+            #messageBox {{
                 border-radius: 5px;
-                background-color: rgb(44, 45, 46);
-                border: 1px solid rgb(44, 45, 46);
-            }
-            #messageBoxTitle {
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton {
+                background-color: {colors[content]};
+                border: 1px solid {colors[title]};
+            }}
+            #messageBoxTitle {{
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+                background-color: {colors[title]};
+            }}
+            QPushButton {{
                 border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton:hover {
+                background-color: {colors[title]};
+            }}
+            QPushButton:hover {{
                 background-color: rgb(49, 50, 50);
-            }
-            #messageBoxContent QWidget {
+            }}
+            #messageBoxContent QWidget {{
                 background-color: transparent;
-            }
-            #messageBoxContent QPushButton {
+            }}
+            #messageBoxContent QPushButton {{
                 border-radius: 5px;
                 padding: 3px 10px;
                 color: rgb(250, 250, 250);
-                border: 1px solid rgb(31, 31, 31);
-            }
-            #messageBoxContent QPushButton:hover {
+                border: 1px solid rgb(32, 32, 32);
+            }}
+            #messageBoxContent QPushButton:hover {{
                 background-color: rgb(0, 120, 212);
                 font-weight: bold;
-            }
-        """)
+            }}
+        """
+        self.set_style_sheet()
         
+        # self.setStyleSheet("""
+        #     QWidget {
+        #         color: rgb(174, 174, 174);
+        #     }
+        #     #messageBox {
+        #         border-radius: 5px;
+        #         background-color: rgb(44, 45, 46);
+        #         border: 1px solid rgb(31, 31, 31);
+        #     }
+        #     #messageBoxTitle {
+        #         border-top-left-radius: 5px;
+        #         border-top-right-radius: 5px;
+        #         border-bottom-left-radius: 0px;
+        #         border-bottom-right-radius: 0px;
+        #         background-color: rgb(31, 31, 31);
+        #     }
+        #     QPushButton {
+        #         border-radius: 5px;
+        #         background-color: rgb(31, 31, 31);
+        #     }
+        #     QPushButton:hover {
+        #         background-color: rgb(49, 50, 50);
+        #     }
+        #     #messageBoxContent QWidget {
+        #         background-color: transparent;
+        #     }
+        #     #messageBoxContent QPushButton {
+        #         border-radius: 5px;
+        #         padding: 3px 10px;
+        #         color: rgb(250, 250, 250);
+        #         border: 1px solid rgb(31, 31, 31);
+        #     }
+        #     #messageBoxContent QPushButton:hover {
+        #         background-color: rgb(0, 120, 212);
+        #         font-weight: bold;
+        #     }
+        # """)
+        
+    # def paintEvent(self, arg__0):
+    #     # TODO 不起作用，所以暂时继承QFrame，否则无法修改派生类的stylesheet
+    #     # 需要添加Q_OBJECT宏，Make sure you define the Q_OBJECT macro for your custom widget. 
+    #     opt = QStyleOption()
+    #     opt.initFrom(self)
+    #     p = QPainter(self)
+    #     self.style().drawPrimitive(QStyle.PE_Widget, opt, p, self)
+    
+    def set_style_sheet(self):
+        self.setStyleSheet(
+            self.style_sheet.format(colors = self.colors)
+        )
+            
     def setWindowTitle(self, window_title):
         self.windowTitleLable.setText(window_title)
         self.layout.insertWidget(0, self.titleWidget)
@@ -135,22 +200,22 @@ class MessageBox(QDialog):
     def set_text(self, content):
         self.contentLabel.setText(content)
         self.contentLabel.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.contentLayout.addWidget(self.contentLabel)
+        self.contentLayout.insertWidget(1, self.contentLabel)
     
     def add_button(self, text):
         self.button = QPushButton(self)
         self.button.setText(text)
-        # button.setFont(self.font)
         self.button.clicked.connect(self.getBtnText)
         self.buttonsLayout.addWidget(self.button, alignment=Qt.AlignRight | Qt.AlignBottom)
         self.contentLayout.addWidget(self.buttonsWidget)
 
     def set_button_color(self, buttons_text:list):
+        btn_color = self.colors["btn"]
         for btn in self.buttonsWidget.findChildren(QPushButton):
             if btn.text() in buttons_text:
-                btn.setStyleSheet("background-color: rgb(0, 120, 212)")
+                btn.setStyleSheet(f"background-color: {btn_color}")
                 
-    def set_background_color(self):
+    def set_title_color(self):
         pass
                 
     def set_min_width(self, width):
@@ -175,76 +240,18 @@ class MessageBox(QDialog):
         print("resize", self.width(), self.height())
     
     def enterEvent(self, event):
-        # TODO 鼠标进入增加边框 rgb(0, 120, 212)
-        self.setStyleSheet("""
-            QWidget {
-                color: rgb(174, 174, 174);
-            }
-            #messageBox {
-                border-radius: 5px;
-                background-color: rgb(44, 45, 46);
-                border: 1px solid rgb(0, 120, 212);
-            }
-            #messageBoxTitle {
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton:hover {
-                background-color: rgb(49, 50, 50);
-            }
-            #messageBoxContent QWidget {
-                background-color: transparent;
-            }
-            #messageBoxContent QPushButton {
-                border-radius: 5px;
-                padding: 3px 10px;
-                color: rgb(250, 250, 250);
-                border: 1px solid rgb(31, 31, 31);
-            }
-            #messageBoxContent QPushButton:hover {
-                background-color: rgb(0, 120, 212);
-                font-weight: bold;
-            }
-        """)
+        # 鼠标进入增加边框 rgb(0, 120, 212)
+        self.setStyleSheet(
+            self.styleSheet()\
+                .replace("1px solid " + self.colors["default_border"], "1px solid " + self.colors["enter_border"])
+        )
     
     def leaveEvent(self, event):
-        # TODO 鼠标移开取消边框
-        self.setStyleSheet("""
-            QWidget {
-                color: rgb(174, 174, 174);
-            }
-            #messageBox {
-                border-radius: 5px;
-                background-color: rgb(44, 45, 46);
-                border: 1px solid rgb(44, 45, 46);
-            }
-            #messageBoxTitle {
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton:hover {
-                background-color: rgb(49, 50, 50);
-            }
-            #messageBoxContent QWidget {
-                background-color: transparent;
-            }
-            #messageBoxContent QPushButton {
-                border-radius: 5px;
-                padding: 3px 10px;
-                color: rgb(250, 250, 250);
-                border: 1px solid rgb(31, 31, 31);
-            }
-            #messageBoxContent QPushButton:hover {
-                background-color: rgb(0, 120, 212);
-                font-weight: bold;
-            }
-        """)
+        # 鼠标移开取消边框
+        self.setStyleSheet(
+            self.styleSheet()\
+                .replace("1px solid " + self.colors["enter_border"], "1px solid " + self.colors["default_border"])
+        )
     
     def mousePressEvent(self, event):
         # 实现鼠标拖拽功能，记录鼠标按下的时候的坐标，仅限标题栏支持拖拽移动
@@ -268,58 +275,30 @@ class InfoBox(MessageBox):
     # rgb(0, 65, 114)
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        self.setWindowTitle("Information")
+        self.add_shadow()
         
+        self.colors["content"] = "rgb(0, 65, 114)"
+        self.set_style_sheet()
 
 class SuccessBox(MessageBox):
     # rgb(4, 74, 22)
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        print("contentWidget", self.contentWidget.styleSheet())
-        print("SuccessBox old", self.styleSheet())
-        self.setAttribute(Qt.WA_StyledBackground, True)
-        self.setStyleSheet("""
-            QWidget {
-                color: rgb(174, 174, 174);
-            }
-            #messageBox {
-                border-radius: 5px;
-                background-color: green;
-                border: 1px solid rgb(44, 45, 46);
-            }
-            #messageBoxTitle {
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-            }
-            QPushButton:hover {
-                background-color: rgb(49, 50, 50);
-            }
-            #messageBoxContent QWidget {
-                background-color: transparent;
-            }
-            #messageBoxContent QPushButton {
-                border-radius: 5px;
-                padding: 3px 10px;
-                color: rgb(250, 250, 250);
-                border: 1px solid rgb(31, 31, 31);
-            }
-            #messageBoxContent QPushButton:hover {
-                background-color: rgb(0, 120, 212);
-                font-weight: bold;
-            }
-        """)
         
-        print("SuccessBox", self.styleSheet())
+        self.add_button("OK")
+        self.set_button_color("OK")
+        self.add_shadow()
+        
+        self.colors["content"] = "rgb(4, 74, 22)"
+        self.set_style_sheet()
+    
         
 class ConfirmBox(MessageBox):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.set_min_width(200)
-        # self.setWindowTitle("Confirm")
-        # self.set_title("Are you sure exit?")
         self.add_button("OK")
         self.add_button("Cancel")
         self.set_button_color("Cancel")
@@ -331,15 +310,24 @@ class WarningBox(MessageBox):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         
-        
         self.add_button("Close")
         self.set_button_color("Close")
         self.add_shadow()
+        
+        self.colors["content"] = "rgb(105, 74, 22)"
+        self.set_style_sheet()
 
 class ErrorBox(MessageBox):
     # rgb(144, 0, 30)
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        
+        self.add_button("Close")
+        self.set_button_color("Close")
+        self.add_shadow()
+        
+        self.colors["content"] = "rgb(144, 0, 30)"
+        self.set_style_sheet()
         
         
 if __name__=="__main__":
@@ -347,9 +335,14 @@ if __name__=="__main__":
     w = QWidget()
     w.resize(600, 400)
     
+    # m=MessageBox(w)
+    # m=InfoBox(w)
     m=SuccessBox(w)
-    m.setWindowTitle("MESSAGE")
+    # m=WarningBox(w)
+    # m=ErrorBox(w)
+    # m=ConfirmBox(w)
     m.set_title("Are you sure exit?")
+    m.set_text("E:\Codes\Python\desktop-app-transfer\.venv\lib\site-packages\qtpy\__init__.py:338: PythonQtWarning: PySide6 version 6.1.3 is not supported by QtPy. To ensure your application works correctly with QtPy, please upgrade to PySide6 6.2.0 or later.")
     m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())

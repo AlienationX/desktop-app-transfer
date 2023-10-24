@@ -4,12 +4,13 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 
-class MyWidget(QWidget):
+class MyWidget(QFrame, QDialog):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.resize(200, 20)
-        # self.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
-        self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明（添加阴影必须背景透明）
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
+        self.setAttribute(Qt.WA_StyledBackground)
+        self.setProperty("name", "title")
         
         self.label = QLabel("Are you ok?")
         self.btn = QPushButton("ok")
@@ -30,19 +31,14 @@ class MyWidget(QWidget):
             }
         """)
         
-    def paintEvent(self, event) -> None:
-        opt = QStyleOption()
-        opt.initFrom(self)
-        painter = QPainter(self)
-        #painter.setRenderHint(QtGui.QPainter.Antialiasing) # 反锯齿
-        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
-
+        print(self.style())
+        
+    
 
 class MyWindow(MyWidget):
     
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        # self.setAttribute(Qt.WA_StyledBackground, True)
         self.setStyleSheet("""
             QFrame {
                 background-color: blue;
@@ -58,6 +54,7 @@ if __name__=="__main__":
     
     m = MyWindow(w)
     m.resize(m.sizeHint())
-    # m.show()
+    
     w.show()
+    m.show()
     app.exit(app.exec())
