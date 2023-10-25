@@ -292,18 +292,6 @@ class SuccessBox(MessageBox):
         
         self.colors["content"] = "rgb(4, 74, 22)"
         self.set_style_sheet()
-    
-        
-class ConfirmBox(MessageBox):
-    
-    def __init__(self, parent=None) -> None:
-        super().__init__(parent)
-        self.set_min_width(200)
-        self.add_button("OK")
-        self.add_button("Cancel")
-        self.set_button_color("Cancel")
-        self.add_shadow()
-        self.setWindowModality(Qt.ApplicationModal)
 
 class WarningBox(MessageBox):
     # rgb(105, 74, 22)
@@ -328,7 +316,20 @@ class ErrorBox(MessageBox):
         
         self.colors["content"] = "rgb(144, 0, 30)"
         self.set_style_sheet()
+
+class ConfirmBox(MessageBox):
+    
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.set_min_width(200)
+        self.add_button("OK")
+        self.add_button("Cancel")
+        self.set_button_color("Cancel")
+        self.add_shadow()
+        self.setWindowModality(Qt.ApplicationModal)
         
+        self.colors["content"] = "rgb(144, 0, 30)"
+        self.set_style_sheet()    
         
 if __name__=="__main__":
     app=QApplication(sys.argv)
@@ -337,12 +338,13 @@ if __name__=="__main__":
     
     # m=MessageBox(w)
     # m=InfoBox(w)
-    m=SuccessBox(w)
+    # m=SuccessBox(w)
     # m=WarningBox(w)
     # m=ErrorBox(w)
-    # m=ConfirmBox(w)
+    m=ConfirmBox(w)
+    # m.setWindowTitle("Message")
     m.set_title("Are you sure exit?")
-    m.set_text("E:\Codes\Python\desktop-app-transfer\.venv\lib\site-packages\qtpy\__init__.py:338: PythonQtWarning: PySide6 version 6.1.3 is not supported by QtPy. To ensure your application works correctly with QtPy, please upgrade to PySide6 6.2.0 or later.")
+    # m.set_text("E:\Codes\Python\desktop-app-transfer\.venv\lib\site-packages\qtpy\__init__.py:338: PythonQtWarning: PySide6 version 6.1.3 is not supported by QtPy. To ensure your application works correctly with QtPy, please upgrade to PySide6 6.2.0 or later.")
     m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())

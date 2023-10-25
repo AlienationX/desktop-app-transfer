@@ -15,6 +15,9 @@ class MenuList(QWidget):
         super().__init__()
         self.resize(300, 400)
         
+        # self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
+        # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
+        
         self.menus = [
             {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "ri.menu-fill", "class": DocumentWidget()},
             {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
@@ -48,6 +51,7 @@ class MenuList(QWidget):
         
         self.listWidget = QListWidget()
         self.listWidget.setObjectName("leftMenu")
+        self.listWidget.setFrameShape(QFrame.NoFrame)  # 去掉ListWidget边框
         for i in range(len(self.menus)):
             menu_item = self.menus[i]
 
@@ -85,14 +89,14 @@ class MenuList(QWidget):
         self.setLayout(self.layout)
         
         self.setStyleSheet("""
-            QWidget {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
-                color: rgb(200, 200, 200);
-                font-size: 13px;
-            }
             QListView {
-                outline: none;  /* 禁用被选中的虚线 */
+                outline: none;  /* 禁用被选中的虚线 0px效果相同*/
+            }
+            QListView QWidget {
+                background-color: transparent;  /* 重点，设置为透明 */
+                border-radius: 0px;
+                color: rgb(44, 222, 133);  /* 200, 200, 200*/
+                font-size: 13px;
             }
             QListView::item:hover {
                 background-color: rgb(4, 57, 94);
@@ -100,11 +104,6 @@ class MenuList(QWidget):
             QListView::item:selected {
                 border-left: 5px solid rgb(30, 74, 28);
                 background-color: rgb(58, 46, 86);
-            }
-            QListView QWidget {
-                background-color: transparent;  /* 重点，设置为透明 */
-                border-radius: 0px;
-                color: rgb(200, 200, 200);
             }
         """)
         

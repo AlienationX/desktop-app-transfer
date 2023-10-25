@@ -14,12 +14,12 @@ class MainFrame(QWidget):
         super().__init__()
         
         self.layout = QHBoxLayout(self)
-        self.layout.setContentsMargins(12, 0, 12, 0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
         
         self.menuList = MenuList()
         self.stackedWidget = QStackedWidget()
-         
+        
         for i in range(len(self.menuList.menus)):        
             menu_item = self.menuList.menus[i]
             setattr(self, menu_item["objectName"], menu_item["class"])  # TODO 把所有widget绑定到self上便于操作，但是也增加了内存消耗。可以优化在切换的时候创建，但是无法保证stackedWidget的顺序
@@ -28,7 +28,7 @@ class MainFrame(QWidget):
         
         # 底部的按钮
         self.extendHContainer = HContainer()
-        # self.extendHContainer.setContentsMargins(0, 0, 0, 0)
+        self.extendHContainer.setContentsMargins(6, 0, 0, 0)
         
         self.settingsBtn = QPushButton(qta.icon("msc.settings-gear", color=QColor(200, 200, 200)), "")
         self.settingsBtn.setIconSize(QSize(20, 20))
@@ -95,9 +95,16 @@ class MainFrame(QWidget):
         
         self.bind()
         
+        self.setStyleSheet("""
+            background-color: rgb(40, 40, 40);
+        """)
+        
         self.menuVContainer.setStyleSheet("""
+            QWidget {
+                background-color: rgb(40, 40, 40);
+            }               
             QPushButton:hover {
-                background-color: rgb(49, 50, 50);
+                background-color: rgb(60, 60, 60);
             }
         """)
         

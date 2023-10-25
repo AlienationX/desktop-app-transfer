@@ -5,7 +5,7 @@ from PySide6.QtGui import *
 import qtawesome as qta
 
 from transfer.widgets.mini_widgets.addons_widget import HContainer, VContainer, MaskWidget
-from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox
+from transfer.widgets.mini_widgets.prompt_box import MessageBox, ConfirmBox, SuccessBox
 from transfer.widgets.mini_widgets.menu_list import MenuList
 from transfer.widgets.mini_widgets.settings_hierarchy import SettingsHierarchy
 
@@ -44,11 +44,12 @@ class MainWindow(QWidget):
         # self.setWindowIcon(logoIcon)
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint) # 隐藏边框并始终在其他窗口之上
-        self.setWindowFlags(Qt.FramelessWindowHint) # 隐藏边框
+        self.setWindowFlags(Qt.FramelessWindowHint)     # 隐藏边框
         self.setAttribute(Qt.WA_TranslucentBackground)  # 设置背景透明
 
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
+        self.frame.setObjectName("window")
         # shadow = QGraphicsDropShadowEffect(self, blurRadius=20, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
         # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
         self.layout = QVBoxLayout(self)
@@ -58,7 +59,7 @@ class MainWindow(QWidget):
         # 添加自定义样式
         theme = self.settings["theme"]
         if theme in ["light_theme", "dark_theme", "color_theme"]:
-            qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.css")  # 可以直接起名为css(其实是qss)
+            qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.qss")  # 可以直接起名为css(其实是qss)
             self.setStyleSheet(qssStyle)
         
         self.mainVContainer = VContainer()
@@ -90,10 +91,12 @@ class MainWindow(QWidget):
         
         self.setStyleSheet("""
             QWidget {
-                border-radius: 5px;
-                background-color: rgb(31, 31, 31);
+                background-color: rgb(30, 30, 30);
                 color: rgb(200, 200, 200);
                 font-size: 12px;
+            }
+            QPushButton {
+                border-radius: 5px;
             }
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 ScrollBars */
@@ -274,9 +277,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     @Slot()
     def confirmClose(self):
         # 关闭程序弹出提示框确认，使用自定义的message_box
-        self.confirm = ConfirmBox()
+        self.confirm = ConfirmBox(self)
         self.confirm.set_title("Are you sure exit?")
         self.confirm.signal.connect(lambda x: self.confirmExit(x))
+        self.confirm.resize(self.confirm.sizeHint())
+        self.confirm.move_center()
         self.confirm.show()
         
         

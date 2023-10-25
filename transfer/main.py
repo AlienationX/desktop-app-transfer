@@ -17,7 +17,7 @@ if __name__ == "__main__":
     
     app = QApplication(sys.argv)  # 支持命令行启动传参，提高可扩展性
     # app.setWindowIcon(QIcon(":ego_logo.png"))
-    # app.setWindowIcon(QIcon(":svgs/JSON-LD.svg"))
+    # app.setWindowIcon(QIcon(":svgs/JSON-LD.svg"))    
     app.setWindowIcon(qta.icon("msc.terminal-debian"))
     window = MainWindow()
     
