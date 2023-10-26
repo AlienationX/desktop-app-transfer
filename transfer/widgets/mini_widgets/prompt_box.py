@@ -31,16 +31,16 @@ class MessageBox(QFrame, QDialog):
         }
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
-        self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\总在最前\禁止调整大小
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)  # 隐藏边框\无任务栏图标
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明（添加阴影必须背景透明）
         
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
         self.frame.setObjectName("messageBox")
         
-        self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(6, 6, 6, 6)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
-        self._layout.addWidget(self.frame)
+        self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(6, 6, 6, 6)  # 设置无外边距则显示存在问题，所以阴影不适合能全屏的应用
+        self.layout.addWidget(self.frame)
 
         self.windowTitleLable = QLabel()
         self.windowTitleLable.setObjectName("titleLable")
@@ -64,9 +64,9 @@ class MessageBox(QFrame, QDialog):
         self.contentLabel.setMinimumWidth(360)
         self.contentLabel.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         
-        self.layout = QVBoxLayout(self.frame)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(0)
+        self.frameLayout = QVBoxLayout(self.frame)
+        self.frameLayout.setContentsMargins(0, 0, 0, 0)
+        self.frameLayout.setSpacing(0)
         
         self.titleWidget = QWidget()
         self.titleWidget.setObjectName("messageBoxTitle")
@@ -89,7 +89,7 @@ class MessageBox(QFrame, QDialog):
         self.buttonsLayout.addStretch()  
         
         # 只增加contentWidget，其他的判断是否存在再增加
-        self.layout.addWidget(self.contentWidget)
+        self.frameLayout.addWidget(self.contentWidget)
         
         self.style_sheet = """
             QWidget {{
@@ -183,7 +183,7 @@ class MessageBox(QFrame, QDialog):
             
     def setWindowTitle(self, window_title):
         self.windowTitleLable.setText(window_title)
-        self.layout.insertWidget(0, self.titleWidget)
+        self.frameLayout.insertWidget(0, self.titleWidget)
         # 如果存在WindowTitle，则修改为上角为直角
         self.contentWidget.setStyleSheet("""
             #messageBoxContent {
@@ -225,9 +225,13 @@ class MessageBox(QFrame, QDialog):
         self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
         self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
         
-    def move_center(self):
-        x = self.parent().width() / 2 - self.width() / 2
-        y = self.parent().height() / 2 - self.height() / 2
+    def move_center(self, parent:QWidget=None):
+        if parent:
+            x = parent.x() + parent.width() / 2 - self.width() / 2
+            y = parent.y() + parent.height() / 2 - self.height() / 2
+        else:
+            x = self.parent().width() / 2 - self.width() / 2
+            y = self.parent().height() / 2 - self.height() / 2
         self.move(x, y)
     
     # @Slot()  # 需要注释掉，否则无法获取sender()的返回值
@@ -326,7 +330,7 @@ class ConfirmBox(MessageBox):
         self.add_button("Cancel")
         self.set_button_color("Cancel")
         self.add_shadow()
-        self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowModality(Qt.ApplicationModal)  # 设置窗体模态，要求该窗体没有父类，否则无效
         
         self.colors["content"] = "rgb(144, 0, 30)"
         self.set_style_sheet()    
@@ -335,16 +339,17 @@ if __name__=="__main__":
     app=QApplication(sys.argv)
     w = QWidget()
     w.resize(600, 400)
+    w.btn = QPushButton("OK", w)
     
-    # m=MessageBox(w)
+    m=MessageBox(w)
     # m=InfoBox(w)
     # m=SuccessBox(w)
     # m=WarningBox(w)
     # m=ErrorBox(w)
-    m=ConfirmBox(w)
-    # m.setWindowTitle("Message")
+    # m=ConfirmBox(w)
+    m.setWindowTitle("Message")
     m.set_title("Are you sure exit?")
-    # m.set_text("E:\Codes\Python\desktop-app-transfer\.venv\lib\site-packages\qtpy\__init__.py:338: PythonQtWarning: PySide6 version 6.1.3 is not supported by QtPy. To ensure your application works correctly with QtPy, please upgrade to PySide6 6.2.0 or later.")
+    m.set_text("E:\Codes\Python\desktop-app-transfer\.venv\lib\site-packages\qtpy\__init__.py:338: PythonQtWarning: PySide6 version 6.1.3 is not supported by QtPy. To ensure your application works correctly with QtPy, please upgrade to PySide6 6.2.0 or later.")
     m.resize(m.sizeHint())  # 更新建议的尺寸，关键
 
     print(w.width() , m.width(), w.height() , m.height())
@@ -352,7 +357,8 @@ if __name__=="__main__":
     y = w.height() - m.height()
     print(x, y)
     m.move(x, y)
+    m.show()
     
     w.show()
-
+    
     app.exit(app.exec())

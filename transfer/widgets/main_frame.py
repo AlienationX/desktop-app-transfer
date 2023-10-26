@@ -6,7 +6,7 @@ import qtawesome as qta
 from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, SettingsHierarchy
 import sys
 
-class MainFrame(QWidget):
+class MainFrame(QFrame, QWidget):
     
     """主窗口"""
     
@@ -238,9 +238,9 @@ class MainFrame(QWidget):
     def showFeedback(self):
         """弹出信息"""
         self.messageBox = MessageBox(self)
-        self.messageBox.setWindowTitle("Message")
-        self.messageBox.set_title("您的反馈或意见请发送邮件至：<b>le7yi_ss@163.com</b>，感谢<br>")
-        self.messageBox.set_text("您的反馈对我们非常重要。无论是称赞还是批评，您的意见都是我们改进服务和产品的关键。您的反馈不仅可以帮助我们更好地理解您的需求和期望，还可以让我们在未来的规划和开发过程中做出更明智的决策。我们感谢您的宝贵时间和建议，期待能收到更多来自您的声音，让我们共同创造更优质的产品和服务。")
+        self.messageBox.setWindowTitle("Feedback")
+        self.messageBox.set_title("请发送邮件至：<b>le7yi_ss@163.com</b>，感谢<br>")
+        self.messageBox.set_text("    您的反馈对我们非常重要，无论是称赞还是批评。这不仅可以帮助我们更好地理解您的需求和期望，还可以让我们在未来的规划和开发过程中做出更明智的决策。我们感谢您的宝贵时间和建议，期待能收到更多来自您的声音，让我们共同创造更优质的产品和服务。")
         self.messageBox.resize(self.messageBox.sizeHint())  # 关键，show之前获取建议的尺寸
         self.messageBox.move_center()
         self.messageBox.show()

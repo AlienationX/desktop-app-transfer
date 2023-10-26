@@ -24,7 +24,7 @@ class MainWindow(QWidget):
         self.settings = {
             "is_vip": False,
             "is_radius": False,
-            "theme": "light1_theme",  # system_theme, light_theme, dark_theme, color_theme
+            "theme": "light111111_theme",  # system_theme, light_theme, dark_theme, color_theme
         }
         
         self.setupUi()
@@ -50,10 +50,8 @@ class MainWindow(QWidget):
         # 重点： 这个frame作为背景和圆角
         self.frame = QFrame()
         self.frame.setObjectName("window")
-        # shadow = QGraphicsDropShadowEffect(self, blurRadius=20, xOffset=5, yOffset=5, color=QColor(31, 31, 31))
-        # self.frame.setGraphicsEffect(shadow)  # 只能在frame上设置阴影
+
         self.layout = QVBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.frame)
 
         # 添加自定义样式
@@ -62,14 +60,13 @@ class MainWindow(QWidget):
             qssStyle = CommonHelper.readQssResource(f":/styles/{theme}.qss")  # 可以直接起名为css(其实是qss)
             self.setStyleSheet(qssStyle)
         
-        self.mainVContainer = VContainer()
-        self.mainVContainer.setSpacing(0)
+        self.frameVContainer = VContainer()
+        self.frameVContainer.setSpacing(0)
         self.setHeader()
-        self.mainFrame = MainFrame()
-        self.mainVContainer.addWidget(self.mainFrame)
+        self.bodyFrame = MainFrame()
+        self.frameVContainer.addWidget(self.bodyFrame)
         self.setFooter()
-        self.frame.setLayout(self.mainVContainer)
-        # self.setContentsMargins(0, 0, 0, 0)
+        self.frame.setLayout(self.frameVContainer)
         
         # QStatusBar        
         # self.statusbar = QStatusBar()
@@ -89,6 +86,9 @@ class MainWindow(QWidget):
         # 绑定事件
         self.bind()
         
+        # 添加阴影
+        self.add_shadow()
+        
         self.setStyleSheet("""
             QWidget {
                 background-color: rgb(30, 30, 30);
@@ -98,93 +98,94 @@ class MainWindow(QWidget):
             QPushButton {
                 border-radius: 5px;
             }
-/* /////////////////////////////////////////////////////////////////////////////////////////////////
-ScrollBars */
-QScrollBar:horizontal {
-    border: none;
-    background: rgb(52, 59, 72);
-    height: 8px;
-    margin: 0px 21px 0 21px;
-	border-radius: 0px;
-}
-QScrollBar::handle:horizontal {
-    background: rgb(189, 147, 249);
-    min-width: 25px;
-	border-radius: 4px
-}
-QScrollBar::add-line:horizontal {
-    border: none;
-    background: rgb(55, 63, 77);
-    width: 20px;
-	border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    subcontrol-position: right;
-    subcontrol-origin: margin;
-}
-QScrollBar::sub-line:horizontal {
-    border: none;
-    background: rgb(55, 63, 77);
-    width: 20px;
-	border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    subcontrol-position: left;
-    subcontrol-origin: margin;
-}
-QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
-    background: none;
-}
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
-    background: none;
-}
-QScrollBar:vertical {	
-    border: none;
-    background: rgb(52, 59, 72);
-    width: 4px;
-    margin: 0;	  /* 21px 0 21px 0;	中间外边距*/
-    border-radius: 0px;
-}
-QScrollBar::handle:vertical {		
-    background: rgb(189, 147, 249);
-    min-height: 25px;	
-    border-radius: 2px
-}
-QScrollBar::add-line:vertical {
-    border: none;
-    background: rgb(55, 63, 77);
-    height: 0px;	/* 20px 上高度*/
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-    subcontrol-position: bottom;
-    subcontrol-origin: margin;
-}
-QScrollBar::sub-line:vertical {	
-    border: none;
-    background: rgb(55, 63, 77);
-    height: 0px;    /* 20px 下高度*/
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    subcontrol-position: top;
-    subcontrol-origin: margin;
-}
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-    background: none;
-}
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-    background: none;
-}
-        """)
-        self.headerHContainer.setStyleSheet("""
             QPushButton:hover {
-                background-color: rgb(49, 50, 50);
+                background-color: rgb(60, 60, 60);
             }
+            #closeBtn:hover {
+                background-color: rgb(144, 0, 30);
+            }
+            /* /////////////////////////////////////////////////////////////////////////////////////////////////
+            ScrollBars */
+            QScrollBar:horizontal {
+                border: none;
+                background: rgb(52, 59, 72);
+                height: 8px;
+                margin: 0px 21px 0 21px;
+                border-radius: 0px;
+            }
+            QScrollBar::handle:horizontal {
+                background: rgb(189, 147, 249);
+                min-width: 25px;
+                border-radius: 4px
+            }
+            QScrollBar::add-line:horizontal {
+                border: none;
+                background: rgb(55, 63, 77);
+                width: 20px;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                subcontrol-position: right;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::sub-line:horizontal {
+                border: none;
+                background: rgb(55, 63, 77);
+                width: 20px;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                subcontrol-position: left;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
+                background: none;
+            }
+            QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+                background: none;
+            }
+            QScrollBar:vertical {	
+                border: none;
+                background: rgb(52, 59, 72);
+                width: 4px;
+                margin: 0;	  /* 21px 0 21px 0;	中间外边距*/
+                border-radius: 0px;
+            }
+            QScrollBar::handle:vertical {		
+                background: rgb(189, 147, 249);
+                min-height: 25px;	
+                border-radius: 2px
+            }
+            QScrollBar::add-line:vertical {
+                border: none;
+                background: rgb(55, 63, 77);
+                height: 0px;	/* 20px 上高度*/
+                border-bottom-left-radius: 2px;
+                border-bottom-right-radius: 2px;
+                subcontrol-position: bottom;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::sub-line:vertical {	
+                border: none;
+                background: rgb(55, 63, 77);
+                height: 0px;    /* 20px 下高度*/
+                border-top-left-radius: 2px;
+                border-top-right-radius: 2px;
+                subcontrol-position: top;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+                background: none;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+            }
+            /* ///////////////////////////////////////////////////////////////////////////////////////////////// */
         """)
-              
         
     def setHeader(self):
         # header
-        self.headerHContainer = HContainer()
+        self.headerHContainer = HContainer(self)
         # self.headerHContainer.setFixedHeight(44)
-        self.headerHContainer.setContentsMargins(12, 6, 12, 6)
+        self.headerHContainer.setContentsMargins(6, 6, 6, 6)
         self.logoLabel = QLabel()
         self.logoLabel.setPixmap(QPixmap(":/TransferS-title_black.png"))
         self.logoLabel.setFixedSize(120, 32)
@@ -216,7 +217,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         self.headerHContainer.addWidget(self.minBtn)
         self.headerHContainer.addWidget(self.maxBtn)
         self.headerHContainer.addWidget(self.closeBtn)
-        self.mainVContainer.addWidget(self.headerHContainer)
+        self.frameVContainer.addWidget(self.headerHContainer)
         
         self.minBtn.clicked.connect(self.showMinimized)
         self.maxBtn.clicked.connect(self.changeMaxOrReset)
@@ -227,17 +228,29 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         if self.isMaximized():
             self.maxBtn.setToolTip("最大化")
             self.maxBtn.setIcon(qta.icon("msc.chrome-maximize", color=QColor(200, 200, 200)))
-            self.layout.setContentsMargins(6, 6, 6, 6)
-            self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
-            self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
+            self.add_shadow()
             self.showNormal()
         else:
             self.maxBtn.setToolTip("还原")
             self.maxBtn.setIcon(qta.icon("msc.chrome-restore", color=QColor(200, 200, 200)))
-            self.layout.setContentsMargins(0, 0, 0, 0)
-            self.frame.setGraphicsEffect(None)  # 最大化无阴影，TODO 且都是直角
+            self.del_shadow()
             self.showMaximized()
-            
+                
+    def add_shadow(self):
+        self.layout.setContentsMargins(6, 6, 6, 6)
+        self.shadow = QGraphicsDropShadowEffect(self, blurRadius=10, xOffset=3, yOffset=3, color=Qt.black)
+        self.frame.setGraphicsEffect(self.shadow)  # 只能在frame上设置阴影
+        self.frame.setStyleSheet("#window {border-radius: 5px;}")
+        self.headerHContainer.setStyleSheet("border-radius: 5px;")
+        self.footerHContainer.setStyleSheet("border-radius: 5px;")
+    
+    def del_shadow(self):
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.frame.setGraphicsEffect(None)  # 最大化无阴影，且都是直角
+        self.frame.setStyleSheet("#window {border-radius: 0px;}")
+        self.headerHContainer.setStyleSheet("QFrame {border-radius: 0px;}")
+        self.footerHContainer.setStyleSheet("QFrame {border-radius: 0px;}")
+    
     def mouseDoubleClickEvent (self, event):
         # 实现双击标题栏最大化和还原
         if self.headerHContainer.underMouse():
@@ -277,13 +290,12 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     @Slot()
     def confirmClose(self):
         # 关闭程序弹出提示框确认，使用自定义的message_box
-        self.confirm = ConfirmBox(self)
+        self.confirm = ConfirmBox()
         self.confirm.set_title("Are you sure exit?")
         self.confirm.signal.connect(lambda x: self.confirmExit(x))
         self.confirm.resize(self.confirm.sizeHint())
-        self.confirm.move_center()
+        self.confirm.move_center(self)
         self.confirm.show()
-        
         
     @Slot()
     def confirmExit(self, reply_text):
@@ -294,19 +306,19 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         # 自定义状态栏
         self.messageLable = QLabel("Welcome")
         self.versionLable = QLabel("Copyright © 2023 by shuli. All rights reserved.")
-        self.statusHContainer = HContainer()
-        # self.statusHContainer.setFixedHeight(30)
-        self.statusHContainer.setContentsMargins(12, 6, 12, 6)
-        self.statusHContainer.addWidget(self.messageLable)
-        self.statusHContainer.addStretch()
-        self.statusHContainer.addWidget(self.versionLable)
-        self.mainVContainer.addWidget(self.statusHContainer)
+        self.footerHContainer = HContainer()
+        # self.footerHContainer.setFixedHeight(30)
+        self.footerHContainer.setContentsMargins(6, 6, 6, 6)
+        self.footerHContainer.addWidget(self.messageLable)
+        self.footerHContainer.addStretch()
+        self.footerHContainer.addWidget(self.versionLable)
+        self.frameVContainer.addWidget(self.footerHContainer)
     
     def bind(self):
         # TODO 给子组件的信号绑定处理函数
-        childw1 = getattr(self.mainFrame, "ExcelToCsvWidget")
+        childw1 = getattr(self.bodyFrame, "ExcelToCsvWidget")
         childw1.message_signal.connect(lambda msg: self.print_status_message(msg))
-        childw2 = getattr(self.mainFrame, "ExcelSplitWidget")
+        childw2 = getattr(self.bodyFrame, "ExcelSplitWidget")
         childw2.message_signal.connect(lambda msg: self.print_status_message(msg))
        
     def print_status_message(self, msg):

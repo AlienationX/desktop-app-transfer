@@ -20,33 +20,34 @@ class MenuList(QWidget):
         
         self.menus = [
             {"id":  0, "pid": -1, "expended": False, "objectName": "home", "text": "HOME", "icon": "ri.menu-fill", "class": DocumentWidget()},
-            {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "EXCEL", "icon": "ri.file-excel-2-line", "class": ""},
-            {"id":  2, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget()},
-            {"id":  3, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget()},
-            {"id":  4, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
-            {"id":  5, "pid": -1, "expended": False, "objectName": "word", "text": "WORD", "icon": "ri.file-word-2-line", "class": ""},
-            {"id":  6, "pid":  5, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget()},
-            {"id":  7, "pid": -1, "expended": False, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": ""},
-            {"id":  8, "pid":  7, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget()},
-            {"id":  9, "pid": -1, "expended": False, "objectName": "file", "text": "FILE", "icon": "msc.go-to-file", "class": ""},
-            {"id": 10, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
-            {"id": 11, "pid":  9, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id":  1, "pid": -1, "expended": False, "objectName": "excel", "text": "Excel", "icon": "ri.file-excel-2-line", "class": ""},
+            {"id": 11, "pid":  1, "expended": False, "objectName": "ExcelToCsvWidget", "text": "转换成CSV", "icon": "msc.bookmark", "class": ExcelToCsvWidget()},
+            {"id": 12, "pid":  1, "expended": False, "objectName": "ExcelSplitWidget", "text": "文件拆分", "icon": "msc.bookmark", "class": ExcelSplitWidget()},
+            {"id": 13, "pid":  1, "expended": False, "objectName": "ExcelOverviewWidget", "text": "数据概况", "icon": "msc.bookmark", "class": ExcelOverviewWidget()},
+            {"id":  2, "pid": -1, "expended": False, "objectName": "word", "text": "Word", "icon": "ri.file-word-2-line", "class": ""},
+            {"id": 21, "pid":  2, "expended": False, "objectName": "WordToPDFWidget", "text": "转换成PDF", "icon": "msc.bookmark", "class": WordToPDFWidget()},
+            {"id": 22, "pid":  2, "expended": False, "objectName": "word_todo1", "text": "PDF在线编辑", "icon": "msc.bookmark", "class": ""},
+            {"id":  3, "pid": -1, "expended": False, "objectName": "csv", "text": "CSV", "icon": "msc.go-to-file", "class": ""},
+            {"id": 31, "pid":  3, "expended": False, "objectName": "CsvToExcelWidget", "text": "转换成EXCEL", "icon": "msc.bookmark", "class": CsvToExcelWidget()},
+            {"id":  4, "pid": -1, "expended": False, "objectName": "file", "text": "File", "icon": "msc.go-to-file", "class": ""},
+            {"id": 41, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量重命名", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
+            {"id": 42, "pid":  4, "expended": False, "objectName": "file_todo1", "text": "批量替换", "icon": "msc.bookmark", "class": ""},
         ]
         
         self.listWidget = QListWidget()
@@ -89,14 +90,14 @@ class MenuList(QWidget):
         self.setLayout(self.layout)
         
         self.setStyleSheet("""
-            QListView {
-                outline: none;  /* 禁用被选中的虚线 0px效果相同*/
-            }
-            QListView QWidget {
-                background-color: transparent;  /* 重点，设置为透明 */
+            QWidget {
                 border-radius: 0px;
+                background-color: transparent;  /* 重点，设置为透明 */
                 color: rgb(44, 222, 133);  /* 200, 200, 200*/
                 font-size: 13px;
+            }
+            QListView {
+                outline: none;  /* 禁用被选中的虚线 0px效果相同*/
             }
             QListView::item:hover {
                 background-color: rgb(4, 57, 94);
