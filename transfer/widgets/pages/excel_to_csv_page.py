@@ -111,6 +111,9 @@ class ExcelToCsvWidget(QWidget):
         self.startBtn = QPushButton(self.startBtnIcon, "执行")
         self.startBtn.setIconSize(QSize(20, 20))
         
+        self.logTextEdit = QPlainTextEdit()
+        self.logTextEdit.setReadOnly(True)
+        
         self.detailProgressBar = QProgressBar()
         self.detailProgressBar.setAlignment(Qt.AlignCenter)
         self.mainProgressBar = QProgressBar()
@@ -249,12 +252,13 @@ class ExcelToCsvWidget(QWidget):
             print("Error: input file is null")
             return
         
-        # self.gridLayout.addWidget(self.detailProgressBar, 7, 0, 1, self.gridLayout.columnCount())  # TODO 文件夹形式，多文件，双进度条，动态图标
-        self.gridLayout.addWidget(self.mainProgressBar, 8, 0, 1, self.gridLayout.columnCount())
-        self.mainProgressBar.setValue(1)                                         # 预先设置为1%
-        self.updateOptions()                                                 # 更新选项值
+        self.gridLayout.addWidget(self.logTextEdit, 7, 0, 1, self.gridLayout.columnCount())
+        # self.gridLayout.addWidget(self.detailProgressBar, 8, 0, 1, self.gridLayout.columnCount())  # TODO 文件夹形式，多文件，双进度条，动态图标
+        self.gridLayout.addWidget(self.mainProgressBar, 9, 0, 1, self.gridLayout.columnCount())
+        self.mainProgressBar.setValue(1)                                        # 预先设置为1%
+        self.updateOptions()                                                    # 更新选项值
         
-        workThread = WorkThread(self)                                        # 将self传进去，绑定到部件上
+        workThread = WorkThread(self)                                           # 将self传进去，绑定到部件上
         workThread.setArgs(self.input_files, self.output_files, self.options)   # 设置参数，传递进线程
         # workThread.signal.connect(lambda x: self.mainProgressBar.setValue(x))
         workThread.signal.connect(lambda value, msg: self.execute_work_signal(value, msg))
@@ -265,6 +269,7 @@ class ExcelToCsvWidget(QWidget):
         
     def execute_work_signal(self, value, msg):
         self.mainProgressBar.setValue(value)
+        self.logTextEdit.appendPlainText(str(datetime.now()) + ': ' + msg)
         self.message_signal.emit(msg)  # 完成一个文件，就发送给状态栏进行显示
     
     def updateOptions(self):

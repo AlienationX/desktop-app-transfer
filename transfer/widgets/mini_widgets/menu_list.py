@@ -93,7 +93,7 @@ class MenuList(QWidget):
             QWidget {
                 border-radius: 0px;
                 background-color: transparent;  /* 重点，设置为透明 */
-                color: rgb(44, 222, 133);  /* 200, 200, 200*/
+                color: rgb(133, 222, 133);  /* 200, 200, 200*/
                 font-size: 13px;
             }
             QListView {
@@ -128,7 +128,7 @@ class MenuList(QWidget):
                     list_item.setHidden(False)
                 else:
                     list_item.setHidden(True)
-                
+       
         
 if __name__=="__main__":
     app=QApplication(sys.argv)

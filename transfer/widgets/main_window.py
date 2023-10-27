@@ -94,6 +94,7 @@ class MainWindow(QWidget):
                 background-color: rgb(30, 30, 30);
                 color: rgb(200, 200, 200);
                 font-size: 12px;
+                font-family: "Segoe UI", "Microsoft YaHei", "Consolas";
             }
             QPushButton {
                 border-radius: 5px;
@@ -101,7 +102,7 @@ class MainWindow(QWidget):
             QPushButton:hover {
                 background-color: rgb(60, 60, 60);
             }
-            #closeBtn:hover {
+            QPushButton#closeBtn:hover {
                 background-color: rgb(144, 0, 30);
             }
             /* /////////////////////////////////////////////////////////////////////////////////////////////////

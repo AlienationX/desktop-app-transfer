@@ -31,7 +31,7 @@ class MessageBox(QFrame, QDialog):
         }
         
         # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.MSWindowsFixedSizeDialogHint)  # 隐藏边框\总在最前\禁止调整大小
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)  # 隐藏边框\无任务栏图标
+        self.setWindowFlags(Qt.FramelessWindowHint)  # 隐藏边框\无任务栏图标
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 背景透明（添加阴影必须背景透明）
         
         # 重点： 这个frame作为背景和圆角
@@ -95,7 +95,7 @@ class MessageBox(QFrame, QDialog):
             QWidget {{
                 color: {colors[font]};
             }}
-            #messageBox {{
+            QWidget#messageBox {{
                 border-radius: 5px;
                 background-color: {colors[content]};
                 border: 1px solid {colors[title]};
@@ -284,6 +284,8 @@ class InfoBox(MessageBox):
         
         self.colors["content"] = "rgb(0, 65, 114)"
         self.set_style_sheet()
+        
+        self.setAttribute(Qt.WA_StyledBackground, False)
 
 class SuccessBox(MessageBox):
     # rgb(4, 74, 22)

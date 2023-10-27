@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 import qtawesome as qta
 
-from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, MessageBox, SettingsHierarchy
+from transfer.widgets.mini_widgets import HContainer, VContainer, MaskWidget, MenuList, SettingsHierarchy, MessageBox, WarningBox, InfoBox
 import sys
 
 class MainFrame(QFrame, QWidget):
@@ -13,6 +13,7 @@ class MainFrame(QFrame, QWidget):
     def __init__(self):
         super().__init__()
         
+        self.setObjectName("mainFrame")
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
@@ -28,7 +29,7 @@ class MainFrame(QFrame, QWidget):
         
         # 底部的按钮
         self.extendHContainer = HContainer()
-        self.extendHContainer.setContentsMargins(6, 0, 0, 0)
+        self.extendHContainer.setContentsMargins(6, 2, 0, 2)
         
         self.settingsBtn = QPushButton(qta.icon("msc.settings-gear", color=QColor(200, 200, 200)), "")
         self.settingsBtn.setIconSize(QSize(20, 20))
@@ -38,14 +39,14 @@ class MainFrame(QFrame, QWidget):
         self.helpBtn.setIconSize(QSize(20, 20))
         self.helpBtn.setToolTip("帮助")
         
-        self.feedbackBtn = QPushButton()  # TODO 测试
+        self.feedbackBtn = QPushButton()
         self.feedbackBtn.setIcon(qta.icon("msc.comment", color=QColor(200, 200, 200)))
         self.feedbackBtn.setIconSize(QSize(20, 20))
         
         self.ellipsisBtn = QPushButton(qta.icon("msc.ellipsis", color=QColor(200, 200, 200)), "")
         self.ellipsisBtn.setIconSize(QSize(20, 20))
         self.ellipsisMenu = QMenu()
-        self.ellipsisMenu.addAction(qta.icon("msc.feedback", color=QColor(200, 200, 200)), "Feedback")  # 反馈
+        self.ellipsisMenu.addAction(qta.icon("msc.feedback", color=QColor(200, 200, 200)), "Feedback")   # 反馈
         self.ellipsisMenu.addAction(qta.icon("mdi.math-log", color=QColor(200, 200, 200)), "UpdateLog")  # 更新日志
         self.ellipsisMenu.addAction(qta.icon("ph.snapchat-logo", color=QColor(200, 200, 200)), "About")  # 关于
         self.ellipsisBtn.setMenu(self.ellipsisMenu)  # TODO 增加样式
@@ -96,7 +97,9 @@ class MainFrame(QFrame, QWidget):
         self.bind()
         
         self.setStyleSheet("""
-            background-color: rgb(40, 40, 40);
+            #mainFrame {
+                background-color: rgb(40, 40, 40);
+            }
         """)
         
         self.menuVContainer.setStyleSheet("""
@@ -109,18 +112,18 @@ class MainFrame(QFrame, QWidget):
         """)
         
         self.showMenuBtn.setStyleSheet("""
-        QPushButton {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 3px;
-            margin: 0;
-            padding: 0;
-        }
-        QPushButton:hover {
-            background-color: transparent;  /* 重点，设置为透明 */
-            border-radius: 3px;
-            margin: 0;
-            padding: 0;
-        }
+            QPushButton {
+                background-color: transparent;  /* 重点，设置为透明 */
+                border-radius: 3px;
+                margin: 0;
+                padding: 0;
+            }
+            QPushButton:hover {
+                background-color: transparent;  /* 重点，设置为透明 */
+                border-radius: 3px;
+                margin: 0;
+                padding: 0;
+            }
         """)
         
         self.stackedWidget.setStyleSheet("""
@@ -133,14 +136,18 @@ class MainFrame(QFrame, QWidget):
                 padding: 4px 10px;
             }
             QPushButton {
-                color: white;
+                color: rgb(250, 250, 250);
                 width: 120px;
                 background-color: rgb(51, 118, 205);
                 border: 1px solid rgb(31, 31, 31);
             }
             QPushButton:hover {
-                color: white;
+                color: rgb(250, 250, 250);
                 background-color: rgb(47, 108, 187);
+            }
+            QPushButton:disabled {
+                color: rgb(250, 250, 250);
+                background-color: green;
             }
             QListView {
                 outline: none;  /* 禁用被选中的虚线 */
@@ -186,15 +193,54 @@ class MainFrame(QFrame, QWidget):
         if menu_item["class"]:
             self.stackedWidget.setCurrentWidget(getattr(self, menu_item["objectName"]))
     
+    def showwwwwwEvent(self, event) -> None:
+        # self.resize(min(self.width(), self.parent().width()), self.parent().height())
+        
+        self.showAnim = QPropertyAnimation(self, b"geometry")
+        self.showAnim.setStartValue(QRect(0, 0, self.width(), self.height()))
+        self.showAnim.setEndValue(QRect(self.width(), 0, self.width(), self.height()))
+        self.showAnim.setDuration(1000)
+        self.showAnim.start()
+        
+    def hideeeeeeeEvent(self, event) -> None:   
+        # self.resize(min(self.width(), self.parent().width()), self.parent().height())
+
+        self.hideAnim = QPropertyAnimation(self, b"geometry")
+        self.hideAnim.setStartValue(QRect(self.width(), 0, self.width(), self.height()))
+        self.hideAnim.setEndValue(QRect(0, 0, self.width(), self.height()))
+        self.hideAnim.setDuration(1000)
+        # self.hideAnim.finished.connect(self.hide)  # 动画完成后执行其他操作
+        self.hideAnim.start()
+    
+    # @Slot()
+    # def hide_menu(self):
+    #     self.menuVContainer.hide()
+    #     x = 0
+    #     y = self.height() - self.showMenuBtn.height()
+    #     self.showMenuBtn.move(x, y)
+    #     self.showMenuBtn.show()
+    #     self.showMenuBtn.raise_()
+    
     @Slot()
     def hide_menu(self):
-        self.menuVContainer.hide()
+        w = self.menuVContainer
+        self.hideAnim = QPropertyAnimation(w, b"geometry")
+        self.hideAnim.setStartValue(QRect(0, 0, w.width(), w.height()))
+        self.hideAnim.setEndValue(QRect(w.width() * -1, 0, w.width(), w.height()))
+        self.hideAnim.setDuration(200)
+        self.hideAnim.finished.connect(w.hide)
+        self.hideAnim.finished.connect(self.finished_action)  # TODO 动画完成后显示按钮，菜单按钮放在右上
+        self.hideAnim.start()
+        
+        # self.menuVContainer.hide()
+    
+    def finished_action(self):
         x = 0
         y = self.height() - self.showMenuBtn.height()
         self.showMenuBtn.move(x, y)
         self.showMenuBtn.show()
-        self.showMenuBtn.raise_()
-        
+        self.showMenuBtn.raise_()  
+    
     @Slot()
     def show_menu(self):
         self.menuVContainer.show()
@@ -237,13 +283,14 @@ class MainFrame(QFrame, QWidget):
                 
     def showFeedback(self):
         """弹出信息"""
-        self.messageBox = MessageBox(self)
-        self.messageBox.setWindowTitle("Feedback")
-        self.messageBox.set_title("请发送邮件至：<b>le7yi_ss@163.com</b>，感谢<br>")
-        self.messageBox.set_text("    您的反馈对我们非常重要，无论是称赞还是批评。这不仅可以帮助我们更好地理解您的需求和期望，还可以让我们在未来的规划和开发过程中做出更明智的决策。我们感谢您的宝贵时间和建议，期待能收到更多来自您的声音，让我们共同创造更优质的产品和服务。")
-        self.messageBox.resize(self.messageBox.sizeHint())  # 关键，show之前获取建议的尺寸
-        self.messageBox.move_center()
-        self.messageBox.show()
+        self.feedbackBox = InfoBox(self)
+        self.feedbackBox.setWindowTitle("Feedback")
+        self.feedbackBox.set_title("请发送邮件至：<b>le7yi_ss@163.com</b>，感谢<br>")
+        self.feedbackBox.set_text("您的反馈对我们非常重要，无论是称赞还是批评。这不仅可以帮助我们更好地理解您的需求和期望，还可以让我们在未来的规划和开发过程中做出更明智的决策。我们感谢您的宝贵时间和建议，期待能收到更多来自您的声音。")
+        self.feedbackBox.add_shadow()
+        self.feedbackBox.resize(self.feedbackBox.sizeHint())  # 关键，show之前获取建议的尺寸
+        self.feedbackBox.move_center()
+        self.feedbackBox.show()
     
         
 if __name__=="__main__":
