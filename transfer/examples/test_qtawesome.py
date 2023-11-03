@@ -90,6 +90,24 @@ class MyWidget(QWidget):
                             animation=qta.Spin(spin_button))
         spin_button.setIcon(spin_icon1)
         self.layout.addWidget(spin_button)
+        
+        # disable Spining icons
+        qta.set_defaults(color_disabled=QColor(150, 150, 150))
+        spin_button_copy = QPushButton(' Spinning icon')
+        spin_icon1 = qta.icon('fa5s.spinner', color='red',
+                            animation=qta.Spin(spin_button_copy))
+        spin_button_copy.setIcon(spin_icon1)
+        spin_button_copy.setEnabled(False)
+        self.layout.addWidget(spin_button_copy)
+        
+        toggle_icon = qta.icon('fa5s.spinner', active='fa5s.balance-scale',
+                                color_off='black',
+                                color_off_active='blue',
+                                color_on='orange',
+                                color_on_active='yellow')
+        toggle_button = QPushButton(toggle_icon, 'Toggle')
+        toggle_button.setEnabled(False)
+        self.layout.addWidget(toggle_button)
 
         # Spining icon widget
         spin_widget = qta.IconWidget()
