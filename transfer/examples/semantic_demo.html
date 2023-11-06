@@ -6,28 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link href="./static/semantic.min.css" rel="stylesheet" type="text/css">
-    <!-- <script src="./static//jquery.min.js"></script> -->
-    <script src="./static//semantic.min.js"></script>
+    <link href="./static/semantic/semantic.min.css" rel="stylesheet" type="text/css">
+    <script src="./static/js/jquery-3.1.1.min.js"></script>
+    <script src="./static/semantic/semantic.min.js"></script>
 
 </head>
 <body>
-
-    <div class="ui button">
-        Default
-      </div>
-    
-      <div class="ui menu">
-        <div class="item">
-          Item A
+    <div class="ui attached stackable menu">
+        <div class="ui container">
+          <a class="item"><i class="home icon"></i> Home</a>
+          <a class="item"><i class="grid layout icon"></i> 用户管理</a>
+          <a class="active item"><i class="mail icon"></i> 权限分配</a>
+          <div class="ui simple dropdown item">More
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <a class="item"><i class="edit icon"></i> Edit Profile</a>
+              <a class="item"><i class="globe icon"></i> Choose Language</a>
+              <a class="item"><i class="settings icon"></i> Account Settings</a>
+            </div>
+          </div>
+          <a class="item right"><i class="edit icon"></i> Edit Profile</a>
         </div>
-        <div class="item">
-          Item B
-        </div>
-        <div class="item">
-          Item C
-        </div>
-      </div>
-
+    </div>
+    <div class="ui compact vertical labeled icon menu">
+        <a class="item"><i class="gamepad icon"></i> 游戏 </a>
+        <a class="item"><i class="video camera icon"></i> 频道 </a>
+        <a class="item"><i class="video play icon"></i> 视频 </a>
+    </div>
 </body>
 </html>
